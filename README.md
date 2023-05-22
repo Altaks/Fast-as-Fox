@@ -31,7 +31,13 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 - Le temps de complétion du niveau est chronométré en secondes + centièmes, et correspond au score du joueur
 - Le joueur ne peut qu’avancer et accélérer et ralentir (induit par l’accélération)
 - La réussite du niveau est déterminée par le fait que le joueur atteint une zone du niveau
-- Les touches de déplacements sont affichées en bas de l'interface du joueur. <br>Les touches de base sont :
+- Les touches de déplacements sont affichées en bas de l'interface du joueur :
+  
+  - [Interface joueur](https://crusenho.itch.io/complete-gui-essential-pack)
+  - [Affichage contrôles](https://crusenho.itch.io/ps4-xbox-controller-buttons)
+  - [Police d'écriture](https://masubiwa.itch.io/irisdot-h21-oblique)
+
+- Les touches de base sont :
   - Sauter : <kbd>Space</kbd>/<kbd>↑</kbd>
   - Bas : <kbd>S</kbd>/<kbd>↓</kbd>
   - Droite : <kbd>D</kbd>/<kbd>→</kbd>
@@ -39,12 +45,20 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 ## Version 2 [Beta]
 ---
 
-- Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire. (Ils sont représentés par des baies de différente couleur, une couleur est associée à un effet) : 
+- Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire. (Ils sont représentés par des baies de différentes couleurs [Sprites de baies](https://ninjikin.itch.io/fruit), une couleur est associée à un effet) :
+
   - Dash : Elance le joueur en avant 1 sec d'animation (+100% de vitesse)
   - Double sauts : Permet d'effectuer deuxième saut pendant le temps de vol d'un premier saut.
   - Dash vers le bas : Permet de s'élancer vers le bas pour attérir immédiattement au sol 
   - Speed : Augmente la vitesse de déplacement du joueur : +145% pendant 5 secondes
   - Revive : Permet d'annuler la prochaine mort du joueur.
+
+<br><center>
+<img src="https://img.itch.zone/aW1nLzY4MTY4NTgucG5n/original/yt%2FJgc.png" width="20%">
+<img src="https://img.itch.zone/aW1nLzY4MTY4NzAucG5n/original/q1o2dc.png" width="20%">
+<img src="https://img.itch.zone/aW1nLzY4MTY4ODIucG5n/original/3LKpQp.png" width="20%">
+<img src="https://img.itch.zone/aW1nLzY4MTY4ODMucG5n/original/ZGfvYt.png" width="20%">
+</center><br>
 
 - Les power ups se stockent dans un slot du joueur (affiché à côté de son icône par la baie du powerup récupéré (en haut a droite)). Il peut choisir de les activer lorsqu'il le souhaite (<kbd>E</kbd>). Le joueur ne peut concerver qu'un seul powerup à la fois.
 
