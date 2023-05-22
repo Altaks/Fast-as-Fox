@@ -39,7 +39,12 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 ## Version 2 [Beta]
 ---
 
-- Le joueur peut atteindre des power ups (dash, sauts, dash vers le bas, speed, revive : Ils sont représentés par des baies de différente couleur, une couleur est associée à un effet), apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire.
+- Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire. (Ils sont représentés par des baies de différente couleur, une couleur est associée à un effet) : 
+  - Dash : Elance le joueur en avant 1 sec d'animation (+100% de vitesse)
+  - Double sauts : Permet d'effectuer deuxième saut pendant le temps de vol d'un premier saut.
+  - Dash vers le bas : Permet de s'élancer vers le bas pour attérir immédiattement au sol 
+  - Speed : Augmente la vitesse de déplacement du joueur : +145% pendant 5 secondes
+  - Revive : Permet d'annuler la prochaine mort du joueur.
 
 - Les power ups se stockent dans un slot du joueur (affiché à côté de son icône par la baie du powerup récupéré (en haut a droite)). Il peut choisir de les activer lorsqu'il le souhaite (<kbd>E</kbd>). Le joueur ne peut concerver qu'un seul powerup à la fois.
 
@@ -83,7 +88,7 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
   - Classement global de chaque niveau par temps
   - Classement par pièces pour le mode infini
 
-<center><img src="https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/c6e86b96-9d07-4e07-8ad4-ad2935deba62.webp" width="50%"></center>
+<center><img src="https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/c6e86b96-9d07-4e07-8ad4-ad2935deba62.webp"></center>
 
 ## Version 4 [MaJ]
 ---
