@@ -45,6 +45,8 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 ## Version 2 [Beta]
 ---
 
+- Le jeu comporte 5 niveaux
+
 - Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire. (Ils sont représentés par des baies de différentes couleurs [Sprites de baies](https://ninjikin.itch.io/fruit), une couleur est associée à un effet) :
 
   - Dash : Elance le joueur en avant 1 sec d'animation (+100% de vitesse)
@@ -96,6 +98,8 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
   - Roux
   - Crimson
   - Albinos
+
+- Le jeu comporte 10 niveaux non infinis
 
 - Sauvegarde des scores locaux dans un classement :
   - Classement global de chaque niveau par pièces
