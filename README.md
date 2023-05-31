@@ -109,6 +109,10 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 
 <center><img src="https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/c6e86b96-9d07-4e07-8ad4-ad2935deba62.webp"></center>
 
+- Police d'écriture du jeu
+
+<center><img src="https://i.imgur.com/8nFHtC0.png"></center>
+
 ## Version 4 [MaJ]
 ---
 
