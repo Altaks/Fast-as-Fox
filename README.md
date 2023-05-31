@@ -41,6 +41,7 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
   - Sauter : <kbd>Space</kbd>/<kbd>↑</kbd>
   - Bas : <kbd>S</kbd>/<kbd>↓</kbd>
   - Droite : <kbd>D</kbd>/<kbd>→</kbd>
+  - Ralentir : <kbd>Q</kbd>/<kbd>←</kbd>
 
 ## Version 2 [Beta]
 ---
