@@ -12,12 +12,14 @@ SOURCES += \
     gameobject.cpp \
     main.cpp \
     mainwindow.cpp \
-    tile.cpp
+    tile.cpp \
+    tileset.cpp
 
 HEADERS += \
     gameobject.h \
     mainwindow.h \
-    tile.h
+    tile.h \
+    tileset.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
