@@ -1,8 +1,13 @@
 #include "gameobject.h"
 
-QObject *GameObject::getParent() const
+const QRect &GameObject::getRectangle() const
 {
-    return parent;
+    return rectangle;
+}
+
+void GameObject::setRectangle(const QRect &newRectangle)
+{
+    rectangle = newRectangle;
 }
 
 GameObject::GameObject(QObject *parent)

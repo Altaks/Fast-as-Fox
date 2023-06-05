@@ -19,10 +19,11 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    constants.h \
     gameobject.h \
     mainwindow.h \
     tile.h \
-    tileset.h
+    tileset.h \
     game.h \
     mainwindow.h
 

@@ -8,12 +8,9 @@ class GameObject : public QObject
 {
     Q_OBJECT
 
-    QObject* parent;
-    QPointF location;
 public:
-    explicit GameObject(QObject *parent = nullptr);    
-    bool collides(QObject* object);
-    QObject* getParent();
+    GameObject(QObject *parent = nullptr);
+    virtual bool collides(QObject* object)=0;
 };
 
 #endif // GAMEOBJECT_H
