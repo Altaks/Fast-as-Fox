@@ -4,6 +4,7 @@
 #include "QtCore/qpoint.h"
 #include <QObject>
 #include <qrect.h>
+#include "CollisionSide.h"
 
 class GameObject : public QObject
 {
@@ -12,7 +13,7 @@ class GameObject : public QObject
     QRect rectangle;
 public:
     GameObject(QObject *parent = nullptr);
-    virtual bool collides(GameObject* object)=0;
+    virtual std::optional<CollisionSide> collides(GameObject* object);
     const QRect &getRectangle() const;
     void setRectangle(const QRect &newRectangle);
 };
