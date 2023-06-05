@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     animatedsprite.cpp \
     gameobject.cpp \
+    game.cpp \
     main.cpp \
     mainwindow.cpp \
     tile.cpp \
@@ -22,8 +23,13 @@ HEADERS += \
     mainwindow.h \
     tile.h \
     tileset.h
+    game.h \
+    mainwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    sprites.qrc
