@@ -10,6 +10,5 @@ const float gravity = 9.81;
 #define FOX_LAND ":/fox/sprites/fox/landing.png"
 #define FRUITS ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png"
-#define LEVEL_ONE ":/level/level/level1.json"
 
 #endif // CONSTANTS_H
