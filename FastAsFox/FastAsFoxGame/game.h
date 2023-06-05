@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-
 #include <QObject>
 #include <QTimer>
 
@@ -10,28 +9,18 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    Game(QObject *parent = nullptr);
-
-    ~Game()
-    {
-        delete tps;
-        delete fps;
-    }
+    explicit Game(QObject *parent = nullptr);
+    ~Game();
 
 public slots:
-    void slotPositionUpdates()
-    {
-        // position update logic here
-    }
-
-    void slotRepaintingUpdates()
-    {
-        // repainting update logic here
-    }
+    void handleTPSUpdate();
+    void handleFPSUpdate();
 
 private:
-    QTimer *tps;
-    QTimer *fps;
+    QTimer tps; // Timer for position updates (20 Hz)
+    QTimer fps; // Timer for repainting updates (100 Hz)
+
+    // Other member variables and methods for game logic
 };
 
 #endif // GAME_H
