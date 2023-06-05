@@ -12,6 +12,7 @@ private:
     QGraphicsPixmapItem * tile;
 public:
     explicit Tile(QPixmap * texture, QObject *parent = nullptr);
+    bool collides(GameObject * obj);
     QGraphicsPixmapItem * getTileItem();
 };
 

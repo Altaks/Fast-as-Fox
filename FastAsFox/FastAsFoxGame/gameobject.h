@@ -12,7 +12,7 @@ class GameObject : public QObject
     QRect rectangle;
 public:
     GameObject(QObject *parent = nullptr);
-    virtual bool collides(QObject* object)=0;
+    virtual bool collides(GameObject* object)=0;
     const QRect &getRectangle() const;
     void setRectangle(const QRect &newRectangle);
 };

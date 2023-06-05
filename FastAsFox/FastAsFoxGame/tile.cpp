@@ -10,3 +10,8 @@ QGraphicsPixmapItem *Tile::getTileItem()
 {
     return this->tile;
 }
+
+
+bool Tile::collides(GameObject* object) {
+
+}
