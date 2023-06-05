@@ -31,6 +31,7 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 - Le temps de complétion du niveau est chronométré en secondes + centièmes, et correspond au score du joueur
 - Le joueur ne peut qu’avancer et accélérer et ralentir (induit par l’accélération)
 - La réussite du niveau est déterminée par le fait que le joueur atteint une zone du niveau
+- Le renard court à 120% de la vitesse de base
 - Les touches de déplacements sont affichées en bas de l'interface du joueur :
   
   - [Interface joueur](https://crusenho.itch.io/complete-gui-essential-pack)
@@ -47,14 +48,15 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
 ---
 
 - Le jeu comporte 5 niveaux
+- Le joueur doit compléter le n niveau avant de pouvoir jouer le suivant
 
-- Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie qui apparaît est aléatoire. (Ils sont représentés par des baies de différentes couleurs [Sprites de baies](https://ninjikin.itch.io/fruit), une couleur est associée à un effet) :
+- Le joueur peut atteindre des power ups qui apparaissent à des endroits prédéfinis mais le type de baie (effet) qui apparaît est aléatoire. (Ils sont représentés par des baies de différentes couleurs [Sprites de baies](https://ninjikin.itch.io/fruit), une couleur est associée à un effet) :
 
-  - Dash : Elance le joueur en avant 1 sec d'animation (+100% de vitesse)
-  - Double sauts : Permet d'effectuer deuxième saut pendant le temps de vol d'un premier saut.
-  - Dash vers le bas : Permet de s'élancer vers le bas pour attérir immédiattement au sol 
-  - Speed : Augmente la vitesse de déplacement du joueur : +145% pendant 5 secondes
-  - Revive : Permet d'annuler la prochaine mort du joueur.
+  - Dash (Pomme verte) : Elance le joueur en avant 1 sec d'animation (+100% de vitesse)
+  - Double sauts (Cerise rouge) : Permet d'effectuer deuxième saut pendant le temps de vol d'un premier saut
+  - Dash vers le bas (Grappe raisins noir) : Permet de s'élancer vers le bas pour attérir immédiattement au sol 
+  - Speed (Citron jaune) : Augmente la vitesse de déplacement du joueur : 145% de la vitesse de base pendant 5 secondes
+  - Revive (Pêche) : Permet d'annuler la prochaine mort du joueur.
 
 <br><center>
 <img src="https://img.itch.zone/aW1nLzY4MTY4NTgucG5n/original/yt%2FJgc.png" width="20%">
@@ -87,18 +89,22 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
     - L'algorithme se base sur la recherche du nombre chromatique pour concaténer les sections de terrain.
     - Une section est voisine avec une autre si la différence de hauteur est supérieure à la hauteur de saut du joueur.
 - Ajout de power down qui peuvent apparaître aux mêmes emplacements que les power up : 
-  - Slow : Ralentit le joueur pendant 5 secondes à 80% de sa vitesse de déplacement
-  - Trop rapide : Augmente la vitesse de base de déplacement de joueur à 180% de sa vitesse de base
-  - Bump en arrière : Repousse le joueur en l'air à un angle de -30° par rapport à la verticale et une vitesse initiale de 60% de la vitesse de déplacement du joueur
-  - Joueur invisible : Fait disparaitre le joueur pendant 5 secondes de l'écran  (sa texture disparait) mais le joueur peut toujours intéragir avec la map, les obstacles et le reste du jeu.
-  - Baie explosive : Fait exploser le joueur, il meurt instantanément lorsqu'il touche la baie.
+  - Slow (Banane jaune) : Ralentit le joueur pendant 5 secondes à 80% de sa vitesse de déplacement
+  - Trop rapide (Fraise) : Augmente la vitesse de base de déplacement de joueur à 180% de sa vitesse de base
+  - Bump en arrière (Pastèque) : Repousse le joueur en l'air à un angle de -30° par rapport à la verticale et une vitesse initiale de 60% de la vitesse de déplacement du joueur
+  - Joueur invisible (Avocat) : Fait disparaitre le joueur pendant 5 secondes de l'écran  (sa texture disparait) mais le joueur peut toujours intéragir avec la map, les obstacles et le reste du jeu.
+  - Explosion (Piment rouge) : Fait exploser le joueur, il meurt instantanément lorsqu'il touche la baie.
   
 - Le renard peut changer d’apparence, il peut changer de couleur :
   
-  - Polaire
-  - Roux
-  - Crimson
-  - Albinos
+  - Orange (par défaut)
+  - Rouge
+  - Jaune
+  - Vert
+  - Turquoise
+  - Bleu
+  - Violet
+  - Rose
 
 - Le jeu comporte 10 niveaux non infinis
 
@@ -107,11 +113,6 @@ Le concept d'un Runner est de terminer l'exploration du niveau le plus rapidemen
   - Classement global de chaque niveau par temps
   - Classement par pièces pour le mode infini
 
-<center><img src="https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/c6e86b96-9d07-4e07-8ad4-ad2935deba62.webp"></center>
-
-- Police d'écriture du jeu
-
-<center><img src="https://i.imgur.com/8nFHtC0.png"></center>
 
 ## Version 4 [MaJ]
 ---
