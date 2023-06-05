@@ -19,7 +19,6 @@ public:
     void updatePosition();
     void updateAnimation();
     void setIsRunning(bool newIsRunning);
-    bool collides(GameObject *object);
 };
 
 #endif // ANIMATEDSPRITE_H

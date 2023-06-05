@@ -19,6 +19,7 @@ private slots:
     void init();
 
     void test_case1();
+    void test_case2();
 
     void cleanup();
     void cleanupTestCase();
@@ -46,6 +47,16 @@ void mapSectionTest::test_case1()
     QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),76);
     coordinates = std::pair<int,int>(1,1);
     QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),60);
+}
+
+void mapSectionTest::test_case2()
+{
+    coordinates = std::pair<int,int>(0,24);
+    QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),0);
+    coordinates = std::pair<int,int>(74,0);
+    QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),76);
+    coordinates = std::pair<int,int>(74,24);
+    QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),0);
 }
 void mapSectionTest::cleanup()
 {
