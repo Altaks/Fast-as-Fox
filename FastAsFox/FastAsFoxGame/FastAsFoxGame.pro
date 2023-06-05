@@ -9,11 +9,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-<<<<<<< HEAD
     animatedsprite.cpp \
     gameobject.cpp \
-=======
->>>>>>> dev-owen
     main.cpp \
     mainwindow.cpp \
     map.cpp \
@@ -23,7 +20,7 @@ SOURCES += \
     tileset.cpp
 
 HEADERS += \
-<<<<<<< HEAD
+    CollisionSide.h \
     animatedsprite.h \
     constants.h \
     gameobject.h \
@@ -33,8 +30,6 @@ HEADERS += \
     player.h \
     tile.h \
     tileset.h \
-=======
->>>>>>> dev-owen
     mainwindow.h
 
 # Default rules for deployment.
