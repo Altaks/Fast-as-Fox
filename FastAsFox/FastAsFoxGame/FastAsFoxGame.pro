@@ -19,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    constants.h \
     gameobject.h \
     mainwindow.h \
     tile.h \
