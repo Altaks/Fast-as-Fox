@@ -161,7 +161,7 @@
         <file>sprites/userInterface/UI_Flat_Textfield_02.png</file>
     </qresource>
     <qresource prefix="/font">
-        <file>sprites/font/font.TTF</file>
+        <file>sprites/font/font.ttf</file>
     </qresource>
     <qresource prefix="/fruits">
         <file>sprites/fruits/fruits.png</file>
