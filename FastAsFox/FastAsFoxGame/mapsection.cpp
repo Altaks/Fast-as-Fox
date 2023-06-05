@@ -50,11 +50,11 @@ MapSection::MapSection(std::string levelpath)
         for(int currentY = 0; currentY < dataHeight; currentY++){
 
             // get tile id into the array
-            int tileId = levelData.at(currentY * dataWidth + currentX).toInt();
+            int tileId = levelData.at(currentY * dataHeight + currentX).toInt();
 
             // determine game accurate coordinates
             int gameCoordX = currentX;
-            int gameCoordY = dataHeight - 1 - currentY;
+            int gameCoordY = dataHeight - currentY;
 
             // add the tile to the section
             coordinatesToTileId.emplace(std::pair<int, int>(gameCoordX, gameCoordY), tileId);

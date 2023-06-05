@@ -47,11 +47,9 @@ void Player::addVelocity(const QVector2D &vec)
 void Player::updatePosition()
 {
     // Update player position based on velocity
-    // You can implement your logic here
 }
 
 void Player::updateAnimation()
 {
     // Update player animation based on the current state
-    // You can implement your logic here
 }

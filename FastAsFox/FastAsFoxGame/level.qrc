@@ -1,5 +1,2 @@
-<RCC>
-    <qresource prefix="/level">
-        <file>level/level1.json</file>
-    </qresource>
-</RCC>
+<!DOCTYPE RCC>
+<RCC version="1.0"/>
