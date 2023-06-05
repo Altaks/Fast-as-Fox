@@ -11,4 +11,6 @@ const float gravity = 9.81;
 #define FRUITS ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png"
 
+#define COLLISION_OFFSET 5
+
 #endif // CONSTANTS_H
