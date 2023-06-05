@@ -11,10 +11,10 @@ CONFIG += c++17
 SOURCES += \
     animatedsprite.cpp \
     gameobject.cpp \
-    game.cpp \
     main.cpp \
     mainwindow.cpp \
     mapsection.cpp \
+    player.cpp \
     tile.cpp \
     tileset.cpp
 
@@ -24,9 +24,9 @@ HEADERS += \
     gameobject.h \
     mainwindow.h \
     mapsection.h \
+    player.h \
     tile.h \
     tileset.h \
-    game.h \
     mainwindow.h
 
 # Default rules for deployment.
