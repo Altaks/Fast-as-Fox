@@ -11,10 +11,11 @@ private:
     bool inAir;
     bool onGround;
     QVector2D velocity;
-    AnimatedSprite animation;
+    AnimatedSprite* animation;
 
 public:
     Player(QObject *parent = nullptr);
+    ~Player();
 
     bool isOnAir() const;
     bool isOnGround() const;
