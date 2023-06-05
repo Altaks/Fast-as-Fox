@@ -2,4 +2,3 @@
 *.o
 build-*/*
 *.pro.user
-*test
