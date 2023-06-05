@@ -14,6 +14,7 @@ SOURCES += \
     game.cpp \
     main.cpp \
     mainwindow.cpp \
+    map.cpp \
     mapsection.cpp \
     tile.cpp \
     tileset.cpp
@@ -23,6 +24,7 @@ HEADERS += \
     constants.h \
     gameobject.h \
     mainwindow.h \
+    map.h \
     mapsection.h \
     tile.h \
     tileset.h \
