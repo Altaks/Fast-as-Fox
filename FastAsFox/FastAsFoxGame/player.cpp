@@ -8,7 +8,10 @@ Player::Player(QObject *parent)
     velocity = QVector2D(0, 0);
 }
 
-Player::~Player() {}
+Player::~Player()
+{
+    delete animation;
+}
 
 bool Player::isOnAir() const
 {
