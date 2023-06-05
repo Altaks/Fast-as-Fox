@@ -14,6 +14,7 @@ SOURCES += \
     game.cpp \
     main.cpp \
     mainwindow.cpp \
+    mapsection.cpp \
     tile.cpp \
     tileset.cpp
 
@@ -22,6 +23,7 @@ HEADERS += \
     constants.h \
     gameobject.h \
     mainwindow.h \
+    mapsection.h \
     tile.h \
     tileset.h \
     game.h \
@@ -33,4 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    level.qrc \
     sprites.qrc

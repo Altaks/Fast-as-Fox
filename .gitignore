@@ -1,4 +1,4 @@
 *.idx
 *.o
 build-*/*
-*.pro.user
+*.user

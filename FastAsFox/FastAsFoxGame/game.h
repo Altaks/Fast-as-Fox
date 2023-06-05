@@ -11,12 +11,23 @@ class Game : public QObject
 
 public:
     Game(QObject *parent = nullptr);
-    ~Game();
+
+    ~Game()
+    {
+        delete tps;
+        delete fps;
+    }
 
 public slots:
-    void slotPositionUpdates();
+    void slotPositionUpdates()
+    {
+        // position update logic here
+    }
 
-    void slotRepaintingUpdates();
+    void slotRepaintingUpdates()
+    {
+        // repainting update logic here
+    }
 
 private:
     QTimer *tps;

@@ -1,16 +1,6 @@
 #include "animatedsprite.h"
 
 
-const QRect &AnimatedSprite::getRectangle() const
-{
-    return rectangle;
-}
-
-void AnimatedSprite::setRectangle(const QRect &newRectangle)
-{
-    rectangle = newRectangle;
-}
-
 AnimatedSprite::AnimatedSprite(QObject *parent)
     : GameObject{parent}
 {
