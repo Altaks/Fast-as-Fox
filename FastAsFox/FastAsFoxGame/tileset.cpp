@@ -25,7 +25,7 @@ std::map<int, QPixmap *>* TileSet::split()
     int currentTileIndex = startingIndex;
     for(int tilesetX = 0, tileCoordX = 0; tilesetX < tileset.width(); tilesetX += sizeSize, tileCoordX++){
         for(int tilesetY = 0, tileCoordY = 0; tilesetY < tileset.height(); tilesetY += sizeSize, tileCoordY++){
-            QPixmap * fragment = nullptr;
+            QPixmap * fragment = new QPixmap();
             *fragment = tileset.copy(tilesetX, tilesetY, sizeSize, sizeSize);
             this->tiles->emplace(currentTileIndex, fragment);
             currentTileIndex++;
