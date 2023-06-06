@@ -44,7 +44,7 @@ void Player::addVelocity(const QVector2D &vec)
     velocity += vec;
 }
 
-void Player::updatePosition()
+void Player::updatePosition(std::vector<GameObject *> objects)
 {
     // Update player position based on velocity
     // You can implement your logic here

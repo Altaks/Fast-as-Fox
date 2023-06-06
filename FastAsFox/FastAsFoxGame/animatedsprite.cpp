@@ -30,8 +30,3 @@ void AnimatedSprite::setIsRunning(bool newIsRunning)
 {
     isRunning = newIsRunning;
 }
-
-bool AnimatedSprite::collides(GameObject *object)
-{
-    return false;
-}
