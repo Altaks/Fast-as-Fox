@@ -1,6 +1,6 @@
 #include "level.h"
 
-Level::Level(pair<int,int> AStartingPosition, pair<int,int> AnEndingPosistion,Map AMap)
+Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingPosistion, Map AMap)
 {
     startingPosition=AStartingPosition;
     endingPosition=AnEndingPosistion;
@@ -9,6 +9,7 @@ Level::Level(pair<int,int> AStartingPosition, pair<int,int> AnEndingPosistion,Ma
 
 Level::~Level(){
     player=nullptr;
+    endingPosition=nullptr;
 }
 
 
@@ -17,6 +18,7 @@ void Level::loadMap(){
 }
 
 void Level::showMap(){
+
 }
 
 void Level::showScore(){
@@ -44,3 +46,4 @@ Map Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
+
