@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 #include <QTimer>
-
-#include <QString>
-#include <QPainter>
-
-#include <iostream>
+#include <QMessageBox>
+#include "animatedsprite.h"
+#include "mapsection.h"
+#include "constants.h"
+#include "map.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,9 +16,17 @@ MainWindow::MainWindow(QWidget *parent)
         fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     }
 
+    TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
+    MapSection * section = new MapSection(LEVEL_ONE);
+
+    std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();
+    tilesets->push_back(set);
+
+    Map * map = new Map(section, tilesets);
+
     // create a scene and view to display text
-    mScene = new QGraphicsScene(this);
-    QGraphicsView *view = new QGraphicsView(mScene, this);
+    mScene = map->getScene();
+    QGraphicsView *view = map->getView();
     setCentralWidget(view);
 
 
@@ -39,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Initialize the LCD number
     lcd = new QLCDNumber(this);
-    lcd->setDigitCount(5);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
+    lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
     lcd->display(count);
@@ -54,10 +62,15 @@ MainWindow::MainWindow(QWidget *parent)
     timer = new QTimer(this);
 
     // Connect timer's timeout() signal to the slot that will update the LCD
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateLCD);
+
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
+
+    // Create the Fox
+    foxSprite = new Fox(mScene);
+
 
 }
 
@@ -156,3 +169,8 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     int margin = 10;
     lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
 }
+
+void MainWindow::showEndOfMapMessage() {
+    QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
+}
+

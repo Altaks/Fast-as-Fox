@@ -3,6 +3,7 @@
 
 #define TILE_SIZE 32
 const float gravity = 9.81;
+const int jump_angle = 45;
 #define FOX_RUN ":/fox/sprites/fox/run.png"
 #define FOX_WALK ":/fox/sprites/fox/walk.png"
 #define FOX_DEAD ":/fox/sprites/fox/dead.png"

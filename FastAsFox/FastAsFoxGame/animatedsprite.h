@@ -4,21 +4,42 @@
 #include "QtGui/qpixmap.h"
 #include <QElapsedTimer>
 #include "gameobject.h"
+#include <QGraphicsPixmapItem>
 
-class AnimatedSprite : public GameObject
-{
-    QPixmap* spriteSheet;
-    QPointF spritePostion;
+#include <QGraphicsPixmapItem>
+#include <QElapsedTimer>
+
+class Fox : public QObject, public QGraphicsPixmapItem {
+
+public:
+    explicit Fox(QGraphicsScene *parentScene);
+    void updateFrame();
+    void startRunning();
+    void stopRunning();
+    void jump();
+    void crouch();
+    void reset();
+    QPointF getSpritePosition() const;
+    QPixmap getSpritePixmap() const;
+
+private:
+    QPixmap *walkSpriteSheet;
+    QPixmap *runSpriteSheet;
+    QGraphicsScene *scene;
+    QTimer *timer;
+    QElapsedTimer *elapsedTimer;
     int currentFrame;
     bool isRunning;
-    QPixmap walkSpriteSheet;
-    QPixmap runSpriteSheet;
-    QElapsedTimer* elapsedTimer;
-public:
-    AnimatedSprite(QObject *parent = nullptr);
-    void updatePosition();
-    void updateAnimation();
-    void setIsRunning(bool newIsRunning);
+    QPointF spritePosition;
+    QPointF spriteVelocity;
+    const float groundLevel = 125.0f;
+    const QPointF gravity = QPointF(0, 2); // 1 or 2 or 3 ... > increasing gravity
+    void updatePixmap();
+
+signals:
+    void endOfMapReached();
+
 };
+
 
 #endif // ANIMATEDSPRITE_H
