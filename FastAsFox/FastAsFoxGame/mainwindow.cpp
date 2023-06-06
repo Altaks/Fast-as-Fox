@@ -16,9 +16,17 @@ MainWindow::MainWindow(QWidget *parent)
         fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     }
 
+    TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
+    MapSection * section = new MapSection(LEVEL_ONE);
+
+    std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();
+    tilesets->push_back(set);
+
+    Map * map = new Map(section, tilesets);
+
     // create a scene and view to display text
-    mScene = new QGraphicsScene(this);
-    QGraphicsView *view = new QGraphicsView(mScene, this);
+    mScene = map->getScene();
+    QGraphicsView *view = map->getView();
     setCentralWidget(view);
 
 

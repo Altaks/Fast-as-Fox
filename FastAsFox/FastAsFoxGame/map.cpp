@@ -1,7 +1,7 @@
 #include "map.h"
 #include "tile.h"
 
-Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
+Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
 
@@ -10,6 +10,9 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
 
     // inject every tile from all the tilesets to the map used tiles
     this->loadedTiles = std::map<int, QPixmap*>();
+    this->tileSets = new std::vector<TileSet*>();
+
+    this->tileSets->reserve(availableTileSets->size());
     this->tileSets = availableTileSets;
 
     for(TileSet * tileset : *availableTileSets){
