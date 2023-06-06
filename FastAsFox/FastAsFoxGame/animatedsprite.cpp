@@ -1,4 +1,4 @@
-#include "AnimatedSprite.h"
+#include "animatedsprite.h"
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
