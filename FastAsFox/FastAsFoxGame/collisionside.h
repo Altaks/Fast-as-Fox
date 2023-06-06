@@ -1,0 +1,4 @@
+#ifndef COLLISIONSIDE_H
+#define COLLISIONSIDE_H
+
+#endif // COLLISIONSIDE_H
