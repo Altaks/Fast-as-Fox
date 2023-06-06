@@ -28,8 +28,8 @@ public:
     ~Level();
     void start();
     void finish();
-    //Map getMap();
-    //void setPlayer(Player* Aplayer)
+    Map getMap();
+    void setPlayer(Player* Aplayer);
 };
 
 

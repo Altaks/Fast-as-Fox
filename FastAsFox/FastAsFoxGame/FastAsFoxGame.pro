@@ -10,14 +10,35 @@ CONFIG += c++17
 
 SOURCES += \
     level.cpp \
+    animatedsprite.cpp \
+    gameobject.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    map.cpp \
+    mapsection.cpp \
+    player.cpp \
+    tile.cpp \
+    tileset.cpp
 
 HEADERS += \
     level.h \
+    animatedsprite.h \
+    collisionside.h \
+    constants.h \
+    gameobject.h \
+    mainwindow.h \
+    map.h \
+    mapsection.h \
+    player.h \
+    tile.h \
+    tileset.h \
     mainwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    level.qrc \
+    sprites.qrc
