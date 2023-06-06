@@ -62,7 +62,7 @@ void Map::load(){
 
             // apply the texture to the tile
             QPixmap * correspondingTexture = this->loadedTiles.at(tileCoord->second);
-            Tile * correspondingTile = new Tile(correspondingTexture);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->second);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
