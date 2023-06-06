@@ -68,7 +68,9 @@ void Map::load(){
         MapSection* section = this->sections.at(sectionId);
 
         // for each tile entry: x ,  y  : tileid
-        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin(); tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++){
+            for(std::map<std::pair<int, int>, int>::iterator tileCoord =
+                section->getCoordinatesToTileId().begin(); tileCoord !=
+                section->getCoordinatesToTileId().end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
