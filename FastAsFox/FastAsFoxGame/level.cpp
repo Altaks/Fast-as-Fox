@@ -17,7 +17,6 @@ void Level::loadMap(){
 }
 
 void Level::showMap(){
-    map.display();
 }
 
 void Level::showScore(){

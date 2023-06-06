@@ -20,11 +20,7 @@ private:
     void showScore();
     void showUI();
 public:
-<<<<<<< Updated upstream
-    Level(pair<int,int> startingPosition, pair<int,int> endingPosistion/*,Map map*/);
-=======
     Level(pair<int,int> startingPosition, pair<int,int> endingPosistion,Map map);
->>>>>>> Stashed changes
     ~Level();
     void start();
     void finish();
