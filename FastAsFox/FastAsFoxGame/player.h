@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
+#include "tile.h"
 
 class Player : public QObject
 {
@@ -32,7 +33,7 @@ signals:
     void playerMoved();
 
 public slots:
-    void updatePosition();
+    void updatePosition(std::vector<Tile *> tiles);
     void updateAnimation();
 };
 
