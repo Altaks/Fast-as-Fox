@@ -40,6 +40,7 @@ void MapTest::initTestCase()
     tileSet = new TileSet(":/texture/sprites/texture/TX Tileset Ground.png",32,0);
     mapSection = new MapSection(LEVEL_ONE);
     availableTileSets.push_back(tileSet);
+    map = new Map(mapSection,availableTileSets);
 }
 
 void MapTest::init()
