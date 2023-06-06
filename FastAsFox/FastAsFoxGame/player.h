@@ -3,10 +3,8 @@
 #include <QVector2D>
 #include "animatedsprite.h"
 
-class Player : public QObject
+class Player
 {
-    Q_OBJECT
-
 private:
     bool inAir;
     bool onGround;
