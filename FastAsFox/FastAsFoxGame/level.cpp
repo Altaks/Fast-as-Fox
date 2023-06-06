@@ -17,6 +17,7 @@ void Level::loadMap(){
 }
 
 void Level::showMap(){
+
 }
 
 void Level::showScore(){
@@ -44,3 +45,4 @@ Map* Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
+

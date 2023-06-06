@@ -7,13 +7,14 @@
 using namespace std;
 
 #include "player.h"
+#include "gameobject.h"
 #include "map.h"
 
 class Level
 {
 private:
     pair<int,int> startingPosition;
-    pair<int,int> endingPosition;
+    GameObject * endingPosition;
     Player * player;
     Map * map;
     void loadMap();
