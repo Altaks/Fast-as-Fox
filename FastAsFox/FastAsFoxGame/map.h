@@ -13,8 +13,8 @@
 class Map
 {
 private:
-    QGraphicsScene * mapScene;
-    QGraphicsView * mapView;
+    QGraphicsScene * mapScene = nullptr;
+    QGraphicsView * mapView = nullptr;
     std::vector<MapSection *> sections;
     std::vector<TileSet *> tileSets;
     std::map<int, QPixmap*> loadedTiles;

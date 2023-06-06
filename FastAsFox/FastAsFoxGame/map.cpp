@@ -8,12 +8,6 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
 
-    // Create the QGraphicsView & QGraphicsScene
-
-    this->mapScene = new QGraphicsScene();
-    this->mapView = new QGraphicsView();
-    this->mapView->setScene(this->mapScene);
-
     // inject every tile from all the tilesets to the map used tiles
     this->loadedTiles = std::map<int, QPixmap*>();
 
@@ -39,10 +33,18 @@ std::vector<MapSection *>* Map::getMap(){
 }
 
 QGraphicsScene * Map::getScene(){
+    if(this->mapScene == nullptr){
+        this->mapScene = new QGraphicsScene(nullptr);
+    }
     return this->mapScene;
 }
 
 QGraphicsView * Map::getView(){
+    if(this->mapView == nullptr){
+        // Create the QGraphicsView & QGraphicsScene
+        this->mapView = new QGraphicsView();
+        this->mapView->setScene(this->getScene());
+    }
     return this->mapView;
 }
 
@@ -71,7 +73,7 @@ void Map::load(){
             tileItem->setPos(graphicsX, graphicsY);
 
             // add the item to the scene
-            this->mapScene->addItem(correspondingTile->getTileItem());
+            this->getScene()->addItem(correspondingTile->getTileItem());
 
         }
 
