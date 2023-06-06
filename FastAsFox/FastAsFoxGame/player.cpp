@@ -76,5 +76,4 @@ void Player::updatePosition(std::vector<Tile *> tiles)
 void Player::updateAnimation()
 {
     // Update player animation based on the current state
-    // You can implement your logic here
 }

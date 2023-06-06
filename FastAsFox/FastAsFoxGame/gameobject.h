@@ -4,7 +4,7 @@
 #include "QtCore/qpoint.h"
 #include <QObject>
 #include <qrect.h>
-#include "CollisionSide.h"
+#include "collisionside.h"
 
 class GameObject : public QObject
 {

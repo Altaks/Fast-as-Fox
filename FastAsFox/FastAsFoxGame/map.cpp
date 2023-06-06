@@ -81,6 +81,18 @@ void Map::load(){
     }
 }
 
-void Map::updateView(GameObject * obj){
-    // TODO : make the game view update to the player
+void Map::updateView(GameObject *obj)
+{
+    QPointF center = obj->getRectangle().center();
+
+    center.rx() += mapView->viewport()->width() / 2;
+
+    center.setX(qMin(qMax(center.x(), mapView->viewport()->width() / 2.0),
+                     mapScene->sceneRect().width() - mapView->viewport()->width() / 2.0));
+    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 2.0),
+                     mapScene->sceneRect().height() - mapView->viewport()->height() / 2.0));
+
+    float lerpFactor = 0.1f;
+    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
+                      + center * lerpFactor);
 }

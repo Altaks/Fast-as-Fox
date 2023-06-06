@@ -16,4 +16,3 @@ QGraphicsPixmapItem *Tile::getTileItem()
 {
     return this->tile;
 }
-

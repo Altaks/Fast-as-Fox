@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +30,31 @@ MainWindow::MainWindow(QWidget *parent)
 //    button->setGeometry(10, 10, 80, 30);
 //    // connect button to printText function
 //    connect(button, &QPushButton::clicked, this, &MainWindow::addText);
+
+
+    // Initialize the LCD number
+    lcd = new QLCDNumber(this);
+    lcd->setDigitCount(5);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
+    lcd->setMode(QLCDNumber::Dec);
+    lcd->setSegmentStyle(QLCDNumber::Flat);
+    lcd->display(count);
+
+    int margin = 10;
+    // Set LCD size and location
+    lcd->setFixedSize(200, 50); // Adjust the size as per your requirements
+    lcd->move(this->width() - lcd->width() - margin, margin);
+
+
+    // Initialize the timer
+    timer = new QTimer(this);
+
+    // Connect timer's timeout() signal to the slot that will update the LCD
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateLCD);
+
+
+    // Start the timer to fire every 10 ms (this will result in hundredths of a second)
+    timer->start(10);
+
 }
 
 void MainWindow::addText() {
@@ -99,4 +125,30 @@ void MainWindow::displayFruit(FruitType fruitType, int versionId, int x, int y)
     QGraphicsPixmapItem* item = new QGraphicsPixmapItem(fruit);
     item->setPos(x, y);
     mScene->addItem(item);
+}
+
+void MainWindow::updateLCD()
+{
+    // Increment counter by 0.01 (which corresponds to hundredths of a second)
+    count += 0.01;
+
+    // Round the number to two decimal places
+    double roundedCount = std::round(count * 100.0) / 100.0;
+
+    // Format the number as a string with leading zeroes
+    QString str = QString("%1").arg(roundedCount, 5, 'f', 2, '0');
+
+    // Display the formatted string
+    lcd->display(str);
+}
+
+
+
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event);
+    int lcdWidth = 200;
+    int lcdHeight = 50;
+    int margin = 10;
+    lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
 }
