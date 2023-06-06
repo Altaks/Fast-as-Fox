@@ -2,16 +2,16 @@
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
+#include "constants.h"
+#include "tile.h"
 
-class Player : public QObject
+class Player
 {
-    Q_OBJECT
-
 private:
     bool inAir;
     bool onGround;
     QVector2D velocity;
-    AnimatedSprite* animation;
+    Fox* animation;
 
 public:
     Player(QObject *parent = nullptr);
@@ -32,7 +32,7 @@ signals:
     void playerMoved();
 
 public slots:
-    void updatePosition();
+    void updatePosition(std::vector<Tile *> tiles);
     void updateAnimation();
 };
 

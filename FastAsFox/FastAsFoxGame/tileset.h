@@ -12,9 +12,10 @@ private:
     std::map<int, QPixmap*>* tiles = nullptr;
     std::map<int, QPixmap*>* split();
     std::string filepath;
-    int sizeSize;
+    int sideSize;
 public:
-    TileSet(std::string filepath, int sizeSize, int startingIndex);
+    TileSet(std::string filepath, int sideSize, int startingIndex);
+    TileSet();
     ~TileSet();
     std::map<int, QPixmap*>* load();
 };
