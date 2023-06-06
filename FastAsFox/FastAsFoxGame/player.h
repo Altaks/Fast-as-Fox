@@ -32,7 +32,7 @@ signals:
     void playerMoved();
 
 public slots:
-    void updatePosition();
+    void updatePosition(std::vector<GameObject *> objects);
     void updateAnimation();
 };
 

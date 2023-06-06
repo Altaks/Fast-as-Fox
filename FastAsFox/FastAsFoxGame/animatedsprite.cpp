@@ -30,4 +30,3 @@ void AnimatedSprite::setIsRunning(bool newIsRunning)
 {
     isRunning = newIsRunning;
 }
-
