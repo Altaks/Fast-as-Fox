@@ -6,22 +6,40 @@
 #include "gameobject.h"
 #include <QGraphicsPixmapItem>
 
-class AnimatedSprite : public QObject, public QGraphicsPixmapItem
-{
-    QPixmap* spriteSheet;
-    QPointF spritePostion;
-    int currentFrame;
-    bool isRunning;
-    QPixmap walkSpriteSheet;
-    QPixmap runSpriteSheet;
-    QElapsedTimer* elapsedTimer;
-    QPointF spritePosition;
+#include <QGraphicsPixmapItem>
+#include <QElapsedTimer>
+
+class Fox : public QObject, public QGraphicsPixmapItem {
 
 public:
-    AnimatedSprite(QObject *parent = nullptr);
-    void updatePosition();
-    void updateAnimation();
-    void setIsRunning(bool newIsRunning);
+    explicit Fox(QGraphicsScene *parentScene);
+    void updateFrame();
+    void startRunning();
+    void stopRunning();
+    void jump();
+    void crouch();
+    void reset();
+    QPointF getSpritePosition() const;
+    QPixmap getSpritePixmap() const;
+
+private:
+    QPixmap *walkSpriteSheet;
+    QPixmap *runSpriteSheet;
+    QGraphicsScene *scene;
+    QTimer *timer;
+    QElapsedTimer *elapsedTimer;
+    int currentFrame;
+    bool isRunning;
+    QPointF spritePosition;
+    QPointF spriteVelocity;
+    const float groundLevel = 125.0f;
+    const QPointF gravity = QPointF(0, 2); // 1 or 2 or 3 ... > increasing gravity
+    void updatePixmap();
+
+signals:
+    void endOfMapReached();
+
 };
+
 
 #endif // ANIMATEDSPRITE_H
