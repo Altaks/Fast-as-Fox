@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QRandomGenerator>
 #include <QPushButton>
+#include "animatedsprite.h"
 #include <QLCDNumber>
 
 enum class FruitType {
@@ -26,6 +27,7 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     void displayFruit(FruitType fruitType, int versionId, int x, int y);
+    void showEndOfMapMessage();
 
 private slots:
     void addText();
@@ -39,6 +41,7 @@ private:
     QTimer *timer;
     QLCDNumber *lcd;
     double count;
+    Fox* foxSprite;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

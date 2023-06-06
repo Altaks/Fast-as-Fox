@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QTimer>
+#include <QMessageBox>
+#include "animatedsprite.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Initialize the LCD number
     lcd = new QLCDNumber(this);
-    lcd->setDigitCount(5);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
+    lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
     lcd->display(count);
@@ -54,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
+
+    // Create the Fox
+    foxSprite = new Fox(mScene);
 
 }
 
@@ -152,3 +157,8 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     int margin = 10;
     lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
 }
+
+void MainWindow::showEndOfMapMessage() {
+    QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
+}
+
