@@ -15,8 +15,6 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
     this->mapView->setScene(this->mapScene);
 
     // inject every tile from all the tilesets to the map used tiles
-    this->loadedTiles = std::map<int, QPixmap*>();
-
     for(TileSet * tileset : availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
         for(std::map<int, QPixmap*>::iterator it = tilesFromTileSet->begin(); it != tilesFromTileSet->end(); it++){

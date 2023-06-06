@@ -1,8 +1,9 @@
 QT += testlib
-QT += gui
+QT -= gui
 QT += widgets
 
-CONFIG += qt warn_on depend_includepath testcase
+CONFIG += qt console warn_on depend_includepath testcase
+CONFIG -= app_bundle
 
 TEMPLATE = app
 
@@ -15,6 +16,18 @@ SOURCES +=  tst_maptest.cpp \
     ../FastAsFoxGame/player.cpp \
     ../FastAsFoxGame/tile.cpp \
     ../FastAsFoxGame/tileset.cpp
+
+HEADERS += \
+    ../FastAsFoxGame/animatedsprite.h \
+    ../FastAsFoxGame/collisionside.h \
+    ../FastAsFoxGame/constants.h \
+    ../FastAsFoxGame/gameobject.h \
+    ../FastAsFoxGame/mainwindow.h \
+    ../FastAsFoxGame/map.h \
+    ../FastAsFoxGame/mapsection.h \
+    ../FastAsFoxGame/player.h \
+    ../FastAsFoxGame/tile.h \
+    ../FastAsFoxGame/tileset.h
 
 DISTFILES += \
     ../FastAsFoxGame/level/level1.json \
@@ -179,15 +192,3 @@ DISTFILES += \
 RESOURCES += \
     ../FastAsFoxGame/level.qrc \
     ../FastAsFoxGame/sprites.qrc
-
-HEADERS += \
-    ../FastAsFoxGame/animatedsprite.h \
-    ../FastAsFoxGame/collisionside.h \
-    ../FastAsFoxGame/constants.h \
-    ../FastAsFoxGame/gameobject.h \
-    ../FastAsFoxGame/mainwindow.h \
-    ../FastAsFoxGame/map.h \
-    ../FastAsFoxGame/mapsection.h \
-    ../FastAsFoxGame/player.h \
-    ../FastAsFoxGame/tile.h \
-    ../FastAsFoxGame/tileset.h
