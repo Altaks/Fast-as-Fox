@@ -2,21 +2,17 @@
 #define LEVEL_H
 
 #include <QPair>
-#include <QElapsedTimer>
-
 
 using namespace std;
 
 #include "player.h"
-#include "gameobject.h"
 #include "map.h"
 
 class Level
 {
 private:
-    QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    GameObject * endingPosition;
+    pair<int,int> endingPosition;
     Player * player;
     Map map;
     void loadMap();
@@ -24,7 +20,11 @@ private:
     void showScore();
     void showUI();
 public:
+<<<<<<< Updated upstream
     Level(pair<int,int> startingPosition, pair<int,int> endingPosistion/*,Map map*/);
+=======
+    Level(pair<int,int> startingPosition, pair<int,int> endingPosistion,Map map);
+>>>>>>> Stashed changes
     ~Level();
     void start();
     void finish();

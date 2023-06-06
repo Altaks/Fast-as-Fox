@@ -9,7 +9,6 @@ Level::Level(pair<int,int> AStartingPosition, pair<int,int> AnEndingPosistion,Ma
 
 Level::~Level(){
     player=nullptr;
-    endingPosition=nullptr;
 }
 
 
