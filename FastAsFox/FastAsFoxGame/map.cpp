@@ -1,21 +1,18 @@
 #include "map.h"
 #include "tile.h"
 
-Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
+Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
 {
     // add the first/default section of the map
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
 
-    // Create the QGraphicsView & QGraphicsScene
-
-    this->mapScene = new QGraphicsScene();
-    this->mapView = new QGraphicsView();
-    this->mapView->setScene(this->mapScene);
-
     // inject every tile from all the tilesets to the map used tiles
-    for(TileSet * tileset : availableTileSets){
+    this->loadedTiles = std::map<int, QPixmap*>();
+    this->tileSets = availableTileSets;
+
+    for(TileSet * tileset : *availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
         for(std::map<int, QPixmap*>::iterator it = tilesFromTileSet->begin(); it != tilesFromTileSet->end(); it++){
             this->loadedTiles.emplace(*it);
@@ -23,13 +20,14 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
     }
 }
 
+
 Map::~Map(){
     delete mapScene;
     delete mapView;
 
     loadedTiles.clear();
     sections.clear();
-    tileSets.clear();
+    tileSets->clear();
 }
 
 std::vector<MapSection *>* Map::getMap(){
@@ -37,10 +35,18 @@ std::vector<MapSection *>* Map::getMap(){
 }
 
 QGraphicsScene * Map::getScene(){
+    if(this->mapScene == nullptr){
+        this->mapScene = new QGraphicsScene(nullptr);
+    }
     return this->mapScene;
 }
 
 QGraphicsView * Map::getView(){
+    if(this->mapView == nullptr){
+        // Create the QGraphicsView & QGraphicsScene
+        this->mapView = new QGraphicsView();
+        this->mapView->setScene(this->getScene());
+    }
     return this->mapView;
 }
 
@@ -69,7 +75,7 @@ void Map::load(){
             tileItem->setPos(graphicsX, graphicsY);
 
             // add the item to the scene
-            this->mapScene->addItem(correspondingTile->getTileItem());
+            this->getScene()->addItem(correspondingTile->getTileItem());
 
         }
 

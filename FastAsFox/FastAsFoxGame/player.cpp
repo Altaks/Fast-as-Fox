@@ -1,7 +1,6 @@
 #include "player.h"
 
 Player::Player(QObject *parent)
-    : QObject(parent)
 {
     inAir = false;
     onGround = true;
@@ -43,10 +42,9 @@ void Player::addVelocity(const QVector2D &vec)
 {
     velocity += vec;
 }
-
+/**
 void Player::updatePosition(const std::vector<Tile *> tiles)
 {
-    /**
     // Update player position based on velocity
     float Vx = velocity.x();
     float Vy = velocity.y();
@@ -87,9 +85,9 @@ void Player::updatePosition(const std::vector<Tile *> tiles)
     // Update player's position using the updated velocity
     QPointF newPosition = animation->pos() + QPointF(Vx, Vy);
     animation->setPos(newPosition);
-**/
-}
 
+}
+**/
 void Player::updateAnimation()
 {
     // Update player animation based on the current state

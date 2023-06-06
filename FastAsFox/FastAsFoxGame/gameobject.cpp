@@ -18,7 +18,12 @@ GameObject::GameObject(QObject *parent)
 
 }
 
-CollisionSide* GameObject::collides(GameObject *object)
+/**
+ * @brief GameObject::collides Returns ths side on which an object has collided with the gameObject on which the function is called
+ * @param object the object that has collided with our GameObject
+ * @return the side of our gameObject object has collided on, or nullopt if no collision has happened
+ */
+std::optional<CollisionSide> GameObject::collides(GameObject *object)
 {
     QRect hitBoxTile = this->rectangle;
     QRect hitBoxObject = object->rectangle;
@@ -71,5 +76,6 @@ CollisionSide* GameObject::collides(GameObject *object)
         }
     }
 
-    return (maxIntersection > 0) ? &side : nullptr;
+    if (maxIntersection > 0) return side;
+    else return std::nullopt;
 }

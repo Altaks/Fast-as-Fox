@@ -8,6 +8,10 @@ TileSet::TileSet(std::string filepath, int sideSize, int startingIndex){
     this->sideSize = sideSize;
 }
 
+TileSet::TileSet(){
+
+}
+
 TileSet::~TileSet(){
     delete this->tiles;
 }
