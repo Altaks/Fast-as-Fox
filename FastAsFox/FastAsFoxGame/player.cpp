@@ -48,6 +48,29 @@ void Player::addVelocity(const QVector2D &vec)
 void Player::updatePosition(std::vector<Tile *> tiles)
 {
     // Update player position based on velocity
+    // You can implement your logic here
+
+    int playerPosX = this->animation->getRectangle().x();
+    int playerPosY = this->animation->getRectangle().y();
+
+    int belowPlayerPosY = playerPosY - 1;
+    bool tileBelowPlayerIsAir = false;
+    for(Tile * tile : tiles){
+        if((int)tile->getTileItem()->x()/32 == playerPosX && (int)tile->getTileItem()->y()/32 == belowPlayerPosY){
+            if(tile->getTileid() == 0){
+
+                // tile is air
+                tileBelowPlayerIsAir = true;
+                break;
+            }
+        }
+    }
+
+    if(isOnAir() || tileBelowPlayerIsAir){
+        // set jump timestamp
+    } else {
+
+    }
 }
 
 void Player::updateAnimation()

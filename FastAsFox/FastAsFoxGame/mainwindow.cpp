@@ -1,11 +1,6 @@
 #include "mainwindow.h"
 #include <QTimer>
 
-#include <QString>
-#include <QPainter>
-
-#include <iostream>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -54,7 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     timer = new QTimer(this);
 
     // Connect timer's timeout() signal to the slot that will update the LCD
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateLCD);
+
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
