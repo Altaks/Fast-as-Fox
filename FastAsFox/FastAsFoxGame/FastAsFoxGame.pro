@@ -20,7 +20,6 @@ SOURCES += \
     tileset.cpp
 
 HEADERS += \
-    CollisionSide.h \
     animatedsprite.h \
     constants.h \
     gameobject.h \
