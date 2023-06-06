@@ -4,7 +4,6 @@
 #include <QPair>
 #include <QElapsedTimer>
 
-
 using namespace std;
 
 #include "player.h"
