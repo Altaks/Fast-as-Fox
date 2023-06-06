@@ -4,8 +4,9 @@
 #include "QtGui/qpixmap.h"
 #include <QElapsedTimer>
 #include "gameobject.h"
+#include <QGraphicsPixmapItem>
 
-class AnimatedSprite : public GameObject
+class AnimatedSprite : public QObject, public QGraphicsPixmapItem
 {
     QPixmap* spriteSheet;
     QPointF spritePostion;
@@ -14,6 +15,8 @@ class AnimatedSprite : public GameObject
     QPixmap walkSpriteSheet;
     QPixmap runSpriteSheet;
     QElapsedTimer* elapsedTimer;
+    QPointF spritePosition;
+
 public:
     AnimatedSprite(QObject *parent = nullptr);
     void updatePosition();
