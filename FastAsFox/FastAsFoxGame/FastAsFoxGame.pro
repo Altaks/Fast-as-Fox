@@ -19,7 +19,8 @@ SOURCES += \
     mapsection.cpp \
     player.cpp \
     tile.cpp \
-    tileset.cpp
+    tileset.cpp \
+    level.cpp
 
 HEADERS += \
     animatedsprite.h \
@@ -32,7 +33,8 @@ HEADERS += \
     player.h \
     tile.h \
     tileset.h \
-    mainwindow.h
+    mainwindow.h \
+    level.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
