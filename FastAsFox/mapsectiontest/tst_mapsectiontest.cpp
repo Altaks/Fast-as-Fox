@@ -41,6 +41,11 @@ void mapSectionTest::init()
 
 }
 
+
+/**
+ * @brief mapSectionTest::test_firstValues
+ * Test if the values at the beginning of the grid as been succesfully generated x= 0 or 1; y= 0 or 1
+ */
 void mapSectionTest::test_firstValues()
 {
     coordinates = std::pair<int,int>(0,0);
@@ -53,6 +58,10 @@ void mapSectionTest::test_firstValues()
     QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),60);
 }
 
+/**
+ * @brief mapSectionTest::test_extremitiesOfMapSection
+ * Test if the values at the others extremities of the grid as been succesfully generated x= max(74); y= max(24)
+ */
 void mapSectionTest::test_extremitiesOfMapSection()
 {
     coordinates = std::pair<int,int>(0,24);
@@ -63,6 +72,11 @@ void mapSectionTest::test_extremitiesOfMapSection()
     QCOMPARE(mapSection->getCoordinatesToTileId().at(coordinates),0);
 }
 
+/**
+ * @brief mapSectionTest::test_OOR
+ * Test is the index values are out of range
+ * Beginning of out of range x= 75; y= 25
+ */
 void mapSectionTest::test_OOR()
 {
     coordinates = std::pair<int,int>(0,25);
