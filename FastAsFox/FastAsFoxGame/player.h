@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
+#include "constants.h"
 #include "tile.h"
 
 class Player : public QObject
