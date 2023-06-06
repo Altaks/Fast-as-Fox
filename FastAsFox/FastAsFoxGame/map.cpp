@@ -1,4 +1,4 @@
-#include "map.h"
+﻿#include "map.h"
 #include "tile.h"
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)

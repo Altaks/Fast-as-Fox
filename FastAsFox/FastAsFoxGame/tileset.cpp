@@ -1,4 +1,4 @@
-#include "tileset.h"
+﻿#include "tileset.h"
 
 #include <QFile>
 
@@ -33,7 +33,7 @@ std::map<int, QPixmap *>* TileSet::split()
     for(int tilesetX = 0, tileCoordX = 0; tilesetX < tileset.width(); tilesetX += sideSize, tileCoordX++){
         for(int tilesetY = 0, tileCoordY = 0; tilesetY < tileset.height(); tilesetY += sideSize, tileCoordY++){
             QPixmap * fragment = new QPixmap();
-            *fragment = tileset.copy(tilesetX, tilesetY, sideSize, sideSize);
+            *fragment = tileset.copy(tilesetY, tilesetX, sideSize, sideSize);
             this->tiles->emplace(currentTileIndex, fragment);
             currentTileIndex++;
         }
