@@ -1,0 +1,14 @@
+debug/level.o
+debug/animatedsprite.o
+debug/gameobject.o
+debug/main.o
+debug/mainwindow.o
+debug/map.o
+debug/mapsection.o
+debug/player.o
+debug/tile.o
+debug/tileset.o
+debug/qrc_level.o
+debug/qrc_sprites.o
+debug/moc_gameobject.o
+debug/moc_player.o
