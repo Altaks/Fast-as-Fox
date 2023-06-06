@@ -18,6 +18,9 @@ TileSet::~TileSet(){
 
 std::map<int, QPixmap*>* TileSet::load(){
     if(this->tiles == nullptr){
+        this->tiles = new std::map<int, QPixmap*>();
+    }
+    if(this->tiles->size() == 0){
         this->tiles = this->split();
     }
     return this->tiles;

@@ -19,7 +19,7 @@ private:
     std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
 public:
-    Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets);
+    Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
     ~Map();
     void load();
     std::vector<MapSection *>* getMap();
