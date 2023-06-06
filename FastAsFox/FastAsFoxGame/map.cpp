@@ -1,6 +1,7 @@
 #include "map.h"
 #include "tile.h"
 
+
 Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
 {
     // add the first/default section of the map
@@ -22,6 +23,7 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
         }
     }
 }
+
 
 Map::~Map(){
     delete mapScene;

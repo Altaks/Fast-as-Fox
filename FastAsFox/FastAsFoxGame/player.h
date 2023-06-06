@@ -11,7 +11,7 @@ private:
     bool inAir;
     bool onGround;
     QVector2D velocity;
-    AnimatedSprite* animation;
+    Fox* animation;
 
 public:
     Player(QObject *parent = nullptr);
