@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     tilesets->push_back(set);
 
     Map * map = new Map(section, tilesets);
+    map->load();
 
     // create a scene and view to display text
     mScene = map->getScene();

@@ -34,7 +34,7 @@ HEADERS += \
     tile.h \
     tileset.h \
     mainwindow.h \
-    level.h \
+    level.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

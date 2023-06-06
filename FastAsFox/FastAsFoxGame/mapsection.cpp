@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-std::map<std::pair<int, int>, int> MapSection::getCoordinatesToTileId() const
+std::map<std::pair<int, int>, int> * MapSection::getCoordinatesToTileId() const
 {
     return coordinatesToTileId;
 }
@@ -38,7 +38,7 @@ MapSection::MapSection(std::string levelpath)
     QJsonArray levelData = jsonDocument["layers"].toArray()[0].toObject()["data"].toArray();
 
     // acquire layer data to load it
-    this->coordinatesToTileId = std::map<std::pair<int, int>, int>();
+    this->coordinatesToTileId = new std::map<std::pair<int, int>, int>();
 
     int dataWidth = jsonDocument["layers"].toArray()[0].toObject()["width"].toInt();
     int dataHeight = jsonDocument["layers"].toArray()[0].toObject()["height"].toInt();
@@ -57,7 +57,7 @@ MapSection::MapSection(std::string levelpath)
             int gameCoordY = dataHeight - 1 - currentY;
 
             // add the tile to the section
-            coordinatesToTileId.emplace(std::pair<int, int>(gameCoordX, gameCoordY), tileId);
+            coordinatesToTileId->emplace(std::pair<int, int>(gameCoordX, gameCoordY), tileId);
         }
     }
 
