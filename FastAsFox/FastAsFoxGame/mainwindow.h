@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include "animatedsprite.h"
 #include <QLCDNumber>
+#include "map.h"
 
 enum class FruitType {
     Apple,
@@ -42,6 +43,9 @@ private:
     QLCDNumber *lcd;
     double count;
     Fox* foxSprite;
+    Map *map;
+    int height=25;
+    int  weight=30;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

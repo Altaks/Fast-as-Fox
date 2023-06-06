@@ -2,6 +2,9 @@
 #include <QTimer>
 #include <QMessageBox>
 #include "animatedsprite.h"
+#include "mapsection.h"
+#include "constants.h"
+#include "map.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -59,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Create the Fox
     foxSprite = new Fox(mScene);
+
 
 }
 
