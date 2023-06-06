@@ -10,12 +10,13 @@ class GameObject : public QObject
 {
     Q_OBJECT
 
+protected:
     QRect rectangle;
 public:
     GameObject(QObject *parent = nullptr);
     virtual std::optional<CollisionSide> collides(GameObject* object);
-    const QRect &getRectangle() const;
-    void setRectangle(const QRect &newRectangle);
+    virtual const QRect &getRectangle() const;
+    virtual void setRectangle(const QRect &newRectangle);
 };
 
 #endif // GAMEOBJECT_H
