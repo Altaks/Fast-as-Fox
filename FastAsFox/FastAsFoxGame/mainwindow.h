@@ -3,20 +3,21 @@
 
 #include <QMainWindow>
 #include <QElapsedTimer>
-#include <QLabel>
-
+#include <QLCDNumber>
+#include <QTimer>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
     QString score=QString();
+    QLCDNumber score2;
     QElapsedTimer timer;
-    QLabel label;
+    QTimer clock;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void DisplayScore();
-    void paintEvent(QPaintEvent* event);
+private slots:
+    void DisplayScore(float time);
 };
 #endif // MAINWINDOW_H
