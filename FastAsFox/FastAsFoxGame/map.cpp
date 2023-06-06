@@ -81,7 +81,7 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(tileID > this->loadedTiles.size()) tileID = 0; // set @ null if tile not found
+            if(tileID >= this->loadedTiles.size()) tileID = 0; // set @ null if tile not found
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
