@@ -5,7 +5,7 @@
 #include <QGraphicsItem>
 
 AnimatedSprite::AnimatedSprite(QObject *parent)
-    : QObject(parent), currentFrame(0), spritePosition(QPointF(0, 0))
+    : GameObject(parent), currentFrame(0), spritePosition(QPointF(0, 0))
 {
     // Create and connect the timer
     QTimer* timer = new QTimer(this);

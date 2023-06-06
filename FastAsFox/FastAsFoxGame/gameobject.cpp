@@ -18,7 +18,7 @@ GameObject::GameObject(QObject *parent)
 
 }
 
-CollisionSide* GameObject::collides(GameObject *object)
+std::optional<CollisionSide> GameObject::collides(GameObject *object)
 {
     QRect hitBoxTile = this->rectangle;
     QRect hitBoxObject = object->rectangle;
@@ -71,5 +71,6 @@ CollisionSide* GameObject::collides(GameObject *object)
         }
     }
 
-    return (maxIntersection > 0) ? &side : nullptr;
+    if (maxIntersection > 0) return side;
+    else return std::nullopt;
 }

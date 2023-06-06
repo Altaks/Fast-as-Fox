@@ -13,6 +13,7 @@ private:
     bool onGround;
     QVector2D velocity;
     AnimatedSprite* animation;
+    unsigned long long lastJumpTimestamp = 0;
 
 public:
     Player(QObject *parent = nullptr);

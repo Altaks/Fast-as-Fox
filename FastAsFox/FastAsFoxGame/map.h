@@ -16,10 +16,10 @@ private:
     QGraphicsScene * mapScene = nullptr;
     QGraphicsView * mapView = nullptr;
     std::vector<MapSection *> sections;
-    std::vector<TileSet *> tileSets;
+    std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
 public:
-    Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets);
+    Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets);
     ~Map();
     void load();
     std::vector<MapSection *>* getMap();

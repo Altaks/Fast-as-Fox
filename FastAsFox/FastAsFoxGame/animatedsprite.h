@@ -6,7 +6,7 @@
 #include "gameobject.h"
 #include <QGraphicsPixmapItem>
 
-class AnimatedSprite : public QObject, public QGraphicsPixmapItem
+class AnimatedSprite : public GameObject, public QGraphicsPixmapItem
 {
     QPixmap* spriteSheet;
     QPointF spritePostion;

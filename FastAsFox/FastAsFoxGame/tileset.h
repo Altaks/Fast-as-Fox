@@ -15,6 +15,7 @@ private:
     int sideSize;
 public:
     TileSet(std::string filepath, int sideSize, int startingIndex);
+    TileSet();
     ~TileSet();
     std::map<int, QPixmap*>* load();
 };
