@@ -1,21 +1,21 @@
 #include "map.h"
 #include "tile.h"
 
-Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
+Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
 
-    // Create the QGraphicsView & QGraphicsScene
-
-    this->mapScene = new QGraphicsScene();
-    this->mapView = new QGraphicsView();
-    this->mapView->setScene(this->mapScene);
-
     // inject every tile from all the tilesets to the map used tiles
-    for(TileSet * tileset : availableTileSets){
+    this->loadedTiles = std::map<int, QPixmap*>();
+    this->tileSets = new std::vector<TileSet*>();
+
+    this->tileSets->reserve(availableTileSets->size());
+    this->tileSets = availableTileSets;
+
+    for(TileSet * tileset : *availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
         for(std::map<int, QPixmap*>::iterator it = tilesFromTileSet->begin(); it != tilesFromTileSet->end(); it++){
             this->loadedTiles.emplace(*it);
@@ -23,13 +23,14 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> availableTileSets)
     }
 }
 
+
 Map::~Map(){
     delete mapScene;
     delete mapView;
 
     loadedTiles.clear();
     sections.clear();
-    tileSets.clear();
+    tileSets->clear();
 }
 
 std::vector<MapSection *>* Map::getMap(){
@@ -37,10 +38,18 @@ std::vector<MapSection *>* Map::getMap(){
 }
 
 QGraphicsScene * Map::getScene(){
+    if(this->mapScene == nullptr){
+        this->mapScene = new QGraphicsScene(nullptr);
+    }
     return this->mapScene;
 }
 
 QGraphicsView * Map::getView(){
+    if(this->mapView == nullptr){
+        // Create the QGraphicsView & QGraphicsScene
+        this->mapView = new QGraphicsView();
+        this->mapView->setScene(this->getScene());
+    }
     return this->mapView;
 }
 
@@ -69,7 +78,7 @@ void Map::load(){
             tileItem->setPos(graphicsX, graphicsY);
 
             // add the item to the scene
-            this->mapScene->addItem(correspondingTile->getTileItem());
+            this->getScene()->addItem(correspondingTile->getTileItem());
 
         }
 
@@ -77,6 +86,18 @@ void Map::load(){
     }
 }
 
-void Map::updateView(GameObject * obj){
-    // TODO : make the game view update to the player
+void Map::updateView(GameObject *obj)
+{
+    QPointF center = obj->getRectangle().center();
+
+    center.rx() += mapView->viewport()->width() / 2;
+
+    center.setX(qMin(qMax(center.x(), mapView->viewport()->width() / 2.0),
+                     mapScene->sceneRect().width() - mapView->viewport()->width() / 2.0));
+    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 2.0),
+                     mapScene->sceneRect().height() - mapView->viewport()->height() / 2.0));
+
+    float lerpFactor = 0.1f;
+    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
+                      + center * lerpFactor);
 }
