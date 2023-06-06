@@ -21,7 +21,6 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
-    collisionside.h \
     constants.h \
     gameobject.h \
     mainwindow.h \
