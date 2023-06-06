@@ -1,4 +1,5 @@
 #include "player.h"
+#include "tile.h"
 
 Player::Player(QObject *parent)
     : QObject(parent)
@@ -44,7 +45,7 @@ void Player::addVelocity(const QVector2D &vec)
     velocity += vec;
 }
 
-void Player::updatePosition(std::vector<GameObject *> objects)
+void Player::updatePosition(std::vector<Tile *> tiles)
 {
     // Update player position based on velocity
     // You can implement your logic here
