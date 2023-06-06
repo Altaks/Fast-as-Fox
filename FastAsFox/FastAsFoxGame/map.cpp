@@ -20,6 +20,7 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
     }
 }
 
+
 Map::~Map(){
     delete mapScene;
     delete mapView;

@@ -1,8 +1,6 @@
 #include "player.h"
-#include "tile.h"
 
 Player::Player(QObject *parent)
-    : QObject(parent)
 {
     inAir = false;
     onGround = true;
@@ -44,35 +42,52 @@ void Player::addVelocity(const QVector2D &vec)
 {
     velocity += vec;
 }
-
-void Player::updatePosition(std::vector<Tile *> tiles)
+/**
+void Player::updatePosition(const std::vector<Tile *> tiles)
 {
     // Update player position based on velocity
-    // You can implement your logic here
+    float Vx = velocity.x();
+    float Vy = velocity.y();
 
-    int playerPosX = this->animation->getRectangle().x();
-    int playerPosY = this->animation->getRectangle().y();
+    // Apply gravity
+    Vy += gravity;
 
-    int belowPlayerPosY = playerPosY - 1;
-    bool tileBelowPlayerIsAir = false;
-    for(Tile * tile : tiles){
-        if((int)tile->getTileItem()->x()/32 == playerPosX && (int)tile->getTileItem()->y()/32 == belowPlayerPosY){
-            if(tile->getTileid() == 0){
+    // Apply tile collision detection and response
+    QRectF playerRect = animation->boundingRect().translated(Vx, Vy);
 
-                // tile is air
-                tileBelowPlayerIsAir = true;
-                break;
+    for (Tile *tile : tiles) {
+        if (playerRect.intersects(tile->getRectangle())) {
+            // Get the collision side
+            std::optional<CollisionSide> collisionSide = tile->collides(this);
+
+            if (collisionSide) {
+                // Respond to the collision based on the collision side
+                switch (*collisionSide) {
+                case CollisionSide::TOP:
+                    Vy = 0; // Stop vertical velocity
+                    onGround = true;
+                    inAir = false;
+                    break;
+                case CollisionSide::BOTTOM:
+                    Vy = 0; // Stop vertical velocity
+                    break;
+                case CollisionSide::LEFT:
+                    Vx = 0; // Stop horizontal velocity
+                    break;
+                case CollisionSide::RIGHT:
+                    Vx = 0; // Stop horizontal velocity
+                    break;
+                }
             }
         }
     }
 
-    if(isOnAir() || tileBelowPlayerIsAir){
-        // set jump timestamp
-    } else {
+    // Update player's position using the updated velocity
+    QPointF newPosition = animation->pos() + QPointF(Vx, Vy);
+    animation->setPos(newPosition);
 
-    }
 }
-
+**/
 void Player::updateAnimation()
 {
     // Update player animation based on the current state
