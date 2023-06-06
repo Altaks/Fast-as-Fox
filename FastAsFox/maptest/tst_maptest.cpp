@@ -1,11 +1,10 @@
 #include <QtTest>
-
-
 #include "../FastAsFoxGame/map.h"
 #include "../FastAsFoxGame/mapsection.h"
 #include "../FastAsFoxGame/tileset.h"
 #include "../FastAsFoxGame/constants.h"
 #include <vector>
+
 // add necessary includes here
 
 class MapTest : public QObject
@@ -23,11 +22,10 @@ private slots:
     void initTestCase();
     void init();
 
-    //void test_getters();
+    void test_case1();
 
     void cleanup();
     void cleanupTestCase();
-
 };
 
 MapTest::MapTest()
@@ -37,20 +35,20 @@ MapTest::MapTest()
 
 void MapTest::initTestCase()
 {
-    tileSet = new TileSet(":/texture/sprites/texture/TX Tileset Ground.png",32,0);
     mapSection = new MapSection(LEVEL_ONE);
+    tileSet = new TileSet(GROUND_TILES,32,0);
     availableTileSets.push_back(tileSet);
 }
 
 void MapTest::init()
 {
-    map = new Map(mapSection,availableTileSets);
+    map = new Map(mapSection, availableTileSets);
 }
 
-/*void MapTest::test_getters()
+void MapTest::test_case1()
 {
-    //QCOMPARE(map->getMap()->at(0),mapSection);
-}*/
+
+}
 
 void MapTest::cleanup()
 {
