@@ -70,6 +70,7 @@ std::optional<CollisionSide> GameObject::collides(GameObject *object)
             side = BOTTOM;
         }
     }
+
     if (maxIntersection > 0) return side;
     else return std::nullopt;
 }

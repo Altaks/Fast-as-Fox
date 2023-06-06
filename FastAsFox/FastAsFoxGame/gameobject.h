@@ -13,8 +13,8 @@ class GameObject : public QObject
 
     QRect rectangle;
 public:
-    GameObject(QObject *parent = nullptr);
-    virtual CollisionSide* collides(GameObject *object);
+    GameObject(QObject * parent = nullptr);
+    virtual std::optional<CollisionSide> collides(GameObject* object);
     const QRect &getRectangle() const;
     void setRectangle(const QRect &newRectangle);
 };
