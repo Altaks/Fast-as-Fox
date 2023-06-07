@@ -1,7 +1,7 @@
-#include "map.h"
+﻿#include "map.h"
 #include "tile.h"
 
-Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
+Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
 
@@ -10,7 +10,15 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*> * availableTileSets)
 
     // inject every tile from all the tilesets to the map used tiles
     this->loadedTiles = std::map<int, QPixmap*>();
+    this->tileSets = new std::vector<TileSet*>();
+
+    this->tileSets->reserve(availableTileSets->size());
     this->tileSets = availableTileSets;
+
+    QPixmap * nullPixmap = new QPixmap(32, 32);
+    nullPixmap->fill(Qt::transparent);
+
+    this->loadedTiles.emplace(0, nullPixmap);
 
     for(TileSet * tileset : *availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
@@ -51,13 +59,18 @@ QGraphicsView * Map::getView(){
 }
 
 void Map::load(){
+
+    qDebug(("Index de tile max : " + std::to_string(this->loadedTiles.size())).c_str());
+
     // inject map at coordinates
     int anchorX = 0;
     for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
         MapSection* section = this->sections.at(sectionId);
 
         // for each tile entry: x ,  y  : tileid
-        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId().begin(); tileCoord != section->getCoordinatesToTileId().end(); tileCoord++){
+            for(std::map<std::pair<int, int>, int>::iterator tileCoord =
+                section->getCoordinatesToTileId().begin(); tileCoord !=
+                section->getCoordinatesToTileId().end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
@@ -67,8 +80,12 @@ void Map::load(){
             graphicsY *= 32;
 
             // apply the texture to the tile
-            QPixmap * correspondingTexture = this->loadedTiles.at(tileCoord->second);
-            Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->second);
+            int tileID = tileCoord->second;
+            if(tileID >= this->loadedTiles.size()) tileID = 0; // set @ null if tile not found
+
+            qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
+            QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileID);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();

@@ -1,15 +1,15 @@
 #include "tile.h"
 
-int Tile::getTileid() const
+int Tile::getTileId() const
 {
-    return tileid;
+    return tileId;
 }
 
 Tile::Tile(QPixmap *texture, int tileid, QObject *parent) : GameObject{parent}
 {
     this->texture = texture;
     this->tile = new QGraphicsPixmapItem(*texture);
-    this->tileid = tileid;
+    this->tileId = tileid;
 }
 
 QGraphicsPixmapItem *Tile::getTileItem()

@@ -4,10 +4,10 @@
 #include <QPair>
 #include <QElapsedTimer>
 
-
 using namespace std;
 
 #include "player.h"
+#include "gameobject.h"
 #include "map.h"
 
 class Level
@@ -15,7 +15,7 @@ class Level
 private:
     QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    pair<int,int> endingPosition;
+    GameObject * endingPosition;
     Player * player;
     Map map;
     void loadMap();
@@ -23,7 +23,7 @@ private:
     void showScore();
     void showUI();
 public:
-    Level(pair<int,int> startingPosition, pair<int,int> endingPosistion,Map map);
+    Level(pair<int,int> startingPosition, GameObject * endingPosistion, Map AMap);
     ~Level();
     void start();
     void finish();

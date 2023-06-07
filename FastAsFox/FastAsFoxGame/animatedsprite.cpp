@@ -7,8 +7,8 @@
 Fox::Fox(QGraphicsScene *parentScene)
     : QGraphicsPixmapItem(nullptr),
       scene(parentScene),
-      walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")), // Updated paths to resources, assuming Qt resources are being used
-      runSpriteSheet(new QPixmap(":/fox/sprites/fox/run.png")), // Updated paths to resources, assuming Qt resources are being used
+      walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")),
+      runSpriteSheet(new QPixmap(":/fox/sprites/fox/run.png")),
       timer(new QTimer(this)),
       elapsedTimer(new QElapsedTimer()),
       currentFrame(0),
