@@ -3,7 +3,7 @@
 
 #include <QPair>
 #include <QElapsedTimer>
-#include <QLabel>
+
 
 using namespace std;
 
@@ -16,20 +16,20 @@ class Level
 private:
     QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    GameObject * endingObject;
+    GameObject * endingPosition;
     Player * player;
-    Fox * fox;
     Map * map;
     void loadMap();
     void showMap();
-
+    void showScore();
+    void showUI();
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, Fox * fox);
+    Level(pair<int,int> startingPosition, GameObject * endingPosistion, Map * AMap);
     ~Level();
     void start();
     void finish();
-    Map * getMap();
-    void setPlayer(Player * Aplayer);
+    Map* getMap();
+    void setPlayer(Player* Aplayer);
 };
 
 
