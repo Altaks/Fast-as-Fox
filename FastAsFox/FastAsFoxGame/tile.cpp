@@ -1,10 +1,8 @@
 #include "tile.h"
-
 int Tile::getTileid() const
 {
     return tileid;
 }
-
 Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameObject{parent}
 {
     this->texture = texture;
@@ -13,7 +11,6 @@ Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameOb
     this->x = x;
     this->y = y;
 }
-
 QGraphicsPixmapItem *Tile::getTileItem()
 {
     return this->tile;
