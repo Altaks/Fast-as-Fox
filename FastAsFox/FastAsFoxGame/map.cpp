@@ -83,7 +83,7 @@ void Map::load(){
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
-            Tile * correspondingTile = new Tile(correspondingTexture, tileID);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->first.first, tileCoord->first.second, tileID);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
