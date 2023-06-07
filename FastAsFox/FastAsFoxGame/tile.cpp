@@ -9,7 +9,7 @@ Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameOb
 {
     this->texture = texture;
     this->tile = new QGraphicsPixmapItem(*texture);
-    this->tileid = tileid;
+    this->tileId = tileid;
     this->x = x;
     this->y = y;
 }

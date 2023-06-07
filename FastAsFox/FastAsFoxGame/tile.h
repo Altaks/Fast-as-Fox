@@ -29,7 +29,7 @@ public:
      * @param tileId The ID of the tile.
      * @param parent The parent object.
      */
-    Tile(QPixmap *texture, int tileId, QObject *parent = nullptr);
+    Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent = nullptr);
 
     /**
      * @brief Returns the ID of the tile.
