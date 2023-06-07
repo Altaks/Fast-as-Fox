@@ -48,7 +48,7 @@ private:
     int  weight=30;
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    //void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

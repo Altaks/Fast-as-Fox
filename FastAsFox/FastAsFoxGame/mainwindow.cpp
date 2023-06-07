@@ -5,6 +5,7 @@
 #include "mapsection.h"
 #include "constants.h"
 #include "map.h"
+#include "level.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,9 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
     map->load();
 
     // create a scene and view to display text
-    mScene = map->getScene();
+    /*mScene = map->getScene();
     QGraphicsView *view = map->getView();
-    setCentralWidget(view);
+    setCentralWidget(view);*/
+
+
+
 
 
     // save font family for use in printText
@@ -47,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Initialize the LCD number
-    lcd = new QLCDNumber(this);
+    /*lcd = new QLCDNumber(this);
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
@@ -68,9 +72,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
-
+*/
     // Create the Fox
-    foxSprite = new Fox(mScene);
+    //foxSprite = new Fox(mScene);
+
+    std::pair<int,int> intpair(1,1);
+    GameObject * gameobjectvitefait;
+    gameobjectvitefait = new GameObject();
+    Level * level;
+    level = new Level(intpair,gameobjectvitefait,map,this);
+    level->start();
+
 
 
 }
@@ -163,13 +175,13 @@ void MainWindow::updateLCD()
 
 
 
-void MainWindow::resizeEvent(QResizeEvent *event) {
+/*void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     int lcdWidth = 200;
     int lcdHeight = 50;
     int margin = 10;
     lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
-}
+}*/
 
 void MainWindow::showEndOfMapMessage() {
     QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
