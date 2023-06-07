@@ -1,23 +1,15 @@
 #include "mainwindow.h"
 #include <QTimer>
 #include <QMessageBox>
-#include "fox.h"
+#include "animatedsprite.h"
 #include "mapsection.h"
 #include "constants.h"
 #include "map.h"
-#include <QApplication>
-#include <QKeyEvent>
-#include <QScreen>
-#include <QPropertyAnimation>
-#include <QScrollBar>
-#include <QScreen>
-#include <QStyle>
-
+#include "level.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     // load the font from resources
     int fontId = QFontDatabase::addApplicationFont(":/font/sprites/font/font.TTF");
     QString fontFamily;
@@ -27,60 +19,43 @@ MainWindow::MainWindow(QWidget *parent)
 
     TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
     MapSection * section = new MapSection(LEVEL_ONE);
+
     std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();
     tilesets->push_back(set);
 
     Map * map = new Map(section, tilesets);
     map->load();
 
-    // Create a scene and view to display text
-    mScene = map->getScene();
-    view = map->getView();
+    // create a scene and view to display text
+    /*mScene = map->getScene();
+    QGraphicsView *view = map->getView();
+    setCentralWidget(view);*/
 
-    // Load and scale the background image
-    QPixmap bg(":/texture/sprites/texture/sky.jpg");
 
-    // Assuming mapWidth and mapHeight are the size of your map
-    // Adjust these to match your map size
-    int mapWidth = map->getWidth(); // Replace with actual width of your map
-    int mapHeight = map->getHeight(); // Replace with actual height of your map
 
-    bg = bg.scaled(mapWidth, mapHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    // Add the background to the scene
-    QGraphicsPixmapItem* background = new QGraphicsPixmapItem(bg);
-    background->setZValue(-1); // ensure it's drawn behind all other items
-    mScene->addItem(background);
-
-    // Set the scene's size to the size of the background
-    mScene->setSceneRect(0, 0, bg.width(), bg.height());
-
-    // Set the QGraphicsView's viewport to the size of the scene
-    view->setViewport(new QWidget);
-    view->viewport()->setFixedSize(bg.size());
-
-    // Set the central widget of the window to be the view
-    setCentralWidget(view);
-
-    // Set the scroll bar policies for the QGraphicsView
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    //:/texture/sprites/texture/sky.jpg
 
     // save font family for use in printText
     mFontFamily = fontFamily;
+
     mFruits = QPixmap(":/fruits/sprites/fruits/fruits.png");
+
+//    // Test the displayFruit function
+//    displayFruit(FruitType::Lemon, 0, 100, 100);
+
+//    // create a button that adds random text when clicked
+//    QPushButton *button = new QPushButton("Add Text", this);
+//    button->setGeometry(10, 10, 80, 30);
+//    // connect button to printText function
+//    connect(button, &QPushButton::clicked, this, &MainWindow::addText);
 
 
     // Initialize the LCD number
-    lcd = new QLCDNumber(this);
+    /*lcd = new QLCDNumber(this);
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
-    lcd->setFrameStyle(QFrame::NoFrame); // Remove the rectangular outline
     lcd->display(count);
-
 
     int margin = 10;
     // Set LCD size and location
@@ -97,62 +72,26 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
-
+*/
     // Create the Fox
-    foxSprite = new Fox(mScene, view);
+    //foxSprite = new Fox(mScene);
 
+    std::pair<int,int> intpair(1,1);
+    GameObject * gameobjectvitefait;
+    gameobjectvitefait = new GameObject();
+    Level * level;
+    level = new Level(intpair,gameobjectvitefait,map,this);
+    level->start();
 
-    //==================CAMERA================================
-
-
-    // Threshold point beyond which camera will move, adjust as needed
-    double threshold = view->width() * 0.25;
-
-    // Check if fox's position in the view has crossed the threshold
-    QPointF foxInView = view->mapFromScene(foxSprite->pos());
-
-    if (foxInView.x() < threshold) {
-        // Center camera on fox but with an offset to the left
-        view->centerOn(QPointF(foxSprite->pos().x() - threshold, foxSprite->pos().y()));
-    }
-
-    //===========================================================
-
-    this->setFocus();
-    qApp->installEventFilter(this);
-
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QRect  screenGeometry = screen->geometry();
-    windowHeight = screenGeometry.height();
-    windowWidth = screenGeometry.width();
-
-    QPixmap ribbonPixmap(":/userInterface/sprites/userInterface/ribbon.png");
-   ribbonX = (this->width() - ribbonPixmap.width()) / 2 - 100;
-
-
-    ribbonY = 0;
-
-
-    // Calculate the new size for the window
-    QSize newSize(bg.width() - 1000, bg.height());
-
-    // Set MainWindow's size to the newSize
-    this->setGeometry(QStyle::alignedRect(
-        Qt::LeftToRight,
-        Qt::AlignCenter,
-        newSize,
-        QGuiApplication::primaryScreen()->availableGeometry()
-    ));
 
 
 }
-
 
 void MainWindow::addText() {
     printText("Bonjour a tous !", 100, 200, 20, QColor(Qt::red));
     printText("La vie est belle.", 150, 250, 20, QColor(Qt::green));
     printText("Les chiens jouent dans le parc.", 200, 300, 20, QColor(Qt::blue));
-    printText("La lutte des classes est le moteur de l'histoire", 300, 400, 20, QColor(231, 200, 27));
+    printText("La lutte des classes est le moteur de l'histoire", 300, 400, 20, QColor(Qt::black));
 
 }
 
@@ -236,111 +175,15 @@ void MainWindow::updateLCD()
 
 
 
-void MainWindow::resizeEvent(QResizeEvent *event) {
+/*void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     int lcdWidth = 200;
     int lcdHeight = 50;
     int margin = 10;
     lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
+}*/
+
+void MainWindow::showEndOfMapMessage() {
+    QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
 }
 
-
-
-
-void MainWindow::onFoxStoppedMoving() {
-    timer->stop();
-    lcd->hide();
-}
-
-void MainWindow::onRibbonAnimationFinished() {
-    // Position the LCD just outside the top edge of the window
-    lcd->move((this->width() - lcd->width()) / 2, -lcd->height());
-
-    // Display the LCD
-    lcd->show();
-
-    // Create a QPropertyAnimation to animate the geometry of the LCD
-    QPropertyAnimation *animation = new QPropertyAnimation(lcd, "geometry");
-
-    // Set the duration of the animation
-    animation->setDuration(1000); // 1 second
-
-    // Set the start and end values for the geometry
-    QRect startRect((this->width() - lcd->width()) / 2, -lcd->height(), lcd->width(), lcd->height());
-
-    // Calculate the center position of the ribbon
-    int ribbonCenterX = this->width() / 2;
-    int ribbonCenterY = ribbonPixmap.height();
-
-    // Calculate new endRect considering the ribbon width
-    int newX = ribbonCenterX - (lcd->width() / 2); // center lcd with respect to the ribbon
-    int newY = ribbonCenterY + ribbonPixmap.height() + 10; // place it 10 pixels below the ribbon
-    QRect endRect(newX, newY, lcd->width(), lcd->height());
-
-
-    animation->setStartValue(startRect);
-    animation->setEndValue(endRect);
-
-    // Start the animation
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
-}
-
-
-
-
-
-
-#include <QGraphicsItemAnimation>
-#include <QTimeLine>
-
-void MainWindow::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_P: {
-        timer->stop();
-            // Store the fox's current position
-            QPointF lastPosition = foxSprite->pos();
-
-            foxSprite->stopMoving();
-
-            // Set the fox's position back to its last position
-            foxSprite->setPos(lastPosition);
-
-            QPixmap ribbonPixmap(":/userInterface/sprites/userInterface/ribbon.png");
-            QGraphicsPixmapItem *ribbonItem = new QGraphicsPixmapItem(ribbonPixmap);
-
-            // Center the ribbon at the top of the window
-           ribbonX = (this->width() - ribbonPixmap.width()) / 2 - 100;
-
-
-            ribbonY = 0;
-            ribbonItem->setScale(1.0); // Initial scale
-
-            ribbonItem->setPos(ribbonX, ribbonY);
-            mScene->addItem(ribbonItem);
-
-            // Create a QGraphicsItemAnimation to animate the ribbonItem's scale
-            QGraphicsItemAnimation *itemAnimation = new QGraphicsItemAnimation;
-            itemAnimation->setItem(ribbonItem);
-
-            // Create a QTimeLine for the animation
-            QTimeLine *timeLine = new QTimeLine(1000); // Set the duration for the animation (in milliseconds)
-            timeLine->setFrameRange(0, 100); // Set the frame range for the animation
-
-            // Connect the timeLine's frameChanged signal to update the scale of the ribbonItem
-            connect(timeLine, &QTimeLine::frameChanged, this, [=](int frame) {
-                qreal scale = 1.0 + static_cast<qreal>(frame) / 100.0; // Calculate the scale value based on the frame
-                ribbonItem->setScale(scale);
-            });
-
-            // Connect the timeLine's finished signal to the onRibbonAnimationFinished slot
-            connect(timeLine, &QTimeLine::finished, this, &MainWindow::onRibbonAnimationFinished);
-
-            // Start the animation
-            timeLine->start();
-
-            break;
-        }
-        default:
-            QMainWindow::keyPressEvent(event);
-    }
-}
