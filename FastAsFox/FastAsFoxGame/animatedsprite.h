@@ -17,7 +17,6 @@ public:
     void startRunning();
     void stopRunning();
     void jump();
-    void crouch();
     void reset();
     QPointF getSpritePosition() const;
     QPixmap getSpritePixmap() const;
