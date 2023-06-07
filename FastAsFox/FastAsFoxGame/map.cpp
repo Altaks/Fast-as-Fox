@@ -1,4 +1,4 @@
-#include "map.h"
+﻿#include "map.h"
 #include "tile.h"
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
@@ -68,7 +68,9 @@ void Map::load(){
         MapSection* section = this->sections.at(sectionId);
 
         // for each tile entry: x ,  y  : tileid
-        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin(); tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++){
+            for(std::map<std::pair<int, int>, int>::iterator tileCoord =
+                section->getCoordinatesToTileId().begin(); tileCoord !=
+                section->getCoordinatesToTileId().end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
@@ -79,7 +81,7 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(tileID > this->loadedTiles.size()) tileID = 0; // set @ null if tile not found
+            if(tileID >= this->loadedTiles.size()) tileID = 0; // set @ null if tile not found
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);

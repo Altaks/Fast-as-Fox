@@ -17,10 +17,10 @@ public:
     void startRunning();
     void stopRunning();
     void jump();
-    void crouch();
     void reset();
     QPointF getSpritePosition() const;
     QPixmap getSpritePixmap() const;
+    void addScore();
 
 private:
     QPixmap *walkSpriteSheet;
@@ -35,6 +35,7 @@ private:
     const float groundLevel = 125.0f;
     const QPointF gravity = QPointF(0, 2); // 1 or 2 or 3 ... > increasing gravity
     void updatePixmap();
+    int score;
 
 signals:
     void endOfMapReached();
