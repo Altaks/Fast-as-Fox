@@ -1,12 +1,14 @@
 #include "level.h"
 #include "QtCore/qtimer.h"
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, Fox * AFox, MainWindow* mainwindow)
+Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, MainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
     endingObject=AnEndingObject;
     map=AMap;
-    fox=AFox;
+    scene = map->getScene();
+    fox=new Fox(scene);
+    fox->setZValue(1);
     mwindow=mainwindow;
 }
 
@@ -23,12 +25,27 @@ void Level::loadMap(){
 }
 
 void Level::showMap(){
-    scene = map->getScene();
     view = map->getView();
-    this->mwindow->setCentralWidget(view);
+    mwindow->setCentralWidget(view);
 }
 
 void Level::showScore()
+{
+
+
+
+    // Initialize the timer
+    timer = new QTimer();
+
+    // Connect timer's timeout() signal to the slot that will update the LCD
+    connect(timer, &QTimer::timeout, this, &Level::updateLCD);
+
+
+    // Start the timer to fire every 10 ms (this will result in hundredths of a second)
+    timer->start(10);
+}
+
+void Level::initLCD()
 {
     // Initialize the LCD number
     lcd = new QLCDNumber();
@@ -41,17 +58,6 @@ void Level::showScore()
     // Set LCD size and location
     lcd->setFixedSize(200, 50); // Adjust the size as per your requirements
     lcd->move(mwindow->width() - lcd->width() - margin, margin);
-
-
-    // Initialize the timer
-    timer = new QTimer();
-
-    // Connect timer's timeout() signal to the slot that will update the LCD
-    connect(timer, &QTimer::timeout, this, &Level::updateLCD);
-
-
-    // Start the timer to fire every 10 ms (this will result in hundredths of a second)
-    timer->start(10);
 }
 
 void Level::updateLCD()
@@ -77,6 +83,7 @@ void Level::showUI()
 void Level::start(){
     loadMap();
     showMap();
+    initLCD();
 }
 
 void Level::finish(){

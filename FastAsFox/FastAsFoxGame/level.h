@@ -27,6 +27,7 @@ private:
     void loadMap();
     void showMap();
     void showScore();
+    void initLCD();
     QGraphicsScene * scene;
     QGraphicsView * view;
     MainWindow * mwindow;
@@ -38,7 +39,7 @@ private slots:
     void updateLCD();
 
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, Fox * fox, MainWindow * mainwindow);
+    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, MainWindow * mainwindow);
     ~Level();
     void start();
     void finish();

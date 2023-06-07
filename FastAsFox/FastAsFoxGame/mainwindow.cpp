@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     tilesets->push_back(set);
 
     Map * map = new Map(section, tilesets);
-    //map->load();
+    map->load();
 
     // create a scene and view to display text
     /*mScene = map->getScene();
@@ -74,13 +74,13 @@ MainWindow::MainWindow(QWidget *parent)
     timer->start(10);
 */
     // Create the Fox
-    foxSprite = new Fox(mScene);
+    //foxSprite = new Fox(mScene);
 
     std::pair<int,int> intpair(1,1);
     GameObject * gameobjectvitefait;
     gameobjectvitefait = new GameObject();
     Level * level;
-    level = new Level(intpair,gameobjectvitefait,map,foxSprite,this);
+    level = new Level(intpair,gameobjectvitefait,map,this);
     level->start();
 
 
@@ -175,13 +175,13 @@ void MainWindow::updateLCD()
 
 
 
-void MainWindow::resizeEvent(QResizeEvent *event) {
+/*void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     int lcdWidth = 200;
     int lcdHeight = 50;
     int margin = 10;
     lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
-}
+}*/
 
 void MainWindow::showEndOfMapMessage() {
     QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
