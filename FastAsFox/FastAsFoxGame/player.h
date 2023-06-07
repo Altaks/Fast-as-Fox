@@ -1,14 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
-#include "animatedsprite.h"
+#include "fox.h"
 #include "constants.h"
 #include "tile.h"
 
-class Player : public QObject
+class Player
 {
-    Q_OBJECT
-
 private:
     bool inAir;
     bool onGround;

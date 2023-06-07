@@ -10,7 +10,7 @@
 #include <QPixmap>
 #include <QRandomGenerator>
 #include <QPushButton>
-#include "animatedsprite.h"
+#include "fox.h"
 #include <QLCDNumber>
 #include "map.h"
 
@@ -23,17 +23,22 @@ enum class FruitType {
     // Add other fruit types here as needed
 };
 
+
 class MainWindow : public QMainWindow {
 
 public:
     MainWindow(QWidget *parent = nullptr);
     void displayFruit(FruitType fruitType, int versionId, int x, int y);
-    void showEndOfMapMessage();
 
 private slots:
     void addText();
     void printText(const QString &text, int x, int y, int z, const QColor &color);
     void updateLCD();
+    void resetGame();
+    void onFoxReachedEnd();
+    void keyPressEvent(QKeyEvent *event);
+    void onFoxStoppedMoving();
+    void onRibbonAnimationFinished();
 
 private:
     QString mFontFamily;
@@ -44,11 +49,18 @@ private:
     double count;
     Fox* foxSprite;
     Map *map;
-    int height=25;
-    int  weight=30;
+    int windowHeight;  // Renamed from 'height'
+    int windowWidth;   // Renamed from 'width'
+    QPixmap ribbonPixmap;
+    int ribbonX;
+    int ribbonY;
+    double deadZoneWidth;
+    QGraphicsView *view;
+
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+
 };
 
 #endif // MAINWINDOW_H

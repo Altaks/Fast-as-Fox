@@ -25,6 +25,8 @@ public:
     std::vector<MapSection *>* getMap();
     QGraphicsScene * getScene();
     QGraphicsView * getView();
+    int getHeight();
+    int getWidth();
 private slots:
     void updateView(GameObject * obj);
 };

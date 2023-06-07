@@ -83,7 +83,7 @@ void Map::load(){
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
-            Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->first.first, tileCoord->first.second, tileID);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileID);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
@@ -112,4 +112,23 @@ void Map::updateView(GameObject *obj)
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
+}
+int Map::getWidth(){
+    int totalWidth = 0;
+    for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
+        MapSection* section = this->sections.at(sectionId);
+        totalWidth += section->getSectionWidth() * 32; // assuming each tile is 32 pixels wide
+    }
+    return totalWidth;
+}
+
+int Map::getHeight(){
+    int maxHeight = 0;
+    for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
+        MapSection* section = this->sections.at(sectionId);
+        if (section->getSectionHeight() > maxHeight) {
+            maxHeight = section->getSectionHeight() * 32; // assuming each tile is 32 pixels high
+        }
+    }
+    return maxHeight;
 }
