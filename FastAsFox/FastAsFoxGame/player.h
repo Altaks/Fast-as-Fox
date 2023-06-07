@@ -5,8 +5,10 @@
 #include "constants.h"
 #include "tile.h"
 
-class Player
+class Player : public QObject
 {
+    Q_OBJECT
+
 private:
     bool inAir;
     bool onGround;
