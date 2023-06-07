@@ -1,6 +1,6 @@
 #include "level.h"
 
-Level::Level(pair<int,int> AStartingPosition, pair<int,int> AnEndingPosistion,Map AMap)
+Level::Level(pair<int,int> AStartingPosition, pair<int,int> AnEndingPosistion,Map* AMap)
 {
     startingPosition=AStartingPosition;
     endingPosition=AnEndingPosistion;
@@ -13,7 +13,7 @@ Level::~Level(){
 
 
 void Level::loadMap(){
-    map.load();
+    map->load();
 }
 
 void Level::showMap(){
@@ -38,7 +38,7 @@ void Level::finish(){
 }
 
 Map Level::getMap(){
-    return map;
+    return *map;
 }
 
 void Level::setPlayer(Player* Aplayer){

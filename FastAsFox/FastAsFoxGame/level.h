@@ -16,13 +16,13 @@ private:
     pair<int,int> startingPosition;
     pair<int,int> endingPosition;
     Player * player;
-    Map map;
+    Map* map;
     void loadMap();
     void showMap();
     void showScore();
     void showUI();
 public:
-    Level(pair<int,int> startingPosition, pair<int,int> endingPosistion,Map map);
+    Level(pair<int,int> startingPosition, pair<int,int> endingPosistion,Map* map);
     ~Level();
     void start();
     void finish();
