@@ -1,8 +1,8 @@
 #include "tile.h"
 
-int Tile::getTileid() const
+int Tile::getTileId() const
 {
-    return tileid;
+    return tileId;
 }
 
 Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameObject{parent}
