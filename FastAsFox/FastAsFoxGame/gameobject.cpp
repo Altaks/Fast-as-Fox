@@ -1,4 +1,4 @@
-#include "gameobject.h"
+﻿#include "gameobject.h"
 #include "constants.h"
 
 
@@ -23,9 +23,9 @@ std::optional<CollisionSide> GameObject::collides(GameObject *object)
     QRect hitBoxTile = this->rectangle;
     QRect hitBoxObject = object->rectangle;
 
-    QRect leftRect = QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
-    QRect rightRect = QRect(hitBoxTile.right(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
-    QRect topRect = QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
+    QRect leftRect =   QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
+    QRect rightRect =  QRect(hitBoxTile.right(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
+    QRect topRect =    QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
     QRect bottomRect = QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.bottom(), hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
 
     qreal maxIntersection = 0;

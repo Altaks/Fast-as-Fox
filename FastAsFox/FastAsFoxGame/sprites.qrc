@@ -21,7 +21,6 @@
         <file>sprites/texture/TX FX Torch Flame.png</file>
         <file>sprites/texture/TX Tileset Ground.png</file>
         <file>sprites/texture/TX Village Props.png</file>
-        <file>sprites/texture/sky.jpg</file>
     </qresource>
     <qresource prefix="/userInterface">
         <file>sprites/userInterface/Spritesheet_UI_Flat.png</file>
@@ -160,7 +159,6 @@
         <file>sprites/userInterface/UI_Flat_Slot_02_Unavailable.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_01.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_02.png</file>
-        <file>sprites/userInterface/ribbon.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>

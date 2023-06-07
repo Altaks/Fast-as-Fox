@@ -1,10 +1,18 @@
-#include "player.h"
+﻿#include "player.h"
 
-Player::Player(QObject *parent)
+Fox *Player::getAnimation() const
 {
-    inAir = false;
-    onGround = true;
-    velocity = QVector2D(0, 0);
+    return animation;
+}
+
+Player::Player(Map * map, QObject *parent)
+{
+    this->inAir = false;
+    this->onGround = true;
+    this->velocity = QVector2D(0, 0);
+    this->animation = new Fox(map->getScene());
+    this->animation->setZValue(1);
+    this->map = map;
 }
 
 Player::~Player()
@@ -24,71 +32,40 @@ bool Player::isOnGround() const
 
 void Player::setVelocity(int x, int y)
 {
-    velocity.setX(x);
-    velocity.setY(y);
+    this->velocity.setX(x);
+    this->velocity.setY(y);
 }
 
 void Player::setVelocity(const QVector2D &vec)
 {
-    velocity = vec;
+    this->velocity = vec;
 }
 
 void Player::addVelocity(int x, int y)
 {
-    velocity += QVector2D(x, y);
+    this->velocity += QVector2D(x, y);
 }
 
 void Player::addVelocity(const QVector2D &vec)
 {
-    velocity += vec;
+    this->velocity += vec;
 }
-/**
-void Player::updatePosition(const std::vector<Tile *> tiles)
+
+void Player::updatePosition()
 {
-    // Update player position based on velocity
-    float Vx = velocity.x();
-    float Vy = velocity.y();
+    std::vector<Tile *>* tiles = map->getActuallyLoadedTiles();
 
-    // Apply gravity
-    Vy += gravity;
+    // Get the "game real" coordinates
+    double xPlayer = ((double)this->animation->x() / 32);
+    double yPlayer = ((double)this->animation->y() / 32);
 
-    // Apply tile collision detection and response
-    QRectF playerRect = animation->boundingRect().translated(Vx, Vy);
+    xPlayer += 0.1;
 
-    for (Tile *tile : tiles) {
-        if (playerRect.intersects(tile->getRectangle())) {
-            // Get the collision side
-            std::optional<CollisionSide> collisionSide = tile->collides(this);
-
-            if (collisionSide) {
-                // Respond to the collision based on the collision side
-                switch (*collisionSide) {
-                case CollisionSide::TOP:
-                    Vy = 0; // Stop vertical velocity
-                    onGround = true;
-                    inAir = false;
-                    break;
-                case CollisionSide::BOTTOM:
-                    Vy = 0; // Stop vertical velocity
-                    break;
-                case CollisionSide::LEFT:
-                    Vx = 0; // Stop horizontal velocity
-                    break;
-                case CollisionSide::RIGHT:
-                    Vx = 0; // Stop horizontal velocity
-                    break;
-                }
-            }
-        }
-    }
-
-    // Update player's position using the updated velocity
-    QPointF newPosition = animation->pos() + QPointF(Vx, Vy);
-    animation->setPos(newPosition);
+    this->animation->setPos(xPlayer * 32, yPlayer * 32);
 
 }
-**/
+
 void Player::updateAnimation()
 {
-    // Update player animation based on the current state
+
 }

@@ -1,9 +1,16 @@
 ﻿#include "map.h"
 #include "tile.h"
 
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
+{
+    return actuallyLoadedTiles;
+}
+
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
+
+    this->actuallyLoadedTiles = new std::vector<Tile*>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -83,7 +90,7 @@ void Map::load(){
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
-            Tile * correspondingTile = new Tile(correspondingTexture, tileID);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->first.first, tileCoord->first.second, tileID);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
@@ -91,7 +98,7 @@ void Map::load(){
 
             // add the item to the scene
             this->getScene()->addItem(correspondingTile->getTileItem());
-
+            this->actuallyLoadedTiles->push_back(correspondingTile);
         }
 
         anchorX += section->getSectionWidth();
@@ -112,23 +119,4 @@ void Map::updateView(GameObject *obj)
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
-}
-int Map::getWidth(){
-    int totalWidth = 0;
-    for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
-        MapSection* section = this->sections.at(sectionId);
-        totalWidth += section->getSectionWidth() * 32; // assuming each tile is 32 pixels wide
-    }
-    return totalWidth;
-}
-
-int Map::getHeight(){
-    int maxHeight = 0;
-    for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
-        MapSection* section = this->sections.at(sectionId);
-        if (section->getSectionHeight() > maxHeight) {
-            maxHeight = section->getSectionHeight() * 32; // assuming each tile is 32 pixels high
-        }
-    }
-    return maxHeight;
 }
