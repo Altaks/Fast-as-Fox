@@ -1,4 +1,5 @@
 #include "animatedsprite.h"
+#include "constants.h"
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -6,9 +7,9 @@
 
 Fox::Fox(QGraphicsScene *parentScene)
     : QGraphicsPixmapItem(nullptr),
+      walkSpriteSheet(new QPixmap(FOX_WALK)),
+      runSpriteSheet(new QPixmap(FOX_RUN)),
       scene(parentScene),
-      walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")),
-      runSpriteSheet(new QPixmap(":/fox/sprites/fox/run.png")),
       timer(new QTimer(this)),
       elapsedTimer(new QElapsedTimer()),
       currentFrame(0),
@@ -86,6 +87,11 @@ void Fox::updateFrame() {
         // Reset the timer to start counting again from this frame.
         elapsedTimer->restart();
     }
+}
+
+void Fox::addScore()
+{
+    this->score+=1;
 }
 
 

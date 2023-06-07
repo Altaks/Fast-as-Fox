@@ -15,6 +15,8 @@ const int jump_angle = 45; /**< The angle at which the fox jumps. */
 #define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png" /**< The file path to the ground tiles sprite sheet. */
 #define LEVEL_ONE ":/level/level/level1.json" /**< The file path to the first level configuration file. */
 
+#define DEFAULT_FONT ":/font/sprites/font/font.TTF" /**< The file path to the font used. */
+
 #define COLLISION_OFFSET 5 /**< The offset used for collision detection. */
 
 #endif // CONSTANTS_H

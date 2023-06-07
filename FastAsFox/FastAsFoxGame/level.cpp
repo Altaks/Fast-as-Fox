@@ -1,45 +1,40 @@
 #include "level.h"
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingPosistion, Map AMap)
+Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, Fox * AFox)
 {
     startingPosition=AStartingPosition;
-    endingPosition=AnEndingPosistion;
+    endingObject=AnEndingObject;
     map=AMap;
+    fox=AFox;
 }
 
 Level::~Level(){
-    player=nullptr;
-    endingPosition=nullptr;
+    delete player;
+    delete endingObject;
+    delete map;
+    delete fox;
 }
 
 
 void Level::loadMap(){
-    map.load();
+    map->load();
 }
 
 void Level::showMap(){
-
-}
-
-void Level::showScore(){
-
-}
-
-void Level::showUI(){
-    showScore();
+    map->getScene();
+    map->getView();
 }
 
 void Level::start(){
     loadMap();
     showMap();
-    showUI();
 }
 
 void Level::finish(){
 
 }
 
-Map Level::getMap(){
+Map * Level::getMap(){
     return map;
 }
 

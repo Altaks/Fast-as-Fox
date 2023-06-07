@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     // load the font from resources
-    int fontId = QFontDatabase::addApplicationFont(":/font/sprites/font/font.TTF");
+    int fontId = QFontDatabase::addApplicationFont(DEFAULT_FONT);
     QString fontFamily;
     if (fontId != -1) {
         fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     // save font family for use in printText
     mFontFamily = fontFamily;
 
-    mFruits = QPixmap(":/fruits/sprites/fruits/fruits.png");
+    mFruits = QPixmap(FRUITS);
 
 //    // Test the displayFruit function
 //    displayFruit(FruitType::Lemon, 0, 100, 100);
