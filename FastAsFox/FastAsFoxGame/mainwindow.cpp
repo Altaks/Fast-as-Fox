@@ -2,10 +2,10 @@
 #include <QTimer>
 #include <QMessageBox>
 #include "animatedsprite.h"
+#include "level.h"
 #include "mapsection.h"
 #include "constants.h"
 #include "map.h"
-#include "level.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -79,11 +79,8 @@ MainWindow::MainWindow(QWidget *parent)
     std::pair<int,int> intpair(1,1);
     GameObject * gameobjectvitefait;
     gameobjectvitefait = new GameObject();
-    Level * level;
     level = new Level(intpair,gameobjectvitefait,map,this);
     level->start();
-
-
 
 }
 
@@ -105,7 +102,7 @@ void MainWindow::printText(const QString &text, int x, int y, int z, const QColo
     mScene->addItem(textItem);
 }
 
-void MainWindow::displayFruit(FruitType fruitType, int versionId, int x, int y)
+/*void MainWindow::displayFruit(FruitType fruitType, int versionId, int x, int y)
 {
     // Define constants for the locations and widths of the fruit types in your sprite sheet
     const int APPLE_START_X = 0;
@@ -155,7 +152,7 @@ void MainWindow::displayFruit(FruitType fruitType, int versionId, int x, int y)
     QGraphicsPixmapItem* item = new QGraphicsPixmapItem(fruit);
     item->setPos(x, y);
     mScene->addItem(item);
-}
+}*/
 
 void MainWindow::updateLCD()
 {
@@ -175,13 +172,10 @@ void MainWindow::updateLCD()
 
 
 
-/*void MainWindow::resizeEvent(QResizeEvent *event) {
+void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
-    int lcdWidth = 200;
-    int lcdHeight = 50;
-    int margin = 10;
-    lcd->setGeometry(QRect(QPoint(this->width() - lcdWidth - margin, margin), QSize(lcdWidth, lcdHeight)));
-}*/
+    level->updateLCDPosition();
+}
 
 void MainWindow::showEndOfMapMessage() {
     QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
