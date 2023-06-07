@@ -18,17 +18,17 @@ private:
     pair<int,int> startingPosition;
     GameObject * endingPosition;
     Player * player;
-    Map map;
+    Map * map;
     void loadMap();
     void showMap();
     void showScore();
     void showUI();
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingPosistion, Map AMap);
+    Level(pair<int,int> startingPosition, GameObject * endingPosistion, Map * AMap);
     ~Level();
     void start();
     void finish();
-    Map getMap();
+    Map* getMap();
     void setPlayer(Player* Aplayer);
 };
 
