@@ -6,6 +6,7 @@ TileSet::TileSet(std::string filepath, int sideSize, int startingIndex){
     this->startingIndex = startingIndex;
     this->filepath = filepath;
     this->sideSize = sideSize;
+    this->tiles = nullptr;
 }
 
 TileSet::TileSet(){

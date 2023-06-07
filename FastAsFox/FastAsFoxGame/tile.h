@@ -8,14 +8,14 @@ class Tile : public GameObject
 private:
     QPixmap * texture;
     QGraphicsPixmapItem * tile;
-    int tileid;
+    int tileId;
     int x;
     int y;
 
 public:
-    explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
+    explicit Tile(QPixmap * texture, int tileId, int x, int y, QObject *parent = nullptr);
     QGraphicsPixmapItem * getTileItem();
-    int getTileid() const;
+    int getTileId() const;
 };
 
 #endif // TILE_H
