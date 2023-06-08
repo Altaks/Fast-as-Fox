@@ -37,6 +37,12 @@ void Fox::updateFrame() {
 
         QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 78);
         this->setPixmap(currentSpriteSheet->copy(frameRect));
+
+        QPixmap coloredPlayer = this->pixmap().copy();
+        coloredPlayer.fill(Qt::red);
+        this->setPixmap(coloredPlayer);
+        this->setZValue(1);
+
         this->update(); // Request redraw
 
         if (currentFrame == totalFrames - 1) {
@@ -50,8 +56,28 @@ void Fox::updateFrame() {
     }
 }
 
+void Fox::startRunning()
+{
+    this->isRunning = true;
+}
+
 
 QPointF Fox::getSpritePosition() const {
     return this->spritePosition;
+}
+
+bool Fox::getIsRunning() const
+{
+    return isRunning;
+}
+
+void Fox::setIsRunning(bool newIsRunning)
+{
+    isRunning = newIsRunning;
+}
+
+QGraphicsScene *Fox::getScene() const
+{
+    return scene;
 }
 

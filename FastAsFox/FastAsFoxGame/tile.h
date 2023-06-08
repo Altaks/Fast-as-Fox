@@ -1,4 +1,4 @@
-#ifndef TILE_H
+﻿#ifndef TILE_H
 #define TILE_H
 #include <QGraphicsPixmapItem>
 #include "gameobject.h"
@@ -8,14 +8,16 @@ class Tile : public GameObject
 private:
     QPixmap * texture;
     QGraphicsPixmapItem * tile;
-    int tileId;
+    int tileid;
     int x;
     int y;
 
 public:
-    explicit Tile(QPixmap * texture, int tileId, int x, int y, QObject *parent = nullptr);
+    explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
     QGraphicsPixmapItem * getTileItem();
-    int getTileId() const;
+    int getTileid() const;
+    int getX() const;
+    int getY() const;
 };
 
 #endif // TILE_H

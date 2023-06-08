@@ -29,7 +29,7 @@ std::optional<CollisionSide> GameObject::collides(GameObject *object)
     QRect bottomRect = QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.bottom(), hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
 
     qreal maxIntersection = 0;
-    static CollisionSide side;
+    CollisionSide side;
 
     if (leftRect.intersects(hitBoxObject))
     {

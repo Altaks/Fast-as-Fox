@@ -21,6 +21,11 @@ public:
     void reset();
     QPointF getSpritePosition() const;
 
+    bool getIsRunning() const;
+    void setIsRunning(bool newIsRunning);
+
+    QGraphicsScene *getScene() const;
+
 private:
     QPixmap *walkSpriteSheet;
     QPixmap *runSpriteSheet;

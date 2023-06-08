@@ -6,7 +6,7 @@
 #include "tile.h"
 #include "map.h"
 
-class Player : public QObject
+class Player : public GameObject
 {
     Q_OBJECT
 
@@ -16,6 +16,7 @@ private:
     QVector2D velocity;
     Fox* animation;
     Map * map;
+    std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
 
 public:
     Player(Map * map, QObject *parent = nullptr);
@@ -30,6 +31,10 @@ public:
     void addVelocity(const QVector2D &vec);
 
     Fox *getAnimation() const;
+
+    void setInAir(bool newInAir);
+    void setOnGround(bool newOnGround);
+    void setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastJumpTimeStamp);
 
 signals:
     void jump();
