@@ -46,6 +46,11 @@ bool Player::isOnGround() const
     return onGround;
 }
 
+bool Player::isStillOnGround() const
+{
+
+}
+
 void Player::setVelocity(int x, int y)
 {
     this->velocity.setX(x);
@@ -119,6 +124,8 @@ void Player::updatePosition()
             vx = walking_speed;
         }
 
+
+
     } else qWarning("None condition of movement have been implied in position update");
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
@@ -166,6 +173,7 @@ void Player::updatePosition()
             }
 
 
+
             /* std::cout << "Tile of ID : " << tile->getTileId() << " "
                       << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
                       << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
@@ -174,6 +182,11 @@ void Player::updatePosition()
 
             break;
         } // else qDebug("Didn't collide with tile");
+        else
+        {
+            this->setInAir(true);
+            this->setOnGround(false);
+        }
     }
 
     // Applies the whole velocity logic

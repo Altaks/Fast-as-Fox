@@ -24,6 +24,7 @@ public:
 
     bool isOnAir() const;
     bool isOnGround() const;
+    bool isStillOnGround() const;
 
     void setVelocity(int x, int y);
     void setVelocity(const QVector2D &vec);
