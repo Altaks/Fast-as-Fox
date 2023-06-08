@@ -33,8 +33,8 @@ void Level::showMap(){
     view = map->getView();
     mwindow->setCentralWidget(view);
 
-    double gameX = 6 * 32;
-    double gameY = 6 * 32;
+    double gameX = this->startingPosition.first * 32;
+    double gameY = this->startingPosition.second * 32;
 
     gameY = this->map->getScene()->height() - gameY;
 

@@ -1,4 +1,4 @@
-#ifndef GAMEOBJECT_H
+﻿#ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
 #include "QtCore/qpoint.h"
@@ -14,9 +14,9 @@ class GameObject : public QObject
     QRect rectangle;
 public:
     GameObject(QObject *parent = nullptr);
-    virtual std::optional<CollisionSide> collides(GameObject *object);
     const QRect &getRectangle() const;
     void setRectangle(const QRect &newRectangle);
+    static std::optional<CollisionSide> collides(QRect hitBoxTile, QRect hitBoxObject);
 };
 
 #endif // GAMEOBJECT_H

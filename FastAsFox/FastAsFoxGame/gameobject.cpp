@@ -18,11 +18,8 @@ GameObject::GameObject(QObject *parent)
 
 }
 
-std::optional<CollisionSide> GameObject::collides(GameObject *object)
+std::optional<CollisionSide> GameObject::collides(QRect hitBoxTile, QRect hitBoxObject)
 {
-    QRect hitBoxTile = this->rectangle;
-    QRect hitBoxObject = object->rectangle;
-
     QRect leftRect =   QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
     QRect rightRect =  QRect(hitBoxTile.right(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
     QRect topRect =    QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);

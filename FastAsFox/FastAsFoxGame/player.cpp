@@ -73,12 +73,10 @@ std::vector<Tile *> filterNearbyTiles(std::vector<Tile *>* tiles, int proximity,
     for(Tile * tile : *tiles){
         if(tile->getTileId() != 0){
 
-            double xOffset = abs(predictedX - (double)tile->getX());
-            double yOffset = abs(predictedY - (double)tile->getY());
+            int xOffset = abs(((int)predictedX) - tile->getX());
+            int yOffset = abs(((int)predictedY) - tile->getY());
 
-            if(xOffset <= proximity && yOffset <= proximity)
-                filtered.push_back(tile);
-
+            if(xOffset <= proximity && yOffset <= proximity) filtered.push_back(tile);
         }
 
     }
@@ -136,16 +134,37 @@ void Player::updatePosition()
 
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
+
         QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
         QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
 
         std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
         std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
-        if(playerRect.intersects(tileRect)){
-            vx = 0;
-            vy = 0;
-            this->lastJumpTimeStamp = std::chrono::system_clock::now();
+        std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
+
+        if(collisionCompute.has_value()){
+
+            // switch sur le côté de la tile qui collide avec l'object
+            switch (collisionCompute.value()) {
+                case TOP:
+                    this->animation->setIsRunning(false);
+                    onGround = true;
+                    inAir = false;
+                    vy = 0.00; // ((tile->getTileItem()->x() - this->animation->x()) - this->animation->pixmap().height()) / 32; // glue the player to the ground
+                    break;
+                case BOTTOM:
+                    vx = 0.00;
+                    vy = 0.00;
+                    break;
+                case LEFT:
+                case RIGHT:
+                    vx = 0.00;
+                    break;
+                default:
+                    break;
+            }
+
 
             /* std::cout << "Tile of ID : " << tile->getTileId() << " "
                       << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
