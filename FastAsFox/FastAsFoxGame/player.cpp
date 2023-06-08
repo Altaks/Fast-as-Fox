@@ -95,6 +95,8 @@ void Player::updatePosition()
     double xPlayer = ((double)this->animation->x() / 32); // get the x as usual
     double yPlayer = (((double)this->map->getScene()->height() - this->animation->y()) / 32); // invert the y axis
 
+    std::cout << "Player is located at " << xPlayer << ", " << yPlayer << std::endl;
+
     // Calculates the velocity vector applied to the player
     double vx = 0.0;
     double vy = 0.0;
@@ -125,13 +127,16 @@ void Player::updatePosition()
     double predictedX = xPlayer + vx;
     double predictedY = yPlayer + vy;
 
+    std::cout << "Player is supposed to go at " << predictedX << ", " << predictedY << std::endl;
+
     this->setRectangle(this->animation->pixmap().rect());
 
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
-    std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
+    // std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
 
-    for(Tile * tile : nearbyTiles){
-        if(tile->getTileid() != 27 && this->collides(tile) == std::nullopt){
+    for(Tile * tile : *tiles){
+        if(tile->getTileid() == 0) continue;
+        if(this->animation->pixmap().rect().intersects(tile->getTileItem()->pixmap().rect())){
             vx = 0;
             vy = 0;
             this->lastJumpTimeStamp = std::chrono::system_clock::now();
@@ -140,6 +145,14 @@ void Player::updatePosition()
                       << "][xmax " << tile->getTileItem()->x() + tile->getTileItem()->pixmap().width() << ",ymax " << tile->getTileItem()->y() + tile->getTileItem()->pixmap().height()
                       << "] of game coords : (" << tile->getX() << "," << tile->getY()
                       << ") collided with player" << std::endl;
+
+            QPixmap collidedPixmap = QPixmap(32, 32);
+            collidedPixmap.fill(Qt::yellow);
+
+            tile->getTileItem()->setPixmap(collidedPixmap);
+            tile->getTileItem()->update();
+            tile->getTileItem()->setZValue(1);
+
             break;
         } else qDebug("Didn't collide with tile");
     }
@@ -148,13 +161,16 @@ void Player::updatePosition()
     xPlayer += vx;
     yPlayer += vy;
 
+    std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
+
     // Reconvert the coordinates to game based coordinates
     xPlayer *= 32;
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    if(xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()){
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) or (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
         xPlayer = 0.00;
+        yPlayer = 0.00;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
