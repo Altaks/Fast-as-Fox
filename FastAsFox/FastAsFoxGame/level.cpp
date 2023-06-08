@@ -32,6 +32,13 @@ void Level::loadMap(){
 void Level::showMap(){
     view = map->getView();
     mwindow->setCentralWidget(view);
+
+    double gameX = this->startingPosition.first * 32;
+    double gameY = this->startingPosition.second * 32;
+
+    gameY = this->map->getScene()->height() - gameY;
+
+    this->player->getAnimation()->setPos(gameX, gameY);
 }
 
 void Level::showScore()
@@ -41,7 +48,6 @@ void Level::showScore()
 
     // Connect timer's timeout() signal to the slot that will update the LCD
     connect(timer, &QTimer::timeout, this, &Level::updateLCD);
-
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);

@@ -26,9 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
     Map * map = new Map(section, tilesets);
     map->load();
 
+    std::pair<int,int> startingCoordinates(19,10);
     GameObject * gameobjectvitefait;
     gameobjectvitefait = new GameObject();
-    level = new Level(LEVEL_ONE_START_POS,gameobjectvitefait,map,this);
+    level = new Level(startingCoordinates,gameobjectvitefait,map,this);
     level->start();
 
 }
