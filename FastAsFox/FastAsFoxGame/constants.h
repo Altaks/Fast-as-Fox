@@ -15,14 +15,14 @@ const double running_speed = 0.5;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //
-#define FOX_RUN ":/fox/sprites/fox/run.png"
-#define FOX_WALK ":/fox/sprites/fox/walk.png"
-#define FOX_DEAD ":/fox/sprites/fox/dead.png"
-#define FOX_JUMP ":/fox/sprites/fox/pounce.png"
-#define FOX_LAND ":/fox/sprites/fox/landing.png"
-#define FRUITS ":/fruits/sprites/fruits/fruits.png"
-#define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png"
-#define LEVEL_ONE ":/level/level/level1.json"
+#define FOX_RUN       ":/fox/sprites/fox/run.png"
+#define FOX_WALK      ":/fox/sprites/fox/walk.png"
+#define FOX_DEAD      ":/fox/sprites/fox/dead.png"
+#define FOX_JUMP      ":/fox/sprites/fox/pounce.png"
+#define FOX_LAND      ":/fox/sprites/fox/landing.png"
+#define FRUITS        ":/fruits/sprites/fruits/fruits.png"
+#define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
+#define LEVEL_ONE     ":/level/level/level1.json"
 // ----------------------------------------------------- //
 
 #define COLLISION_OFFSET 5

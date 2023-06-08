@@ -151,7 +151,6 @@ void Player::updatePosition()
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
-                    vy = 0.00; // ((tile->getTileItem()->x() - this->animation->x()) - this->animation->pixmap().height()) / 32; // glue the player to the ground
                     break;
                 case BOTTOM:
                     vx = 0.00;
