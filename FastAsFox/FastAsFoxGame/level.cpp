@@ -111,4 +111,3 @@ Map * Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
-
