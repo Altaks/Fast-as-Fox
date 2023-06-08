@@ -1,15 +1,13 @@
-#include "animatedsprite.h"
-#include "constants.h"
+﻿#include "animatedsprite.h"
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QDebug>
 
-Fox::Fox(QGraphicsScene *parentScene)
-    : QGraphicsPixmapItem(nullptr),
-      walkSpriteSheet(new QPixmap(FOX_WALK)),
-      runSpriteSheet(new QPixmap(FOX_RUN)),
-      scene(parentScene),
+Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
+      walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")),
+      runSpriteSheet(new QPixmap(":/fox/sprites/fox/run.png")), // Updated paths to resources, assuming Qt resources are being used
+      scene(parentScene), // Updated paths to resources, assuming Qt resources are being used
       timer(new QTimer(this)),
       elapsedTimer(new QElapsedTimer()),
       currentFrame(0),
@@ -39,44 +37,7 @@ void Fox::updateFrame() {
 
         QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 78);
         this->setPixmap(currentSpriteSheet->copy(frameRect));
-
-        spriteVelocity += gravity;
-
-        if (isRunning) {
-            spritePosition.rx() += 10;  // Increase horizontal speed when running
-        } else {
-            spritePosition.rx() += 1;  // Default horizontal speed
-        }
-
-        spritePosition += spriteVelocity;
-
-        QPointF proposedPosition = spritePosition;
-
-        if (isRunning) {
-            proposedPosition += QPointF(10, 0);  // Increase horizontal speed when running
-        } else {
-            proposedPosition += QPointF(1, 0);  // Default horizontal speed
-        }
-
-        proposedPosition += spriteVelocity;
-
-        int rightEdgeOfMap = scene->width() - this->pixmap().width();
-
-        if (proposedPosition.x() >= rightEdgeOfMap) {
-            proposedPosition.setX(0);  // Set the x-position back to start
-            spriteVelocity.setX(0);  // Reset horizontal velocity
-
-            qDebug() << "Fox has reached the right edge of the map, resetting position.";
-        }
-
-        spritePosition = proposedPosition;
-        this->setPos(spritePosition);
         this->update(); // Request redraw
-
-        if (spritePosition.y() > groundLevel) {
-            spritePosition.setY(groundLevel);
-            spriteVelocity.setY(0);
-        }
 
         if (currentFrame == totalFrames - 1) {
             currentFrame = 0;
@@ -89,10 +50,8 @@ void Fox::updateFrame() {
     }
 }
 
-void Fox::addScore()
-{
-    this->score+=1;
+
+QPointF Fox::getSpritePosition() const {
+    return this->spritePosition;
 }
-
-
 

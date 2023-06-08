@@ -1,24 +1,28 @@
-#include "level.h"
+﻿#include "level.h"
 #include "QtCore/qtimer.h"
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, MainWindow* mainwindow) : QObject()
+Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
     endingObject=AnEndingObject;
     map=AMap;
     scene = map->getScene();
-    fox=new Fox(scene);
-    fox->setZValue(1);
+    player = new Player(map);
     mwindow=mainwindow;
+    count=0.00;
+
+    QTimer * playerUpdatePositionClock = new QTimer();
+
+    connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
+
+    playerUpdatePositionClock->start(50); // 20 tps
 }
 
 Level::~Level(){
     delete player;
     delete endingObject;
     delete map;
-    delete fox;
 }
-
 
 void Level::loadMap(){
     map->load();
@@ -31,9 +35,6 @@ void Level::showMap(){
 
 void Level::showScore()
 {
-
-
-
     // Initialize the timer
     timer = new QTimer();
 
@@ -48,20 +49,18 @@ void Level::showScore()
 void Level::initLCD()
 {
     // Initialize the LCD number
-    lcd = new QLCDNumber();
+    lcd = new QLCDNumber(mwindow);
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
-    lcd->display(count);
-
-    int margin = 10;
     // Set LCD size and location
-    lcd->setFixedSize(200, 50); // Adjust the size as per your requirements
-    lcd->move(mwindow->width() - lcd->width() - margin, margin);
+    lcd->setFixedSize(200, 50);
+    lcd->display(count);
 }
 
 void Level::updateLCD()
 {
+
     // Increment counter by 0.01 (which corresponds to hundredths of a second)
     count += 0.01;
 
@@ -75,6 +74,12 @@ void Level::updateLCD()
     lcd->display(str);
 }
 
+void Level::updateLCDPosition()
+{
+    int margin = 10;
+    lcd->move(mwindow->width() - lcd->width() - margin, margin);
+}
+
 void Level::showUI()
 {
     showScore();
@@ -84,6 +89,7 @@ void Level::start(){
     loadMap();
     showMap();
     initLCD();
+    showUI();
 }
 
 void Level::finish(){

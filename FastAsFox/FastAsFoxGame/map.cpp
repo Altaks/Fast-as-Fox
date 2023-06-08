@@ -1,9 +1,16 @@
 ﻿#include "map.h"
 #include "tile.h"
 
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
+{
+    return actuallyLoadedTiles;
+}
+
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
+
+    this->actuallyLoadedTiles = new std::vector<Tile*>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -93,7 +100,7 @@ void Map::load(){
 
             // add the item to the scene
             this->getScene()->addItem(correspondingTile->getTileItem());
-
+            this->actuallyLoadedTiles->push_back(correspondingTile);
         }
 
         anchorX += section->getSectionWidth();

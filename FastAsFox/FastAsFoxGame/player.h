@@ -1,9 +1,10 @@
-#ifndef PLAYER_H
+﻿#ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
 #include "constants.h"
 #include "tile.h"
+#include "map.h"
 
 class Player : public QObject
 {
@@ -14,9 +15,10 @@ private:
     bool onGround;
     QVector2D velocity;
     Fox* animation;
+    Map * map;
 
 public:
-    Player(QObject *parent = nullptr);
+    Player(Map * map, QObject *parent = nullptr);
     ~Player();
 
     bool isOnAir() const;
@@ -27,6 +29,8 @@ public:
     void addVelocity(int x, int y);
     void addVelocity(const QVector2D &vec);
 
+    Fox *getAnimation() const;
+
 signals:
     void jump();
     void accelerate();
@@ -34,7 +38,7 @@ signals:
     void playerMoved();
 
 public slots:
-    void updatePosition(std::vector<Tile *> tiles);
+    void updatePosition();
     void updateAnimation();
 };
 

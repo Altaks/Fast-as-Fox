@@ -12,22 +12,23 @@
 #include <QPushButton>
 #include "animatedsprite.h"
 #include <QLCDNumber>
+#include "level.h"
 #include "map.h"
 
-enum class FruitType {
+/*enum class FruitType {
     Apple,
     Grape,
     Cherry,
     Lemon,
     Peach,
     // Add other fruit types here as needed
-};
+};*/
 
 class MainWindow : public QMainWindow {
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    void displayFruit(FruitType fruitType, int versionId, int x, int y);
+    //void displayFruit(FruitType fruitType, int versionId, int x, int y);
     void showEndOfMapMessage();
 
 private slots:
@@ -46,9 +47,10 @@ private:
     Map *map;
     int height=25;
     int  weight=30;
+    Level * level;
 
 protected:
-    //void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

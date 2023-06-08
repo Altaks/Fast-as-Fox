@@ -1,10 +1,12 @@
-#ifndef LEVEL_H
+﻿#ifndef LEVEL_H
 #define LEVEL_H
 
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
-#include "mainwindow.h"
+#include <QMainWindow>
+#include <QLCDNumber>
+
 
 
 using namespace std;
@@ -22,7 +24,6 @@ private:
     pair<int,int> startingPosition;
     GameObject * endingObject;
     Player * player;
-    Fox * fox;
     Map * map;
     void loadMap();
     void showMap();
@@ -30,7 +31,7 @@ private:
     void initLCD();
     QGraphicsScene * scene;
     QGraphicsView * view;
-    MainWindow * mwindow;
+    QMainWindow * mwindow;
     QLCDNumber * lcd;
     double count;
     QTimer * timer;
@@ -39,12 +40,13 @@ private slots:
     void updateLCD();
 
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, MainWindow * mainwindow);
+    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
     void finish();
     Map * getMap();
     void showUI();
+    void updateLCDPosition();
     void setPlayer(Player * Aplayer);
 };
 
