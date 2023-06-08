@@ -33,8 +33,8 @@ void Level::showMap(){
     view = map->getView();
     mwindow->setCentralWidget(view);
 
-    double gameX = 19 * 32;
-    double gameY = 9 * 32;
+    double gameX = 6 * 32;
+    double gameY = 6 * 32;
 
     gameY = this->map->getScene()->height() - gameY;
 
@@ -48,7 +48,6 @@ void Level::showScore()
 
     // Connect timer's timeout() signal to the slot that will update the LCD
     connect(timer, &QTimer::timeout, this, &Level::updateLCD);
-
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);

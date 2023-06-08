@@ -15,7 +15,7 @@ private:
 public:
     explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
     QGraphicsPixmapItem * getTileItem();
-    int getTileid() const;
+    int getTileId() const;
     int getX() const;
     int getY() const;
 };

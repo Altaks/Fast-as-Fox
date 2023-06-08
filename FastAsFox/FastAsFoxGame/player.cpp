@@ -71,7 +71,7 @@ std::vector<Tile *> filterNearbyTiles(std::vector<Tile *>* tiles, int proximity,
     std::vector<Tile *> filtered = std::vector<Tile *>();
 
     for(Tile * tile : *tiles){
-        if(tile->getTileid() != 0){
+        if(tile->getTileId() != 0){
 
             double xOffset = abs(predictedX - (double)tile->getX());
             double yOffset = abs(predictedY - (double)tile->getY());
@@ -135,32 +135,25 @@ void Player::updatePosition()
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
     for(Tile * tile : *tiles){
-        if(tile->getTileid() == 0) continue;
-        else{
-            QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
-            QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
+        if(tile->getTileId() == 0) continue;
+        QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
+        QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
 
-            std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
-            std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
+        std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
+        std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
-            if(playerRect.intersects(tileRect)){
-                vx = 0;
-                vy = 0;
-                this->lastJumpTimeStamp = std::chrono::system_clock::now();
-                std::cout << "Tile of ID : " << tile->getTileid() << " "
-                          << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
-                          << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
-                          << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
+        if(playerRect.intersects(tileRect)){
+            vx = 0;
+            vy = 0;
+            this->lastJumpTimeStamp = std::chrono::system_clock::now();
 
-                QPixmap collidedPixmap = QPixmap(32, 32);
-                collidedPixmap.fill(Qt::yellow);
+            /* std::cout << "Tile of ID : " << tile->getTileId() << " "
+                      << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
+                      << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
+                      << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
+            */
 
-                tile->getTileItem()->setPixmap(collidedPixmap);
-                tile->getTileItem()->update();
-                tile->getTileItem()->setZValue(1);
-
-                break;
-            }
+            break;
         } // else qDebug("Didn't collide with tile");
     }
 
