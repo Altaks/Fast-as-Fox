@@ -95,6 +95,8 @@ void Player::updatePosition()
     double xPlayer = ((double)this->animation->x() / 32); // get the x as usual
     double yPlayer = (((double)this->map->getScene()->height() - this->animation->y()) / 32); // invert the y axis
 
+    std::cout << "Player is located at " << xPlayer << ", " << yPlayer << std::endl;
+
     // Calculates the velocity vector applied to the player
     double vx = 0.0;
     double vy = 0.0;
@@ -125,13 +127,15 @@ void Player::updatePosition()
     double predictedX = xPlayer + vx;
     double predictedY = yPlayer + vy;
 
+    std::cout << "Player is supposed to go at " << predictedX << ", " << predictedY << std::endl;
+
     this->setRectangle(this->animation->pixmap().rect());
 
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
 
     for(Tile * tile : nearbyTiles){
-        if(tile->getTileid() != 27 && tile->getTileid() != 33 && this->collides(tile) == std::nullopt){
+        if(this->getRectangle().intersects(tile->getTileItem()->pixmap().rect())){
             vx = 0;
             vy = 0;
             this->lastJumpTimeStamp = std::chrono::system_clock::now();
@@ -140,6 +144,14 @@ void Player::updatePosition()
                       << "][xmax " << tile->getTileItem()->x() + tile->getTileItem()->pixmap().width() << ",ymax " << tile->getTileItem()->y() + tile->getTileItem()->pixmap().height()
                       << "] of game coords : (" << tile->getX() << "," << tile->getY()
                       << ") collided with player" << std::endl;
+
+            QPixmap collidedPixmap = QPixmap(32, 32);
+            collidedPixmap.fill(Qt::yellow);
+
+            tile->getTileItem()->setPixmap(collidedPixmap);
+            tile->getTileItem()->update();
+            tile->getTileItem()->setZValue(1);
+
             break;
         } else qDebug("Didn't collide with tile");
     }
@@ -147,6 +159,8 @@ void Player::updatePosition()
     // Applies the whole velocity logic
     xPlayer += vx;
     yPlayer += vy;
+
+    std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
 
     // Reconvert the coordinates to game based coordinates
     xPlayer *= 32;

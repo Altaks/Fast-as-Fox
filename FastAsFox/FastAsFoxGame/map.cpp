@@ -91,22 +91,6 @@ void Map::load(){
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
 
-            if(tileID == 27 or tileID == 33 or tileID == 47){
-                correspondingTexture = new QPixmap(32, 32);
-
-                if(tileID == 27)
-                    correspondingTexture->fill(Qt::red);
-                if(tileID == 33)
-                    correspondingTexture->fill(Qt::green);
-                if(tileID == 47)
-                    correspondingTexture->fill(Qt::blue);
-            }
-
-            if(tileCoord->first.first == 6 && tileCoord->first.second == 21){
-                correspondingTexture = new QPixmap(32, 32);
-                correspondingTexture->fill(Qt::black);
-            }
-
             Tile * correspondingTile = new Tile(correspondingTexture, tileCoord->first.first, tileCoord->first.second, tileID);
 
             // place the tile in the scene
