@@ -2,11 +2,6 @@
 #include "player.h"
 #include "tile.h"
 
-std::vector<Tile *> *Map::getActuallyLoadedTiles() const
-{
-    return actuallyLoadedTiles;
-}
-
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
@@ -41,10 +36,18 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
     this->mapView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->mapView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    this->connect(itsPlayer, SIGNAL(playerMoved()), this, SLOT(updateView()));
-
 }
 
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
+{
+    return actuallyLoadedTiles;
+}
+
+void Map::setItsPlayer(Player* player)
+{
+    itsPlayer = player;
+    this->connect(itsPlayer, SIGNAL(playerMoved()), this, SLOT(updateView()));
+}
 
 Map::~Map(){
     delete mapScene;
