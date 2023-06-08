@@ -132,10 +132,11 @@ void Player::updatePosition()
     this->setRectangle(this->animation->pixmap().rect());
 
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
-    std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
+    // std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
 
-    for(Tile * tile : nearbyTiles){
-        if(this->getRectangle().intersects(tile->getTileItem()->pixmap().rect())){
+    for(Tile * tile : *tiles){
+        if(tile->getTileid() == 0) continue;
+        if(this->animation->pixmap().rect().intersects(tile->getTileItem()->pixmap().rect())){
             vx = 0;
             vy = 0;
             this->lastJumpTimeStamp = std::chrono::system_clock::now();
