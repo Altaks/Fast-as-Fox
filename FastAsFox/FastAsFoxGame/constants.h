@@ -4,7 +4,7 @@
 #define TILE_SIZE 32
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
-const float gravity = 2; // to set to 9.81
+const float gravity = 9.81/20; // to set to 9.81
 const int alpha = 45;
 const double V0 = 0.6;
 // ----------------------------------------------------- //
