@@ -39,10 +39,10 @@ void Fox::updateFrame() {
 
         this->setPixmap(currentSpriteSheet->copy(frameRect));
 
-        QPixmap coloredPlayer = this->pixmap().copy();
-        coloredPlayer.fill(Qt::red);
-        this->setPixmap(coloredPlayer);
-        this->setZValue(1);
+//        QPixmap coloredPlayer = this->pixmap().copy();
+//        coloredPlayer.fill(Qt::red);
+//        this->setPixmap(coloredPlayer);
+//        this->setZValue(1);
 
         this->update(); // Request redraw
 
