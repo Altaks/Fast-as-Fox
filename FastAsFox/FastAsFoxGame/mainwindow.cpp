@@ -32,13 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-void MainWindow::addText() {
-    printText("Bonjour a tous !", 100, 200, 20, QColor(Qt::red));
-    printText("La vie est belle.", 150, 250, 20, QColor(Qt::green));
-    printText("Les chiens jouent dans le parc.", 200, 300, 20, QColor(Qt::blue));
-    printText("La lutte des classes est le moteur de l'histoire", 300, 400, 20, QColor(Qt::black));
-}
-
 void MainWindow::printText(const QString &text, int x, int y, int z, const QColor &color) {
     QFont font(mFontFamily);
     font.setPointSize(z);
@@ -115,9 +108,6 @@ void MainWindow::updateLCD()
     // Display the formatted string
     lcd->display(str);
 }
-
-
-
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
