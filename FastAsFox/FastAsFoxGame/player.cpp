@@ -131,7 +131,7 @@ void Player::updatePosition()
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
 
     for(Tile * tile : nearbyTiles){
-        if(tile->getTileid() != 27 && this->collides(tile) == std::nullopt){
+        if(tile->getTileid() != 27 && tile->getTileid() != 33 && this->collides(tile) == std::nullopt){
             vx = 0;
             vy = 0;
             this->lastJumpTimeStamp = std::chrono::system_clock::now();
@@ -153,8 +153,9 @@ void Player::updatePosition()
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    if(xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()){
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) or (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
         xPlayer = 0.00;
+        yPlayer = 0.00;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
