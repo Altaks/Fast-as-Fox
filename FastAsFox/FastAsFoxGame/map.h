@@ -33,6 +33,7 @@ public:
     QGraphicsScene * getScene();
     QGraphicsView * getView();
     std::vector<Tile *> *getActuallyLoadedTiles() const;
+    void setItsPlayer(Player* player);
     Player* getItsPlayer();
 public slots:
     void updateView();
