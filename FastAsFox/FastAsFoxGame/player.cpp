@@ -132,19 +132,25 @@ void Player::updatePosition()
     this->setRectangle(this->animation->pixmap().rect());
 
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
-    // std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
+    std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 3, predictedX, predictedY);
 
-    for(Tile * tile : *tiles){
+    for(Tile * tile : nearbyTiles){
         if(tile->getTileid() == 0) continue;
-        if(this->animation->pixmap().rect().intersects(tile->getTileItem()->pixmap().rect())){
+
+        QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
+        QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
+
+        std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
+        std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
+
+        if(playerRect.intersects(tileRect)){
             vx = 0;
             vy = 0;
             this->lastJumpTimeStamp = std::chrono::system_clock::now();
-            std::cout << tile->getTileid()
-                      << " : [xmin " << tile->getTileItem()->x() << ",ymin " << tile->getTileItem()->y()
-                      << "][xmax " << tile->getTileItem()->x() + tile->getTileItem()->pixmap().width() << ",ymax " << tile->getTileItem()->y() + tile->getTileItem()->pixmap().height()
-                      << "] of game coords : (" << tile->getX() << "," << tile->getY()
-                      << ") collided with player" << std::endl;
+            std::cout << "Tile of ID : " << tile->getTileid() << " "
+                      << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
+                      << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
+                      << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
 
             QPixmap collidedPixmap = QPixmap(32, 32);
             collidedPixmap.fill(Qt::yellow);
@@ -154,7 +160,7 @@ void Player::updatePosition()
             tile->getTileItem()->setZValue(1);
 
             break;
-        } else qDebug("Didn't collide with tile");
+        } // else qDebug("Didn't collide with tile");
     }
 
     // Applies the whole velocity logic
@@ -168,7 +174,7 @@ void Player::updatePosition()
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) or (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
         xPlayer = 0.00;
         yPlayer = 0.00;
     }
