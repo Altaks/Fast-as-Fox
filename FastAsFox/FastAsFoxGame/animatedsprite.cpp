@@ -50,8 +50,28 @@ void Fox::updateFrame() {
     }
 }
 
+void Fox::startRunning()
+{
+    this->isRunning = true;
+}
+
 
 QPointF Fox::getSpritePosition() const {
     return this->spritePosition;
+}
+
+bool Fox::getIsRunning() const
+{
+    return isRunning;
+}
+
+void Fox::setIsRunning(bool newIsRunning)
+{
+    isRunning = newIsRunning;
+}
+
+QGraphicsScene *Fox::getScene() const
+{
+    return scene;
 }
 
