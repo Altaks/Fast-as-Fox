@@ -231,6 +231,7 @@ void Player::updatePosition()
     }
 
     this->animation->setPos(xPlayer, yPlayer);
+    emit playerMoved();
 
 }
 
