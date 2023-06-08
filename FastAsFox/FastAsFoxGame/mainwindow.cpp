@@ -1,7 +1,6 @@
 ﻿#include "mainwindow.h"
 #include <QTimer>
 #include <QMessageBox>
-#include "animatedsprite.h"
 #include "level.h"
 #include "mapsection.h"
 #include "constants.h"

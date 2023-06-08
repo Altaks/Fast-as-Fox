@@ -24,7 +24,7 @@ public:
 
     bool isOnAir() const;
     bool isOnGround() const;
-    bool isStillOnGround() const;
+    bool isStillOnGround(std::optional<CollisionSide> collisionCompute) const;
 
     void setVelocity(int x, int y);
     void setVelocity(const QVector2D &vec);

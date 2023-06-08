@@ -46,9 +46,13 @@ bool Player::isOnGround() const
     return onGround;
 }
 
-bool Player::isStillOnGround() const
+bool Player::isStillOnGround(std::optional<CollisionSide> collision) const
 {
-
+    if(!collision.has_value() and onGround==true)
+    {
+        return false;
+    }
+    return true;
 }
 
 void Player::setVelocity(int x, int y)
@@ -104,6 +108,8 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
+    std::optional<CollisionSide> collisionSideOld;
+
     if(this->isOnAir()){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -139,6 +145,8 @@ void Player::updatePosition()
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
+
+
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
 
@@ -150,6 +158,7 @@ void Player::updatePosition()
 
         std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
 
+
         if(collisionCompute.has_value()){
 
             // switch sur le côté de la tile qui collide avec l'object
@@ -158,20 +167,21 @@ void Player::updatePosition()
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
+                    collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
                     vx = 0.00;
                     vy = 0.00;
+                    collisionSideOld.emplace(BOTTOM);
                     break;
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
+                    collisionSideOld.emplace(RIGHT);
                     break;
                 default:
                     break;
             }
-
-
 
             /* std::cout << "Tile of ID : " << tile->getTileId() << " "
                       << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
@@ -181,11 +191,12 @@ void Player::updatePosition()
 
             break;
         } // else qDebug("Didn't collide with tile");
-        else
-        {
-            this->setInAir(true);
-            this->setOnGround(false);
-        }
+
+    }
+    if(!isStillOnGround(collisionSideOld))
+    {
+        onGround=false;
+        setInAir(true);
     }
 
     // Applies the whole velocity logic
