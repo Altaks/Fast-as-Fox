@@ -25,6 +25,7 @@ Player::Player(Map * map, QObject *parent)
 {
     this->inAir = false;
     this->onGround = true;
+    this->playerJump = false;
     this->velocity = QVector2D(0, 0);
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
@@ -44,6 +45,15 @@ bool Player::isOnAir() const
 bool Player::isOnGround() const
 {
     return onGround;
+}
+
+bool Player::isStillOnGround(std::optional<CollisionSide> collision) const
+{
+    if(!collision.has_value() and onGround==true)
+    {
+        return false;
+    }
+    return true;
 }
 
 void Player::setVelocity(int x, int y)
@@ -99,7 +109,9 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
-    if(this->isOnAir()){
+    std::optional<CollisionSide> collisionSideOld;
+
+    if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
@@ -108,18 +120,34 @@ void Player::updatePosition()
         vx = V0 * sin(alpha);
         vy = - gravity * t + V0 * cos(alpha);
 
-    } else if(this->isOnGround()){
+    }
+    else if(this->isOnGround()){
 
-        if(this->animation->getIsRunning()){
+            if(this->animation->getIsRunning()){
 
-            vx = running_speed;
+                vx = running_speed;
 
-        } else {
-            // walking by default
-            vx = walking_speed;
-        }
+            }
+            else {
+                // walking by default
+                vx = walking_speed;
+            }
 
-    } else qWarning("None condition of movement have been implied in position update");
+    } //else qWarning("None condition of movement have been implied in position update");
+    else
+    {
+        std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
+        std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
+        double t = time.count();
+
+        if(this->animation->getIsRunning())
+            vx = running_speed * sin(alpha);
+        else
+            vx = walking_speed * sin(alpha);
+
+        vy = - gravity * t * cos(alpha);
+    }
+
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
     double predictedX = xPlayer + vx;
@@ -132,16 +160,19 @@ void Player::updatePosition()
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
+
+
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
 
         QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
         QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
 
-//        std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
-//        std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
+        //std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
+        //std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
         std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
+
 
         if(collisionCompute.has_value()){
 
@@ -151,19 +182,21 @@ void Player::updatePosition()
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
+                    collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
                     vx = 0.00;
                     vy = 0.00;
+                    collisionSideOld.emplace(BOTTOM);
                     break;
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
+                    collisionSideOld.emplace(RIGHT);
                     break;
                 default:
                     break;
             }
-
 
             /* std::cout << "Tile of ID : " << tile->getTileId() << " "
                       << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
@@ -173,13 +206,19 @@ void Player::updatePosition()
 
             break;
         } // else qDebug("Didn't collide with tile");
+
+    }
+    if(!isStillOnGround(collisionSideOld))
+    {
+        onGround=false;
+        setInAir(true);
     }
 
     // Applies the whole velocity logic
     xPlayer += vx;
     yPlayer += vy;
 
-   // std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
+    //std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
 
     // Reconvert the coordinates to game based coordinates
     xPlayer *= 32;

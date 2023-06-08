@@ -1,4 +1,5 @@
 ﻿#include "animatedsprite.h"
+#include "constants.h"
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -12,15 +13,14 @@ Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
       elapsedTimer(new QElapsedTimer()),
       currentFrame(0),
       isRunning(false),
-      spritePosition(QPointF(0, 0)),
-      spriteVelocity(QPointF(0, 0))
+      spritePosition(LEVEL_ONE_START_POS)
 {
     // Check if pixmap loaded correctly
     if(walkSpriteSheet->isNull() || runSpriteSheet->isNull()) {
         qWarning() << "Failed to load spritesheet.";
     }
 
-    setPos(spritePosition);
+    setPos(spritePosition.first,spritePosition.second);
     scene->addItem(this);
     connect(timer, &QTimer::timeout, this, &Fox::updateFrame);
     timer->start(50);
@@ -38,6 +38,12 @@ void Fox::updateFrame() {
         QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 78);
 
         this->setPixmap(currentSpriteSheet->copy(frameRect));
+
+        QPixmap coloredPlayer = this->pixmap().copy();
+        coloredPlayer.fill(Qt::red);
+        this->setPixmap(coloredPlayer);
+        this->setZValue(1);
+
         this->update(); // Request redraw
 
         if (currentFrame == totalFrames - 1) {
@@ -57,7 +63,7 @@ void Fox::startRunning()
 }
 
 
-QPointF Fox::getSpritePosition() const {
+std::pair<int, int> Fox::getSpritePosition() const {
     return this->spritePosition;
 }
 
