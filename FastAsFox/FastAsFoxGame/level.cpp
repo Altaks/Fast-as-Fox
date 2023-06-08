@@ -17,7 +17,7 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
-    playerUpdatePositionClock->start(50); // 20 tps
+    playerUpdatePositionClock->start(10); // 20 tps
 }
 
 Level::~Level(){

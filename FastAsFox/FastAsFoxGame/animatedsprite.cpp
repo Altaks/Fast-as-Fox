@@ -32,10 +32,10 @@ void Fox::updateFrame() {
 
     if (msSinceLastFrame >= 50) {  // 50 ms corresponds to 20 FPS
         QPixmap *currentSpriteSheet = isRunning ? runSpriteSheet : walkSpriteSheet;
-        int frameWidth = isRunning ? 78 : 78;
+        int frameWidth = isRunning ? 53 : 53;
         int totalFrames = currentSpriteSheet->width() / frameWidth;
 
-        QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 78);
+        QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 53);
 
         this->setPixmap(currentSpriteSheet->copy(frameRect));
 

@@ -120,8 +120,7 @@ Player* Map::getItsPlayer(){
 
 void Map::updateView()
 {
-
-    QPointF center = this->itsPlayer->getAnimation()->getSpritePosition();
+    QPointF center = this->itsPlayer->getAnimation()->pos();
 
     center.rx() += mapView->viewport()->width() / 2;
 
@@ -133,4 +132,5 @@ void Map::updateView()
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
+    qInfo("Called update view");
 }

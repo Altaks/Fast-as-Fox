@@ -175,13 +175,13 @@ void Player::updatePosition()
 
 
         if(collisionCompute.has_value()){
-
             // switch sur le côté de la tile qui collide avec l'object
             switch (collisionCompute.value()) {
                 case TOP:
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
+                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32 - 1/32;
                     collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
@@ -192,6 +192,7 @@ void Player::updatePosition()
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
+                    vy = 2;
                     collisionSideOld.emplace(RIGHT);
                     break;
                 default:
@@ -204,7 +205,7 @@ void Player::updatePosition()
                       << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
             */
 
-            break;
+
         } // else qDebug("Didn't collide with tile");
 
     }
@@ -226,12 +227,12 @@ void Player::updatePosition()
     yPlayer = this->map->getScene()->height() - yPlayer;
 
     if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
-        xPlayer = 0.00;
-        yPlayer = 0.00;
+        xPlayer = 40*32;
+        yPlayer = 10*32;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
-
+    emit playerMoved();
 }
 
 void Player::updateAnimation()
