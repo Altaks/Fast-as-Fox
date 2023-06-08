@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     gameobjectvitefait = new GameObject();
     level = new Level(intpair,gameobjectvitefait,map,this);
     level->start();
+
 }
 
 void MainWindow::printText(const QString &text, int x, int y, int z, const QColor &color) {
@@ -109,9 +110,6 @@ void MainWindow::updateLCD()
     // Display the formatted string
     lcd->display(str);
 }
-
-
-
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
