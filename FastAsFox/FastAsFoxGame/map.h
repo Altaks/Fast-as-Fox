@@ -7,6 +7,7 @@
 #include <QGraphicsView>
 
 #include "gameobject.h"
+//#include "player.h"
 #include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
@@ -20,6 +21,7 @@ private:
     std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
     std::vector<Tile *> * actuallyLoadedTiles = nullptr;
+    //Player* itsPlayer;
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
     ~Map();
@@ -28,9 +30,9 @@ public:
     QGraphicsScene * getScene();
     QGraphicsView * getView();
     std::vector<Tile *> *getActuallyLoadedTiles() const;
-
+    //Player* getItsPlayer();
 private slots:
-    void updateView(GameObject * obj);
+    void updateView();
 };
 
 #endif // MAP_H

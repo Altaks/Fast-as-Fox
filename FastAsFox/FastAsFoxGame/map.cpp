@@ -33,6 +33,11 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
             this->loadedTiles.emplace(*it);
         }
     }
+
+    this->mapView = new QGraphicsView();
+    this->mapView->setScene(this->getScene());
+    this->mapView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //Yeah, get lost u ugly
+    this->mapView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //F 'em scrollbars
 }
 
 
@@ -57,11 +62,6 @@ QGraphicsScene * Map::getScene(){
 }
 
 QGraphicsView * Map::getView(){
-    if(this->mapView == nullptr){
-        // Create the QGraphicsView & QGraphicsScene
-        this->mapView = new QGraphicsView();
-        this->mapView->setScene(this->getScene());
-    }
     return this->mapView;
 }
 
@@ -106,18 +106,23 @@ void Map::load(){
     }
 }
 
-void Map::updateView(GameObject *obj)
+//Player* Map::getItsPlayer(){
+//    return itsPlayer;
+//}
+
+void Map::updateView()
 {
-    QPointF center = obj->getRectangle().center();
 
-    center.rx() += mapView->viewport()->width() / 2;
+//    QPointF center = this->player->animation->getRectangle().center();
 
-    center.setX(qMin(qMax(center.x(), mapView->viewport()->width() / 2.0),
-                     mapScene->sceneRect().width() - mapView->viewport()->width() / 2.0));
-    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 2.0),
-                     mapScene->sceneRect().height() - mapView->viewport()->height() / 2.0));
+//    center.rx() += mapView->viewport()->width() / 2;
 
-    float lerpFactor = 0.1f;
-    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
-                      + center * lerpFactor);
+//    center.setX(qMin(qMax(center.x(), mapView->viewport()->width() / 2.0),
+//                     mapScene->sceneRect().width() - mapView->viewport()->width() / 2.0));
+//    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 2.0),
+//                     mapScene->sceneRect().height() - mapView->viewport()->height() / 2.0));
+
+//    float lerpFactor = 0.1f;
+//    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
+//                      + center * lerpFactor);
 }
