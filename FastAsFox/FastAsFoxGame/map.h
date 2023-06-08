@@ -1,4 +1,4 @@
-#ifndef MAP_H
+﻿#ifndef MAP_H
 #define MAP_H
 
 #include <vector>
@@ -9,6 +9,7 @@
 #include "gameobject.h"
 #include "tileset.h"
 #include "mapsection.h"
+#include "tile.h"
 
 class Map
 {
@@ -18,6 +19,7 @@ private:
     std::vector<MapSection *> sections;
     std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
+    std::vector<Tile *> * actuallyLoadedTiles = nullptr;
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
     ~Map();
@@ -25,6 +27,8 @@ public:
     std::vector<MapSection *>* getMap();
     QGraphicsScene * getScene();
     QGraphicsView * getView();
+    std::vector<Tile *> *getActuallyLoadedTiles() const;
+
 private slots:
     void updateView(GameObject * obj);
 };

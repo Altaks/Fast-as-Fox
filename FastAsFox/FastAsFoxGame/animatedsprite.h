@@ -1,4 +1,4 @@
-#ifndef ANIMATEDSPRITE_H
+﻿#ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
 
 #include "QtGui/qpixmap.h"
@@ -20,7 +20,6 @@ public:
     void crouch();
     void reset();
     QPointF getSpritePosition() const;
-    QPixmap getSpritePixmap() const;
 
 private:
     QPixmap *walkSpriteSheet;

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include <QTimer>
 #include <QMessageBox>
 #include "animatedsprite.h"
@@ -26,56 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     Map * map = new Map(section, tilesets);
     map->load();
 
-    // create a scene and view to display text
-    /*mScene = map->getScene();
-    QGraphicsView *view = map->getView();
-    setCentralWidget(view);*/
-
-
-
-
-
-    // save font family for use in printText
-    mFontFamily = fontFamily;
-
-    mFruits = QPixmap(":/fruits/sprites/fruits/fruits.png");
-
-//    // Test the displayFruit function
-//    displayFruit(FruitType::Lemon, 0, 100, 100);
-
-//    // create a button that adds random text when clicked
-//    QPushButton *button = new QPushButton("Add Text", this);
-//    button->setGeometry(10, 10, 80, 30);
-//    // connect button to printText function
-//    connect(button, &QPushButton::clicked, this, &MainWindow::addText);
-
-
-    // Initialize the LCD number
-    /*lcd = new QLCDNumber(this);
-    lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
-    lcd->setMode(QLCDNumber::Dec);
-    lcd->setSegmentStyle(QLCDNumber::Flat);
-    lcd->display(count);
-
-    int margin = 10;
-    // Set LCD size and location
-    lcd->setFixedSize(200, 50); // Adjust the size as per your requirements
-    lcd->move(this->width() - lcd->width() - margin, margin);
-
-
-    // Initialize the timer
-    timer = new QTimer(this);
-
-    // Connect timer's timeout() signal to the slot that will update the LCD
-    connect(timer, &QTimer::timeout, this, &MainWindow::updateLCD);
-
-
-    // Start the timer to fire every 10 ms (this will result in hundredths of a second)
-    timer->start(10);
-*/
-    // Create the Fox
-    //foxSprite = new Fox(mScene);
-
     std::pair<int,int> intpair(1,1);
     GameObject * gameobjectvitefait;
     gameobjectvitefait = new GameObject();
@@ -89,7 +39,6 @@ void MainWindow::addText() {
     printText("La vie est belle.", 150, 250, 20, QColor(Qt::green));
     printText("Les chiens jouent dans le parc.", 200, 300, 20, QColor(Qt::blue));
     printText("La lutte des classes est le moteur de l'histoire", 300, 400, 20, QColor(Qt::black));
-
 }
 
 void MainWindow::printText(const QString &text, int x, int y, int z, const QColor &color) {

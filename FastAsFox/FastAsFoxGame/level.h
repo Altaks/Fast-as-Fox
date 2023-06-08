@@ -1,4 +1,4 @@
-#ifndef LEVEL_H
+﻿#ifndef LEVEL_H
 #define LEVEL_H
 
 #include <QPair>
@@ -24,7 +24,6 @@ private:
     pair<int,int> startingPosition;
     GameObject * endingObject;
     Player * player;
-    Fox * fox;
     Map * map;
     void loadMap();
     void showMap();

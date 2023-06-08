@@ -1,10 +1,18 @@
-#include "player.h"
+﻿#include "player.h"
 
-Player::Player(QObject *parent)
+Fox *Player::getAnimation() const
 {
-    inAir = false;
-    onGround = true;
-    velocity = QVector2D(0, 0);
+    return animation;
+}
+
+Player::Player(Map * map, QObject *parent)
+{
+    this->inAir = false;
+    this->onGround = true;
+    this->velocity = QVector2D(0, 0);
+    this->animation = new Fox(map->getScene());
+    this->animation->setZValue(1);
+    this->map = map;
 }
 
 Player::~Player()
@@ -24,31 +32,40 @@ bool Player::isOnGround() const
 
 void Player::setVelocity(int x, int y)
 {
-    velocity.setX(x);
-    velocity.setY(y);
+    this->velocity.setX(x);
+    this->velocity.setY(y);
 }
 
 void Player::setVelocity(const QVector2D &vec)
 {
-    velocity = vec;
+    this->velocity = vec;
 }
 
 void Player::addVelocity(int x, int y)
 {
-    velocity += QVector2D(x, y);
+    this->velocity += QVector2D(x, y);
 }
 
 void Player::addVelocity(const QVector2D &vec)
 {
-    velocity += vec;
+    this->velocity += vec;
 }
 
-void Player::updatePosition(const std::vector<Tile *> tiles)
+void Player::updatePosition()
 {
+    std::vector<Tile *>* tiles = map->getActuallyLoadedTiles();
+
+    // Get the "game real" coordinates
+    double xPlayer = ((double)this->animation->x() / 32);
+    double yPlayer = ((double)this->animation->y() / 32);
+
+    xPlayer += 0.1;
+
+    this->animation->setPos(xPlayer * 32, yPlayer * 32);
 
 }
 
 void Player::updateAnimation()
 {
-    // Update player animation based on the current state
+
 }

@@ -1,4 +1,4 @@
-#include "level.h"
+﻿#include "level.h"
 #include "QtCore/qtimer.h"
 
 Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
@@ -7,19 +7,22 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     endingObject=AnEndingObject;
     map=AMap;
     scene = map->getScene();
-    fox=new Fox(scene);
-    fox->setZValue(1);
+    player = new Player(map);
     mwindow=mainwindow;
     count=0.00;
+
+    QTimer * playerUpdatePositionClock = new QTimer();
+
+    connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
+
+    playerUpdatePositionClock->start(50); // 20 tps
 }
 
 Level::~Level(){
     delete player;
     delete endingObject;
     delete map;
-    delete fox;
 }
-
 
 void Level::loadMap(){
     map->load();
@@ -50,13 +53,8 @@ void Level::initLCD()
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
-
-
-
     // Set LCD size and location
-    lcd->setFixedSize(200, 50); // Adjust the size as per your requirements
-
-
+    lcd->setFixedSize(200, 50);
     lcd->display(count);
 }
 
@@ -105,4 +103,3 @@ Map * Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
-
