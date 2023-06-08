@@ -1,10 +1,6 @@
 ﻿#include "map.h"
+#include "player.h"
 #include "tile.h"
-
-std::vector<Tile *> *Map::getActuallyLoadedTiles() const
-{
-    return actuallyLoadedTiles;
-}
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
@@ -33,8 +29,25 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
             this->loadedTiles.emplace(*it);
         }
     }
+
+    //Creates the mapView and hides the scrollbars
+    this->mapView = new QGraphicsView();
+    this->mapView->setScene(this->getScene());
+    this->mapView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->mapView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 }
 
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
+{
+    return actuallyLoadedTiles;
+}
+
+void Map::setItsPlayer(Player* player)
+{
+    itsPlayer = player;
+    this->connect(itsPlayer, SIGNAL(playerMoved()), this, SLOT(updateView()));
+}
 
 Map::~Map(){
     delete mapScene;
@@ -57,11 +70,6 @@ QGraphicsScene * Map::getScene(){
 }
 
 QGraphicsView * Map::getView(){
-    if(this->mapView == nullptr){
-        // Create the QGraphicsView & QGraphicsScene
-        this->mapView = new QGraphicsView();
-        this->mapView->setScene(this->getScene());
-    }
     return this->mapView;
 }
 
@@ -106,9 +114,14 @@ void Map::load(){
     }
 }
 
-void Map::updateView(GameObject *obj)
+Player* Map::getItsPlayer(){
+    return itsPlayer;
+}
+
+void Map::updateView()
 {
-    QPointF center = obj->getRectangle().center();
+
+    QPointF center = this->itsPlayer->getAnimation()->getSpritePosition();
 
     center.rx() += mapView->viewport()->width() / 2;
 
