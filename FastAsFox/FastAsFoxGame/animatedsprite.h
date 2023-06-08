@@ -19,7 +19,7 @@ public:
     void jump();
     void crouch();
     void reset();
-    QPointF getSpritePosition() const;
+    std::pair<int,int> getSpritePosition() const;
 
     bool getIsRunning() const;
     void setIsRunning(bool newIsRunning);
@@ -34,10 +34,8 @@ private:
     QElapsedTimer *elapsedTimer;
     int currentFrame;
     bool isRunning;
-    QPointF spritePosition;
-    QPointF spriteVelocity;
-    const float groundLevel = 125.0f;
-    const QPointF gravity = QPointF(0, 2); // 1 or 2 or 3 ... > increasing gravity
+    std::pair<int,int> spritePosition;
+    std::pair<int,int> spriteVelocity;
     void updatePixmap();
 
 signals:

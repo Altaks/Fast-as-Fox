@@ -1,6 +1,7 @@
 ﻿#ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <utility>
 #define TILE_SIZE 32
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
@@ -24,6 +25,10 @@ const double running_speed = 0.5;
 #define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png"
 #define LEVEL_ONE ":/level/level/level1.json"
 // ----------------------------------------------------- //
+
+// ----------< STARTING POSITION CONSTANTS >------------ //
+const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(10,10);
+
 
 #define COLLISION_OFFSET 5
 

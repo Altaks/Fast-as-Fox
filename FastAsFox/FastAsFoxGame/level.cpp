@@ -32,13 +32,6 @@ void Level::loadMap(){
 void Level::showMap(){
     view = map->getView();
     mwindow->setCentralWidget(view);
-
-    double gameX = 19 * 32;
-    double gameY = 9 * 32;
-
-    gameY = this->map->getScene()->height() - gameY;
-
-    this->player->getAnimation()->setPos(gameX, gameY);
 }
 
 void Level::showScore()
