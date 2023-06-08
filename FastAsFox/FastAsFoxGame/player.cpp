@@ -25,6 +25,7 @@ Player::Player(Map * map, QObject *parent)
 {
     this->inAir = false;
     this->onGround = true;
+    this->playerJump = false;
     this->velocity = QVector2D(0, 0);
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
@@ -110,7 +111,7 @@ void Player::updatePosition()
 
     std::optional<CollisionSide> collisionSideOld;
 
-    if(this->isOnAir()){
+    if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
@@ -119,20 +120,30 @@ void Player::updatePosition()
         vx = V0 * sin(alpha);
         vy = - gravity * t + V0 * cos(alpha);
 
-    } else if(this->isOnGround()){
+    }
+    else if(this->isOnGround()){
 
-        if(this->animation->getIsRunning()){
+            if(this->animation->getIsRunning()){
 
-            vx = running_speed;
+                vx = running_speed;
 
-        } else {
-            // walking by default
-            vx = walking_speed;
-        }
+            }
+            else {
+                // walking by default
+                vx = walking_speed;
+            }
 
+    } //else qWarning("None condition of movement have been implied in position update");
+    else
+    {
+        std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
+        std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
+        double t = time.count();
 
+        vx = 0;
+        vy = - gravity * t * cos(alpha);
+    }
 
-    } else qWarning("None condition of movement have been implied in position update");
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
     double predictedX = xPlayer + vx;

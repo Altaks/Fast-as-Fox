@@ -13,6 +13,7 @@ class Player : public GameObject
 private:
     bool inAir;
     bool onGround;
+    bool playerJump;
     QVector2D velocity;
     Fox* animation;
     Map * map;
@@ -25,6 +26,7 @@ public:
     bool isOnAir() const;
     bool isOnGround() const;
     bool isStillOnGround(std::optional<CollisionSide> collisionCompute) const;
+
 
     void setVelocity(int x, int y);
     void setVelocity(const QVector2D &vec);

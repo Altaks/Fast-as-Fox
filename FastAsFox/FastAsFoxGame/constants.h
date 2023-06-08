@@ -27,7 +27,7 @@ const double running_speed = 0.5;
 // ----------------------------------------------------- //
 
 // ----------< STARTING POSITION CONSTANTS >------------ //
-const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(19,10);
+const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(25,10);
 
 
 #define COLLISION_OFFSET 5
