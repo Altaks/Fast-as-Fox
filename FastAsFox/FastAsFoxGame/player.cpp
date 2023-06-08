@@ -140,7 +140,11 @@ void Player::updatePosition()
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
         double t = time.count();
 
-        vx = 0;
+        if(this->animation->getIsRunning())
+            vx = running_speed * sin(alpha);
+        else
+            vx = walking_speed * sin(alpha);
+
         vy = - gravity * t * cos(alpha);
     }
 
@@ -164,8 +168,8 @@ void Player::updatePosition()
         QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
         QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
 
-//        std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
-//        std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
+        //std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
+        //std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
         std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
 
@@ -214,7 +218,7 @@ void Player::updatePosition()
     xPlayer += vx;
     yPlayer += vy;
 
-   // std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
+    //std::cout << "Player recalculated position is " << xPlayer << ", " << yPlayer << std::endl;
 
     // Reconvert the coordinates to game based coordinates
     xPlayer *= 32;
@@ -227,7 +231,6 @@ void Player::updatePosition()
     }
 
     this->animation->setPos(xPlayer, yPlayer);
-    emit playerMoved();
 
 }
 
