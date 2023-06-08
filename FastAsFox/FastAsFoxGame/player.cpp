@@ -21,7 +21,7 @@ void Player::setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_cl
     lastJumpTimeStamp = newLastJumpTimeStamp;
 }
 
-Player::Player(Map * map, QObject *parent)
+Player::Player(Map * map, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
     this->onGround = true;
