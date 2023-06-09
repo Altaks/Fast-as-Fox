@@ -135,7 +135,7 @@ void Player::updatePosition()
             vx = running_speed * sin(alpha);
         else
             vx = walking_speed * sin(alpha);
-        vy = - gravity * t - walking_speed * cos(alpha);
+        vy = - gravity * t + walking_speed * cos(alpha);
     }
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
