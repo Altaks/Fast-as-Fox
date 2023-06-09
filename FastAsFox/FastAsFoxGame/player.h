@@ -19,9 +19,10 @@ private:
     Fox* animation;
     Map * map;
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
+    std::pair<int, int> spawnCoords;
 
 public:
-    Player(Map * map, QObject *parent = nullptr);
+    Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent = nullptr);
     ~Player();
 
     bool isOnAir() const;

@@ -21,7 +21,7 @@ void Player::setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_cl
     lastJumpTimeStamp = newLastJumpTimeStamp;
 }
 
-Player::Player(Map * map, QObject *parent)
+Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
     this->onGround = true;
@@ -30,6 +30,7 @@ Player::Player(Map * map, QObject *parent)
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
     this->map = map;
+    this->spawnCoords = spawnCoords;
 }
 
 Player::~Player()
@@ -109,8 +110,6 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
-    std::optional<CollisionSide> collisionSideOld;
-
     if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -161,6 +160,8 @@ void Player::updatePosition()
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
 
+
+    std::optional<CollisionSide> collisionSideOld;
 
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
@@ -227,8 +228,15 @@ void Player::updatePosition()
     yPlayer = this->map->getScene()->height() - yPlayer;
 
     if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
-        xPlayer = 40*32;
-        yPlayer = 10*32;
+
+        double gameX = this->spawnCoords.first * 32;
+        double gameY = this->spawnCoords.second * 32;
+
+        gameY = this->map->getScene()->height() - gameY;
+
+        getAnimation()->setPos(gameX, gameY);
+        emit playerMoved();
+        return;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
