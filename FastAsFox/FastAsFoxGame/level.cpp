@@ -104,6 +104,10 @@ void Level::start(){
 
 void Level::finish(){
 
+    if(endingObject->isAtTheEnd(player->getAnimation())==true){
+        //connect(this, &BerriesPile::isAtTheEnd,mwindow,&MainWindow::)
+        qDebug("ouais");
+    }
 }
 
 Map * Level::getMap(){
@@ -118,3 +122,7 @@ GameObject * Level::getEndingObject(){
     return endingObject;
 }
 
+
+Player * Level::getPlayer(){
+    return player;
+}

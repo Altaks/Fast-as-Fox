@@ -105,8 +105,8 @@ public:
     void setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastJumpTimeStamp);
 
     void setY(double newY);
-
     void setX(double newX);
+
 
 signals:
     void jump();

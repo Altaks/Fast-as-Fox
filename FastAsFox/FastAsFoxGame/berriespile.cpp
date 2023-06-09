@@ -1,6 +1,9 @@
 #include "berriespile.h"
 #include "constants.h"
+
+
 #include <QDebug>
+
 
 BerriesPile::BerriesPile(QGraphicsScene * theScene, pair<int, int> endPose, int sectionHeight)
 {
@@ -24,4 +27,13 @@ BerriesPile::BerriesPile(QGraphicsScene * theScene, pair<int, int> endPose, int 
         this->setPixmap(*BerriesPileSprite);
         this->update();
     }
+}
+
+bool BerriesPile::isAtTheEnd(Fox* fox){
+
+    QRect pile(x(), y(), TILE_SIZE, TILE_SIZE);
+
+    QRect foxRect(fox->x(),fox->y(),fox->pixmap().width(),fox->pixmap().height());
+
+    return GameObject::collides(pile, foxRect) != std::nullopt;
 }

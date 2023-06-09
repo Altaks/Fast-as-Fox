@@ -113,7 +113,11 @@ public:
      * @param Aplayer the player to be set as the level's player
      */
     void setPlayer(Player * Aplayer);
+    Player * getPlayer();
     GameObject * getEndingObject();
+
+public slots:
+        void finish();
 };
 
 

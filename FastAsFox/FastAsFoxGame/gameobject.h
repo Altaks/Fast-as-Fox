@@ -16,6 +16,7 @@ class GameObject : public QObject
 {
     Q_OBJECT
 
+protected:
     QRect rectangle; /**< The rectangle representing the object's position and size. */
 
 public:
