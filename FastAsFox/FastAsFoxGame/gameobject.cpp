@@ -23,20 +23,11 @@ std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> GameObject
     QRect leftRect =   QRect(hitBoxTile.left(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
     QRect rightRect =  QRect(hitBoxTile.right() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
     QRect topRect =    QRect(hitBoxTile.left(), hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width(), COLLISION_OFFSET);
-    QRect bottomRect = QRect(hitBoxTile.left(), hitBoxTile.bottom(), hitBoxTile.width(), COLLISION_OFFSET);
+    QRect bottomRect = QRect(hitBoxTile.left(), hitBoxTile.bottom() - COLLISION_OFFSET, hitBoxTile.width(), COLLISION_OFFSET);
 
     qreal maxIntersection = 0;
     std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> side = std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>>(std::nullopt, std::nullopt);
 
-    if (leftRect.intersects(hitBoxObject))
-    {
-        QRectF intersection = leftRect.intersected(hitBoxObject);
-        if (intersection.width() > maxIntersection)
-        {
-            maxIntersection = intersection.width();
-            side.second = LEFT;
-        }
-    }
 
     if (rightRect.intersects(hitBoxObject))
     {
@@ -48,6 +39,17 @@ std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> GameObject
         }
     }
 
+    else if (leftRect.intersects(hitBoxObject))
+    {
+        QRectF intersection = leftRect.intersected(hitBoxObject);
+        if (intersection.width() > maxIntersection)
+        {
+            maxIntersection = intersection.width();
+            side.second = LEFT;
+        }
+    }
+
+
     if (topRect.intersects(hitBoxObject))
     {
         QRectF intersection = topRect.intersected(hitBoxObject);
@@ -58,7 +60,7 @@ std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> GameObject
         }
     }
 
-    if (bottomRect.intersects(hitBoxObject))
+    else if (bottomRect.intersects(hitBoxObject))
     {
         QRectF intersection = bottomRect.intersected(hitBoxObject);
         if (intersection.height() > maxIntersection)

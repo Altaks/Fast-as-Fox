@@ -251,7 +251,7 @@ void Player::updatePosition()
         if(collisionSide.first.value()==TOP and collisionSide.second.value()==RIGHT)
         {
             vx=0;
-            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32+1;
+            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
         }
     }
     else if(collisionSide.first.has_value() and !collisionSide.second.has_value())
@@ -288,7 +288,7 @@ void Player::updatePosition()
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer >= this->map->getScene()->height())){
         xPlayer = LEVEL_ONE_START_POS.first*32;
         yPlayer = LEVEL_ONE_START_POS.second*32;
     }
