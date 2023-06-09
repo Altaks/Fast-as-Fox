@@ -13,7 +13,7 @@ const double V0 = 0.6;
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
 const double walking_speed = 0.1/5;
-const double running_speed = 0.5;
+const double running_speed = 0.2/5;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //
@@ -30,6 +30,18 @@ const double running_speed = 0.5;
 // ----------< STARTING POSITION CONSTANTS >------------ //
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(40,10);
 const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
+
+
+// ----------------< FOX SPRITE SIZE >------------------ //
+
+const int RUN_SPRITE_WIDTH = 72;
+const int RUN_SPRITE_HEIGHT = 32;
+const int RUN_SPRITE_N_OF_FRAME = 7;
+
+const int WALK_SPRITE_WIDTH = 53;
+const int WALK_SPRITE_HEIGHT = 31;
+const int WALK_SPRITE_N_OF_FRAME = 9;
+
 
 #define COLLISION_OFFSET 16
 
