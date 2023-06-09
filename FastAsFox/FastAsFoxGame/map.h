@@ -12,6 +12,8 @@
 #include "tile.h"
 #include "tileset.h"
 #include <map>
+#include <queue>
+#include <set>
 
 class Player; //Forward declaration of player, to avoid creating an circular inclusion, as map.h is already included in player.h
 
@@ -40,6 +42,10 @@ public:
     void setItsPlayer(Player* player);
     Player *getItsPlayer();
     std::map<std::pair<int, int>, Tile *> getNearbyTiles() const;
+    std::map<std::pair<int, int>, Tile *> collectNearbyTiles();
+    Tile *getTileAtCoordinates(int x, int y);
+
+    void setNearbyTiles(const std::map<std::pair<int, int>, Tile *> &newNearbyTiles);
 
 public slots:
     void updateView();
