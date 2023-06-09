@@ -44,12 +44,15 @@ public:
     Level(pair<int,int> startingPosition, Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
-    void finish();
     Map * getMap();
     void showUI();
     void updateLCDPosition();
     void setPlayer(Player * Aplayer);
+    Player * getPlayer();
     GameObject * getEndingObject();
+
+public slots:
+        void finish();
 };
 
 

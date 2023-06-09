@@ -2,6 +2,7 @@
 #define BERRIESPILE_H
 
 #include "gameobject.h"
+#include "animatedsprite.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -17,6 +18,8 @@ private:
     pair<int,int> endPose;
 public:
     BerriesPile(QGraphicsScene * theScene, pair<int,int> endPose, int sectionHeight);
+public slots:
+    bool isAtTheEnd(Fox* fox);
 };
 
 #endif // BERRIESPILE_H

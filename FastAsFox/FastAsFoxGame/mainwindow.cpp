@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     
     level = new Level(LEVEL_ONE_START_POS,map,this);
     level->start();
+    connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
 
 }
 
