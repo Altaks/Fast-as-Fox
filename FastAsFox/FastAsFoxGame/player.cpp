@@ -21,7 +21,7 @@ void Player::setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_cl
     lastJumpTimeStamp = newLastJumpTimeStamp;
 }
 
-Player::Player(Map * map, QObject *parent)
+Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
     this->onGround = true;
@@ -30,6 +30,7 @@ Player::Player(Map * map, QObject *parent)
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
     this->map = map;
+    this->spawnCoords = spawnCoords;
 }
 
 Player::~Player()
@@ -109,8 +110,6 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
-    std::optional<CollisionSide> collisionSideOld;
-
     if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -162,6 +161,8 @@ void Player::updatePosition()
 
 
 
+    std::optional<CollisionSide> collisionSideOld;
+
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
 
@@ -175,13 +176,13 @@ void Player::updatePosition()
 
 
         if(collisionCompute.has_value()){
-
             // switch sur le côté de la tile qui collide avec l'object
             switch (collisionCompute.value()) {
                 case TOP:
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
+                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32 - 1/32;
                     collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
@@ -192,6 +193,7 @@ void Player::updatePosition()
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
+                    vy = 2;
                     collisionSideOld.emplace(RIGHT);
                     break;
                 default:
@@ -204,7 +206,7 @@ void Player::updatePosition()
                       << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
             */
 
-            break;
+
         } // else qDebug("Didn't collide with tile");
 
     }
@@ -226,13 +228,19 @@ void Player::updatePosition()
     yPlayer = this->map->getScene()->height() - yPlayer;
 
     if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
-        xPlayer = 0.00;
-        yPlayer = 0.00;
+
+        double gameX = this->spawnCoords.first * 32;
+        double gameY = this->spawnCoords.second * 32;
+
+        gameY = this->map->getScene()->height() - gameY;
+
+        getAnimation()->setPos(gameX, gameY);
+        emit playerMoved();
+        return;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
     emit playerMoved();
-
 }
 
 void Player::updateAnimation()

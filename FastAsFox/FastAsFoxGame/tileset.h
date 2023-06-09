@@ -2,9 +2,13 @@
 #define TILESET_H
 
 #include <QPixmap>
-
 #include <map>
 
+/**
+ * @brief The TileSet class represents a tileset in the game.
+ *
+ * The TileSet class manages the loading and splitting of a tileset image into individual tiles.
+ */
 class TileSet
 {
 private:
@@ -41,6 +45,10 @@ public:
      * @brief TileSet the default constructor for the TileSet class
      */
     TileSet();
+
+    /**
+     * @brief Destructor for the TileSet class.
+     */
     ~TileSet();
     /**
      * @brief load loads the tiles in the tileset

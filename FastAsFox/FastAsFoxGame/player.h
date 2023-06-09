@@ -43,6 +43,7 @@ private:
      * @brief lastJumpTimeStamp stores the time the player jumped for the last time
      */
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
+    std::pair<int, int> spawnCoords;
 
 public:
     /**
@@ -50,7 +51,7 @@ public:
      * @param map the map the player will be venturing
      * @param parent the parent object of Player (neede for QObjects)
      */
-    Player(Map * map, QObject *parent = nullptr);
+    Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent);
     ~Player();
 
     /**

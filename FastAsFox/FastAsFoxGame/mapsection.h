@@ -4,6 +4,11 @@
 #include <iostream>
 #include <map>
 
+/**
+ * @brief The MapSection class represents a section of the game map.
+ *
+ * A MapSection is a portion of the game map that contains tiles.
+ */
 class MapSection
 {
 private:

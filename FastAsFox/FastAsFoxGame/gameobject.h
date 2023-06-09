@@ -6,16 +6,22 @@
 #include <qrect.h>
 #include "collisionside.h"
 
-
+/**
+ * @brief The GameObject class represents a game object.
+ *
+ * The GameObject class is a base class for various game objects and provides
+ * functionality for collision detection.
+ */
 class GameObject : public QObject
 {
     Q_OBJECT
 
-    QRect rectangle;
+    QRect rectangle; /**< The rectangle representing the object's position and size. */
+
 public:
     /**
-     * @brief GameObject constructor for the gameobject class
-     * @param parent the parent of the object (required for QObjects)
+     * @brief Constructs a GameObject object with the given parent QObject.
+     * @param parent The parent QObject of the GameObject.
      */
     GameObject(QObject *parent = nullptr);
     /**
@@ -23,9 +29,10 @@ public:
      * @return a rectangle that represents the area of the object
      */
     const QRect &getRectangle() const;
+
     /**
-     * @brief setRectangle Creates a rectangle of the same position and area as the object
-     * @param newRectangle the rectangle that will be attributed to the object as its rectangle
+     * @brief Sets the rectangle representing the position and size of the object.
+     * @param newRectangle The new rectangle to set.
      */
     void setRectangle(const QRect &newRectangle);
     /**

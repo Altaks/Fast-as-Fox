@@ -83,7 +83,9 @@ void Map::load(){
         MapSection* section = this->sections.at(sectionId);
 
         // for each tile entry: x ,  y  : tileid
-        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin(); tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++){
+            for(std::map<std::pair<int, int>, int>::iterator tileCoord =
+                section->getCoordinatesToTileId().begin(); tileCoord !=
+                section->getCoordinatesToTileId().end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
@@ -132,5 +134,5 @@ void Map::updateView()
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
-    qInfo("called update view");
+    qInfo("Called update view");
 }

@@ -7,7 +7,7 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     endingObject=AnEndingObject;
     map=AMap;
     scene = map->getScene();
-    player = new Player(map);
+    player = new Player(map, AStartingPosition);
     map->setItsPlayer(player);
     player->setInAir(true);
     mwindow=mainwindow;
@@ -17,7 +17,7 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
-    playerUpdatePositionClock->start(50); // 20 tps
+    playerUpdatePositionClock->start(10); // 20 tps
 }
 
 Level::~Level(){
