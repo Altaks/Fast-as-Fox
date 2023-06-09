@@ -42,18 +42,17 @@ public:
     void setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastJumpTimeStamp);
 
     void setY(double newY);
-
     void setX(double newX);
 
+    void playerAccelerated();
+    void playerJumped();
+    void playerSlowedDown();
+
 signals:
-    void jump();
-    void accelerate();
-    void slowdown();
     void playerMoved();
 
 public slots:
     void updatePosition();
-    void updateAnimation();
 };
 
 #endif // PLAYER_H

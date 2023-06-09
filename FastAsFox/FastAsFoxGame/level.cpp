@@ -6,10 +6,10 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     startingPosition=AStartingPosition;
     endingObject=AnEndingObject;
     map=AMap;
-    scene = map->getScene();
     player = new Player(map, AStartingPosition);
-    map->setItsPlayer(player);
     player->setInAir(true);
+    map->setItsPlayer(player);
+    scene = map->getScene();
     mwindow=mainwindow;
     count=0.00;
 
@@ -24,6 +24,21 @@ Level::~Level(){
     delete player;
     delete endingObject;
     delete map;
+}
+
+Player *Level::getPlayer() const
+{
+    return player;
+}
+
+QGraphicsScene *Level::getScene() const
+{
+    return scene;
+}
+
+QGraphicsView *Level::getView() const
+{
+    return view;
 }
 
 void Level::loadMap(){

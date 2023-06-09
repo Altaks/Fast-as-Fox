@@ -243,7 +243,26 @@ void Player::updatePosition()
     emit playerMoved();
 }
 
-void Player::updateAnimation()
+void Player::playerAccelerated()
 {
+    if(!animation->getIsRunning()){
+        qInfo() << "Player accelerated\n";
+        this->getAnimation()->setIsRunning(true);
+    }
+}
 
+void Player::playerJumped(){
+    if(!playerJump){
+        qInfo() << "Player jumped \n";
+        this->setInAir(true);
+        playerJump = true;
+        onGround = false;
+    }
+}
+
+void Player::playerSlowedDown(){
+    if(animation->getIsRunning()){
+        qInfo() << "Player slowed down\n";
+        this->getAnimation()->setIsRunning(false);
+    }
 }
