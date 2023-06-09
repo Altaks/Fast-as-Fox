@@ -10,6 +10,7 @@
 #include "gameobject.h"
 #include "mapsection.h"
 #include "tile.h"
+#include "tileset.h"
 #include <QMovie>
 
 
