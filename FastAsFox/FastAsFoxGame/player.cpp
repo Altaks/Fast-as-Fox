@@ -1,4 +1,5 @@
 ﻿#include "player.h"
+#include <cmath>
 
 Fox *Player::getAnimation() const
 {
