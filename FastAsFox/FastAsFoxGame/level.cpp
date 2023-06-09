@@ -1,5 +1,6 @@
 ﻿#include "level.h"
 #include "QtCore/qtimer.h"
+#include <cmath>
 
 Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
