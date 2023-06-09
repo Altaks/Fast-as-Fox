@@ -21,7 +21,7 @@ void Player::setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_cl
     lastJumpTimeStamp = newLastJumpTimeStamp;
 }
 
-Player::Player(Map * map, QObject *parent)
+Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
     this->onGround = true;
@@ -30,6 +30,7 @@ Player::Player(Map * map, QObject *parent)
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
     this->map = map;
+    this->spawnCoords = spawnCoords;
 }
 
 Player::~Player()
@@ -47,9 +48,9 @@ bool Player::isOnGround() const
     return onGround;
 }
 
-bool Player::isStillOnGround(std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collision) const
+bool Player::isStillOnGround(std::optional<CollisionSide> collision) const
 {
-    if(!collision.first.has_value() and onGround==true)
+    if(!collision.has_value() and onGround==true)
     {
         return false;
     }
@@ -109,8 +110,6 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
-    std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionSide;
-
     if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -145,7 +144,7 @@ void Player::updatePosition()
         else
             vx = walking_speed * sin(alpha);
 
-        vy = - gravity * t - walking_speed * cos(alpha);
+        vy = - gravity * t * cos(alpha);
     }
 
 
@@ -160,11 +159,9 @@ void Player::updatePosition()
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
-    QRect collidedTopTileRect;
-    QRect collidedBottomTileRect;
-    QRect collidedRightTileRect;
-    QRect collidedLeftTileRect;
 
+
+    std::optional<CollisionSide> collisionSideOld;
 
     for(Tile * tile : *tiles){
         if(tile->getTileId() == 0) continue;
@@ -175,44 +172,17 @@ void Player::updatePosition()
         //std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
         //std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
-        std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionCompute = GameObject::collides(tileRect, playerRect);
+        std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
 
 
-        if(collisionCompute.first.has_value())
-        {
-            if (collisionCompute.first.value()==TOP){
-                collidedTopTileRect = tileRect;
-                collisionSide.first.emplace(TOP);
-            }
-            else if (collisionCompute.first.value()==BOTTOM){
-                collidedBottomTileRect = tileRect;
-                collisionSide.first.emplace(BOTTOM);
-            }
-        }
-
-        else if (collisionCompute.second.has_value())
-        {
-            if (collisionCompute.second.value()==RIGHT)
-            {
-                collidedRightTileRect = tileRect;
-                collisionSide.second.emplace(RIGHT);
-            }
-            else if (collisionCompute.second.value()==LEFT)
-            {
-                collidedLeftTileRect = tileRect;
-                collisionSide.second.emplace(LEFT);
-            }
-        }
-
-
- /*       if(collisionCompute.first.has_value()){
+        if(collisionCompute.has_value()){
             // switch sur le côté de la tile qui collide avec l'object
-            switch (collisionCompute.first.value()) {
+            switch (collisionCompute.value()) {
                 case TOP:
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
-                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32;
+                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32 - 1/32;
                     collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
@@ -223,6 +193,7 @@ void Player::updatePosition()
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
+                    vy = 2;
                     collisionSideOld.emplace(RIGHT);
                     break;
                 default:
@@ -236,45 +207,13 @@ void Player::updatePosition()
             */
 
 
-         // else qDebug("Didn't collide with tile");
+        } // else qDebug("Didn't collide with tile");
 
     }
-
-    if(!isStillOnGround(collisionSide))
+    if(!isStillOnGround(collisionSideOld))
     {
         onGround=false;
         setInAir(true);
-        this->animation->setIsRunning(false);
-    }
-
-    if(collisionSide.first.has_value() and collisionSide.second.has_value())
-    {
-        if(collisionSide.first.value()==TOP and collisionSide.second.value()==RIGHT)
-        {
-            vx=0;
-            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
-        }
-    }
-    else if(collisionSide.first.has_value() and !collisionSide.second.has_value())
-    {
-        if(collisionSide.first.value()==TOP)
-        {
-            onGround = true;
-            inAir = false;
-            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
-        }
-        if(collisionSide.first.value()==BOTTOM)
-        {
-
-        }
-    }
-    else if(!collisionSide.first.has_value() and collisionSide.second.has_value())
-    {
-        if(collisionSide.second.value()==RIGHT)
-        {
-            setInAir(true);
-            vx=0;
-        }
     }
 
     // Applies the whole velocity logic
@@ -288,16 +227,43 @@ void Player::updatePosition()
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer >= this->map->getScene()->height())){
-        xPlayer = LEVEL_ONE_START_POS.first*32;
-        yPlayer = LEVEL_ONE_START_POS.second*32;
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
+
+        double gameX = this->spawnCoords.first * 32;
+        double gameY = this->spawnCoords.second * 32;
+
+        gameY = this->map->getScene()->height() - gameY;
+
+        getAnimation()->setPos(gameX, gameY);
+        emit playerMoved();
+        return;
     }
 
     this->animation->setPos(xPlayer, yPlayer);
     emit playerMoved();
 }
 
-void Player::updateAnimation()
+void Player::playerAccelerated()
 {
+    if(!animation->getIsRunning()){
+        qInfo() << "Player accelerated\n";
+        this->getAnimation()->setIsRunning(true);
+    }
+}
 
+void Player::playerJumped(){
+    if(!playerJump){
+        qInfo() << "Player jumped \n";
+        this->setInAir(true);
+        playerJump = true;
+        onGround = false;
+        this->getAnimation()->setIsRunning(false);
+    }
+}
+
+void Player::playerSlowedDown(){
+    if(animation->getIsRunning()){
+        qInfo() << "Player slowed down\n";
+        this->getAnimation()->setIsRunning(false);
+    }
 }

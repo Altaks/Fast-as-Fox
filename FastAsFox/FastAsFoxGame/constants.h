@@ -25,10 +25,13 @@ const double running_speed = 0.2/5;
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
 #define LEVEL_ONE     ":/level/level/level1.json"
+#define LEVEL_TWO     ":/level/level/level2.json"
 // ----------------------------------------------------- //
 
 // ----------< STARTING POSITION CONSTANTS >------------ //
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(40,10);
+const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
+
 const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
 
 

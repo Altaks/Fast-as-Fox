@@ -48,6 +48,9 @@ public:
     void showUI();
     void updateLCDPosition();
     void setPlayer(Player * Aplayer);
+    Player *getPlayer() const;
+    QGraphicsScene *getScene() const;
+    QGraphicsView *getView() const;
 };
 
 
