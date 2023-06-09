@@ -92,7 +92,7 @@ public:
     Player* getItsPlayer();
 public slots:
     /**
-     * @brief updateView updates the view to always follow the player
+     * @brief updateView updates the view to follow the player
      */
     void updateView();
 };
