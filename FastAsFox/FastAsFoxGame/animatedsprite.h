@@ -32,7 +32,8 @@ private:
     QGraphicsScene *scene;
     QTimer *timer;
     QElapsedTimer *elapsedTimer;
-    int currentFrame;
+    int currentFrameWalk;
+    int currentFrameRun;
     bool isRunning;
     std::pair<int,int> spritePosition;
     std::pair<int,int> spriteVelocity;

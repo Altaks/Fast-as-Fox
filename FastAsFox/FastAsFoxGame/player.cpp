@@ -259,7 +259,6 @@ void Player::updatePosition()
     {
         if(collisionSide.first.value()==TOP)
         {
-            this->animation->setIsRunning(true);
             onGround = true;
             inAir = false;
             yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
