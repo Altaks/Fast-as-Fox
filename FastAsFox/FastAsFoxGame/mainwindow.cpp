@@ -5,6 +5,7 @@
 #include "mapsection.h"
 #include "constants.h"
 #include "map.h"
+#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     level = new Level(LEVEL_ONE_START_POS,map,this);
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+
 
 }
 
@@ -93,27 +95,18 @@ void MainWindow::printText(const QString &text, int x, int y, int z, const QColo
     mScene->addItem(item);
 }*/
 
-void MainWindow::updateLCD()
-{
-    // Increment counter by 0.01 (which corresponds to hundredths of a second)
-    count += 0.01;
-
-    // Round the number to two decimal places
-    double roundedCount = std::round(count * 100.0) / 100.0;
-
-    // Format the number as a string with leading zeroes
-    QString str = QString("%1").arg(roundedCount, 5, 'f', 2, '0');
-
-    // Display the formatted string
-    lcd->display(str);
-}
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     level->updateLCDPosition();
 }
 
-void MainWindow::showEndOfMapMessage() {
-    QMessageBox::information(this, "Game over", "Le renard a atteint la fin de la map !");
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+        case Qt::Key_P:
+            level->getMap()->displayAnimation();
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
+    }
 }
-

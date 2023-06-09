@@ -75,6 +75,9 @@ private:
      * @brief timer the value of the timer
      */
     QTimer * timer;
+    std::string lcdCount;
+
+
 
 private slots:
     void updateLCD();
@@ -118,6 +121,7 @@ public:
 
 public slots:
         void finish();
+    std::string getLcdCount();
 };
 
 
