@@ -145,7 +145,7 @@ void Player::updatePosition()
         else
             vx = walking_speed * sin(alpha);
 
-        vy = - gravity * t * cos(alpha);
+        vy = - gravity * t + walking_speed * cos(alpha);
     }
 
 
