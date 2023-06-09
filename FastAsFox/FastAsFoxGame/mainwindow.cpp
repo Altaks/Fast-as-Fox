@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     Map * map = new Map(section, tilesets);
     map->load();
-    
-    level = new Level(LEVEL_ONE_START_POS,map,this);
+    std::pair<int, int> testSpawn = std::pair(68, 10);
+    level = new Level(testSpawn,map,this);
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
 

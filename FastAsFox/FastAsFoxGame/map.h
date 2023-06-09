@@ -94,8 +94,8 @@ public:
      * @return itsPlayer
      */
     Player* getItsPlayer();
-    void displayAnimation();
     void setLcdCount(const std::string &value);
+    void displayAnimation();
 
 
 public slots:

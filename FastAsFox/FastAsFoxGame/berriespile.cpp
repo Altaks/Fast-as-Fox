@@ -35,5 +35,6 @@ bool BerriesPile::isAtTheEnd(Fox* fox){
 
     QRect foxRect(fox->x(),fox->y(),fox->pixmap().width(),fox->pixmap().height());
 
-    return GameObject::collides(pile, foxRect) != std::nullopt;
+
+    return GameObject::collides(pile, foxRect) != std::pair<std::optional<CollisionSide>,std::optional<CollisionSide>>(std::nullopt, std::nullopt);
 }

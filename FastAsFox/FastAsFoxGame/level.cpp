@@ -139,8 +139,7 @@ void Level::start(){
 void Level::finish(){
 
     if(endingObject->isAtTheEnd(player->getAnimation())==true){
-        //connect(this, &BerriesPile::isAtTheEnd,mwindow,&MainWindow::)
-        qDebug("ouais");
+        map->displayAnimation();
     }
 }
 
@@ -159,6 +158,7 @@ GameObject * Level::getEndingObject(){
 
 Player * Level::getPlayer(){
     return player;
+}
 
 std::string Level::getLcdCount()
 {

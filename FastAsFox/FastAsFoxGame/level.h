@@ -97,7 +97,6 @@ public:
      */
     void start();
 
-    void finish();
     /**
      * @brief getMap getter for the level's map
      * @return the level's map
@@ -120,7 +119,7 @@ public:
     GameObject * getEndingObject();
 
 public slots:
-        void finish();
+    void finish();
     std::string getLcdCount();
 };
 

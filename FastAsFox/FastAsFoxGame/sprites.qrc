@@ -172,6 +172,7 @@
     </qresource>
     <qresource prefix="/tasDeBaies">
         <file>sprites/tasDeBaies.png</file>
+    </qresource>
     <qresource prefix="/particules">
         <file>sprites/particules/fireworks.gif</file>
     </qresource>
