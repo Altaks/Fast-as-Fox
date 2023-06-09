@@ -1,17 +1,18 @@
 ﻿#ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include "qpoint.h"
 #include <utility>
 #define TILE_SIZE 32
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
-const float gravity = 9.81/20; // to set to 9.81
+const float gravity = 9.81/100; // to set to 9.81
 const int alpha = 45;
 const double V0 = 0.6;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
-const double walking_speed = 0.1;
+const double walking_speed = 0.1/5;
 const double running_speed = 0.5;
 // ----------------------------------------------------- //
 
@@ -31,6 +32,7 @@ const double running_speed = 0.5;
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(40,10);
 const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
 
+const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
 
 #define COLLISION_OFFSET 5
 

@@ -132,5 +132,5 @@ void Map::updateView()
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
-    qInfo("called update view");
+    qInfo("Called update view");
 }
