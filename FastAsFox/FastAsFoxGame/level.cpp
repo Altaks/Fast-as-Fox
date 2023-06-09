@@ -6,7 +6,8 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
     startingPosition=AStartingPosition;
     map=AMap;
     scene = map->getScene();
-    player = new Player(map);
+    player = new Player(map, AStartingPosition);
+    map->setItsPlayer(player);
     player->setInAir(true);
     mwindow=mainwindow;
     pair<int,int>endpose(70,5);
@@ -17,7 +18,7 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
-    playerUpdatePositionClock->start(50); // 20 tps
+    playerUpdatePositionClock->start(10); // 20 tps
 }
 
 Level::~Level(){
@@ -34,8 +35,8 @@ void Level::showMap(){
     view = map->getView();
     mwindow->setCentralWidget(view);
 
-    double gameX = 6 * 32;
-    double gameY = 6 * 32;
+    double gameX = this->startingPosition.first * 32;
+    double gameY = this->startingPosition.second * 32;
 
     gameY = this->map->getScene()->height() - gameY;
 

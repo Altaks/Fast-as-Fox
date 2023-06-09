@@ -13,17 +13,22 @@ class Player : public GameObject
 private:
     bool inAir;
     bool onGround;
+    bool playerJump;
+    bool fast;
     QVector2D velocity;
     Fox* animation;
     Map * map;
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
+    std::pair<int, int> spawnCoords;
 
 public:
-    Player(Map * map, QObject *parent = nullptr);
+    Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent = nullptr);
     ~Player();
 
     bool isOnAir() const;
     bool isOnGround() const;
+    bool isStillOnGround(std::optional<CollisionSide> collisionCompute) const;
+
 
     void setVelocity(int x, int y);
     void setVelocity(const QVector2D &vec);
@@ -35,6 +40,10 @@ public:
     void setInAir(bool newInAir);
     void setOnGround(bool newOnGround);
     void setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastJumpTimeStamp);
+
+    void setY(double newY);
+
+    void setX(double newX);
 
 signals:
     void jump();
