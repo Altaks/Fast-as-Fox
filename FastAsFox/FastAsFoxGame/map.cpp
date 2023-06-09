@@ -15,15 +15,11 @@ std::vector<MapSection *> Map::getSections() const
     return sections;
 }
 
-
-
-Map::Map(MapSection *defaultSection,
-         std::vector<TileSet *, std::allocator<TileSet *> > *availableTileSets)
+Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
 
     this->actuallyLoadedTiles = new std::vector<Tile*>();
-    this->nearbyTiles=  std::map<std::pair<int, int>, Tile *>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -55,103 +51,12 @@ Map::Map(MapSection *defaultSection,
 
 }
 
-std::vector<Tile *> * Map::getActuallyLoadedTiles() const
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
 {
     return actuallyLoadedTiles;
 }
 
-std::map<std::pair<int, int>, Tile *> Map::getNearbyTiles() const
-{
-    return nearbyTiles;
-}
-
-void Map::setNearbyTiles(const std::map<std::pair<int, int>, Tile *> &newNearbyTiles)
-{
-    nearbyTiles = newNearbyTiles;
-}
-
-Tile *Map::getTileAtCoordinates(int x, int y)
-{
-    for (Tile *tile : *getActuallyLoadedTiles()) {
-        if (tile->getX() == x && tile->getY() == y) {
-            return tile; // Found the tile at the specified coordinates
-        }
-    }
-
-    return nullptr; // No tile found at the specified coordinates
-}
-
-/**
-    // Player coordinates
-    double xPlayer = (double) (getItsPlayer()->getAnimation()->x()) / 32;
-    double yPlayer = (double) (getScene()->height() - getItsPlayer()->getAnimation()->y()) / 32;
-
-    // Search distance
-    int k = 5;
-    **/
-std::map<std::pair<int, int>, Tile*> Map::collectNearbyTiles(std::vector<Tile*>* tiles, int proximity, double predictedX, double predictedY)
-{
-    std::map<std::pair<int, int>, Tile*> nearbyTiles;
-
-    // Perform wide search of nearby tiles
-    std::queue<Tile*> tileQueue;
-    Tile* initialTile = getTileAtCoordinates((int)(predictedX), (int)(predictedY));
-    tileQueue.push(initialTile);
-
-    // Marked tiles
-    std::set<Tile*> markedTiles;
-    markedTiles.insert(initialTile);
-
-    // Perform breadth-first search
-    while (!tileQueue.empty())
-    {
-        Tile* currentTile = tileQueue.front();
-        tileQueue.pop();
-
-        // Add current tile to the result
-        nearbyTiles[std::make_pair(currentTile->getX(), currentTile->getY())] = currentTile;
-
-        // Check if the search distance is exceeded in either x or y direction
-        if (std::abs(predictedX - currentTile->getX()) >= proximity || std::abs(predictedY - currentTile->getY()) >= proximity)
-        {
-            break; // Stop the search
-        }
-
-        // Check neighboring tiles
-        Tile* upperTile = currentTile->getUpperTile();
-        if (upperTile && markedTiles.find(upperTile) == markedTiles.end())
-        {
-            tileQueue.push(upperTile);
-            markedTiles.insert(upperTile);
-        }
-
-        Tile* bottomTile = currentTile->getBottomTile();
-        if (bottomTile && markedTiles.find(bottomTile) == markedTiles.end())
-        {
-            tileQueue.push(bottomTile);
-            markedTiles.insert(bottomTile);
-        }
-
-        Tile* leftTile = currentTile->getLeftTile();
-        if (leftTile && markedTiles.find(leftTile) == markedTiles.end())
-        {
-            tileQueue.push(leftTile);
-            markedTiles.insert(leftTile);
-        }
-
-        Tile* rightTile = currentTile->getRightTile();
-        if (rightTile && markedTiles.find(rightTile) == markedTiles.end())
-        {
-            tileQueue.push(rightTile);
-            markedTiles.insert(rightTile);
-        }
-    }
-    setNearbyTiles(nearbyTiles);
-    return nearbyTiles;
-}
-
-//setNearbyTiles(nearbyTiles);
-void Map::setItsPlayer(Player *player)
+void Map::setItsPlayer(Player* player)
 {
     itsPlayer = player;
     this->connect(itsPlayer, SIGNAL(playerMoved()), this, SLOT(updateView()));
@@ -344,3 +249,6 @@ void Map::displayAnimation() {
 void Map::setLcdCount(const std::string &value) {
     lcdCount = value;
 }
+
+
+

@@ -146,7 +146,7 @@ void Player::updatePosition()
     this->setRectangle(this->animation->pixmap().rect());
 
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
-    std::map<std::pair<int, int>, Tile*> nearbyTiles = map->collectNearbyTiles(tiles, 5, predictedX, predictedY);
+    std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
     QRect collidedTopTileRect;
     QRect collidedBottomTileRect;
