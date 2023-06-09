@@ -131,7 +131,7 @@ std::map<std::pair<int, int>, Tile *> Map::collectNearbyTiles()
             markedTiles.insert(rightTile);
         }
     }
-
+    setNearbyTiles(nearbyTiles);
     return nearbyTiles;
 }
 
