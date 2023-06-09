@@ -9,6 +9,7 @@
 
 Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
+    levelCleared = false;
     startingPosition=AStartingPosition;
     map=AMap;
     scene = map->getScene();
@@ -138,8 +139,9 @@ void Level::start(){
 
 void Level::finish(){
 
-    if(endingObject->isAtTheEnd(player->getAnimation())==true){
+    if(endingObject->isAtTheEnd(player->getAnimation())==true && !levelCleared){
         map->displayAnimation();
+        this->levelCleared = true;
     }
 }
 

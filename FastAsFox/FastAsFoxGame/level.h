@@ -118,6 +118,8 @@ public:
     Player * getPlayer();
     GameObject * getEndingObject();
 
+    bool levelCleared;
+
 public slots:
     void finish();
     std::string getLcdCount();
