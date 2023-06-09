@@ -304,6 +304,11 @@ void Player::updatePosition()
         }
     }
 
+    void Player::updateAnimation()
+    {
+
+    }
+
     void Player::playerSlowedDown(){
         if(animation->getIsRunning()){
             qInfo() << "Player slowed down\n";

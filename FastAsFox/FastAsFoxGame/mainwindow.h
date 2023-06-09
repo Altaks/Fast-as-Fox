@@ -30,7 +30,6 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     //void displayFruit(FruitType fruitType, int versionId, int x, int y);
-    void keyPressEvent(QKeyEvent * event);
     void showEndOfMapMessage();
 
 private slots:

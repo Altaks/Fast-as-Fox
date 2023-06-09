@@ -121,13 +121,3 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     level->updateLCDPosition();
 }
-
-void MainWindow::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_P:
-            level->getMap()->displayAnimation();
-            break;
-        default:
-            QMainWindow::keyPressEvent(event);
-    }
-}
