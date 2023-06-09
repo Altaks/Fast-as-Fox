@@ -48,9 +48,9 @@ bool Player::isOnGround() const
     return onGround;
 }
 
-bool Player::isStillOnGround(std::optional<CollisionSide> collision) const
+bool Player::isStillOnGround(std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collision) const
 {
-    if(!collision.has_value() and onGround==true)
+    if(!collision.first.has_value() and onGround==true)
     {
         return false;
     }
@@ -110,6 +110,8 @@ void Player::updatePosition()
     double vx = 0.0;
     double vy = 0.0;
 
+    std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionSide;
+
     if(this->isOnAir() && this->playerJump){
 
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -144,7 +146,7 @@ void Player::updatePosition()
         else
             vx = walking_speed * sin(alpha);
 
-        vy = - gravity * t * cos(alpha);
+        vy = - gravity * t - walking_speed * cos(alpha);
     }
 
 
@@ -159,6 +161,10 @@ void Player::updatePosition()
     // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
     std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
+    QRect collidedTopTileRect;
+    QRect collidedBottomTileRect;
+    QRect collidedRightTileRect;
+    QRect collidedLeftTileRect;
 
 
     std::optional<CollisionSide> collisionSideOld;
@@ -172,17 +178,44 @@ void Player::updatePosition()
         //std::cout << "Precalculated playerRect [x:"<< playerRect.x() << ",y:"<< playerRect.y() << ",w:"<< playerRect.width() << ",h:"<< playerRect.height() << "]" << std::endl;
         //std::cout << "Precalculated tileRect [x:"<< tileRect.x() << ",y:"<< tileRect.y() << ",w:"<< tileRect.width() << ",h:"<< tileRect.height() << "]" << std::endl;
 
-        std::optional<CollisionSide> collisionCompute = GameObject::collides(tileRect, playerRect);
+        std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionCompute = GameObject::collides(tileRect, playerRect);
 
 
-        if(collisionCompute.has_value()){
+        if(collisionCompute.first.has_value())
+        {
+            if (collisionCompute.first.value()==TOP){
+                collidedTopTileRect = tileRect;
+                collisionSide.first.emplace(TOP);
+            }
+            else if (collisionCompute.first.value()==BOTTOM){
+                collidedBottomTileRect = tileRect;
+                collisionSide.first.emplace(BOTTOM);
+            }
+        }
+
+        else if (collisionCompute.second.has_value())
+        {
+            if (collisionCompute.second.value()==RIGHT)
+            {
+                collidedRightTileRect = tileRect;
+                collisionSide.second.emplace(RIGHT);
+            }
+            else if (collisionCompute.second.value()==LEFT)
+            {
+                collidedLeftTileRect = tileRect;
+                collisionSide.second.emplace(LEFT);
+            }
+        }
+
+
+ /*       if(collisionCompute.first.has_value()){
             // switch sur le côté de la tile qui collide avec l'object
-            switch (collisionCompute.value()) {
+            switch (collisionCompute.first.value()) {
                 case TOP:
                     this->animation->setIsRunning(false);
                     onGround = true;
                     inAir = false;
-                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32 - 1/32;
+                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32;
                     collisionSideOld.emplace(TOP);
                     break;
                 case BOTTOM:
@@ -193,7 +226,6 @@ void Player::updatePosition()
                 case LEFT:
                 case RIGHT:
                     vx = 0.00;
-                    vy = 2;
                     collisionSideOld.emplace(RIGHT);
                     break;
                 default:
@@ -207,13 +239,45 @@ void Player::updatePosition()
             */
 
 
-        } // else qDebug("Didn't collide with tile");
+         // else qDebug("Didn't collide with tile");
 
     }
-    if(!isStillOnGround(collisionSideOld))
+
+    if(!isStillOnGround(collisionSide))
     {
         onGround=false;
         setInAir(true);
+        this->animation->setIsRunning(false);
+    }
+
+    if(collisionSide.first.has_value() and collisionSide.second.has_value())
+    {
+        if(collisionSide.first.value()==TOP and collisionSide.second.value()==RIGHT)
+        {
+            vx=0;
+            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
+        }
+    }
+    else if(collisionSide.first.has_value() and !collisionSide.second.has_value())
+    {
+        if(collisionSide.first.value()==TOP)
+        {
+            onGround = true;
+            inAir = false;
+            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
+        }
+        if(collisionSide.first.value()==BOTTOM)
+        {
+
+        }
+    }
+    else if(!collisionSide.first.has_value() and collisionSide.second.has_value())
+    {
+        if(collisionSide.second.value()==RIGHT)
+        {
+            setInAir(true);
+            vx=0;
+        }
     }
 
     // Applies the whole velocity logic

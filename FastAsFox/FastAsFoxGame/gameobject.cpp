@@ -18,25 +18,16 @@ GameObject::GameObject(QObject *parent)
 
 }
 
-std::optional<CollisionSide> GameObject::collides(QRect hitBoxTile, QRect hitBoxObject)
+std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> GameObject::collides(QRect hitBoxTile, QRect hitBoxObject)
 {
-    QRect leftRect =   QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
-    QRect rightRect =  QRect(hitBoxTile.right(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
-    QRect topRect =    QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
-    QRect bottomRect = QRect(hitBoxTile.left() - COLLISION_OFFSET, hitBoxTile.bottom(), hitBoxTile.width() + COLLISION_OFFSET*2, COLLISION_OFFSET);
+    QRect leftRect =   QRect(hitBoxTile.left(), hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
+    QRect rightRect =  QRect(hitBoxTile.right() - COLLISION_OFFSET, hitBoxTile.top(), COLLISION_OFFSET, hitBoxTile.height());
+    QRect topRect =    QRect(hitBoxTile.left(), hitBoxTile.top() - COLLISION_OFFSET, hitBoxTile.width(), COLLISION_OFFSET);
+    QRect bottomRect = QRect(hitBoxTile.left(), hitBoxTile.bottom() - COLLISION_OFFSET, hitBoxTile.width(), COLLISION_OFFSET);
 
     qreal maxIntersection = 0;
-    CollisionSide side;
+    std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> side = std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>>(std::nullopt, std::nullopt);
 
-    if (leftRect.intersects(hitBoxObject))
-    {
-        QRectF intersection = leftRect.intersected(hitBoxObject);
-        if (intersection.width() > maxIntersection)
-        {
-            maxIntersection = intersection.width();
-            side = LEFT;
-        }
-    }
 
     if (rightRect.intersects(hitBoxObject))
     {
@@ -44,9 +35,20 @@ std::optional<CollisionSide> GameObject::collides(QRect hitBoxTile, QRect hitBox
         if (intersection.width() > maxIntersection)
         {
             maxIntersection = intersection.width();
-            side = RIGHT;
+            side.second = RIGHT;
         }
     }
+
+    else if (leftRect.intersects(hitBoxObject))
+    {
+        QRectF intersection = leftRect.intersected(hitBoxObject);
+        if (intersection.width() > maxIntersection)
+        {
+            maxIntersection = intersection.width();
+            side.second = LEFT;
+        }
+    }
+
 
     if (topRect.intersects(hitBoxObject))
     {
@@ -54,20 +56,19 @@ std::optional<CollisionSide> GameObject::collides(QRect hitBoxTile, QRect hitBox
         if (intersection.height() > maxIntersection)
         {
             maxIntersection = intersection.height();
-            side = TOP;
+            side.first = TOP;
         }
     }
 
-    if (bottomRect.intersects(hitBoxObject))
+    else if (bottomRect.intersects(hitBoxObject))
     {
         QRectF intersection = bottomRect.intersected(hitBoxObject);
         if (intersection.height() > maxIntersection)
         {
             maxIntersection = intersection.height();
-            side = BOTTOM;
+            side.first = BOTTOM;
         }
     }
 
-    if (maxIntersection > 0) return side;
-    else return std::nullopt;
+    return side;
 }

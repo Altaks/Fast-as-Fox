@@ -85,10 +85,8 @@ private:
      * @brief elapsedTimer the timer's elapsed time
      */
     QElapsedTimer *elapsedTimer;
-    int currentFrame;
-    /**
-     * @brief isRunning Bolean set to true if the fox is running, and to false if he isn't
-     */
+    int currentFrameWalk;
+    int currentFrameRun;
     bool isRunning;
     /**
      * @brief spritePosition x,y position of the sprite

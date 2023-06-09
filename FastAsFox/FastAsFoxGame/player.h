@@ -64,12 +64,8 @@ public:
      * @return onGround
      */
     bool isOnGround() const;
-    /**
-     * @brief isStillOnGround checks if the player is still on the ground
-     * @param collisionCompute the side on which the player is colliding with tiles, or nullopt if the player isn't colliding with anything
-     * @return fales if the player isn't on th ground, true if he still is
-     */
-    bool isStillOnGround(std::optional<CollisionSide> collision) const;
+    bool isStillOnGround(std::pair<std::optional<CollisionSide>, std::optional<CollisionSide> > collisionCompute) const;
+
 
     /**
      * @brief setVelocity setter for the player's velocity

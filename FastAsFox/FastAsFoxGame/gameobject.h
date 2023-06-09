@@ -41,7 +41,7 @@ public:
      * @param hitBoxObject the rectangle our current object
      * @return the side of the tile our object has collided on
      */
-    static std::optional<CollisionSide> collides(QRect hitBoxTile, QRect hitBoxObject);
+static std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collides(QRect hitBoxTile, QRect hitBoxObject);
 };
 
 #endif // GAMEOBJECT_H
