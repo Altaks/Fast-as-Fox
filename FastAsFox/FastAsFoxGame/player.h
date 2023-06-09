@@ -1,15 +1,14 @@
-﻿#ifndef PLAYER_H
+﻿
+#ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
 #include "constants.h"
 #include "tile.h"
 #include "map.h"
-
 class Player : public GameObject
 {
     Q_OBJECT
-
 private:
     /**
      * @brief inAir set to true if the layer is in air, false if it isn't
@@ -44,7 +43,6 @@ private:
      */
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
-
 public:
     /**
      * @brief Player Constructor for the player class
@@ -103,17 +101,13 @@ public:
      * @param newLastJumpTimeStamp the last time the player jumped
      */
     void setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastJumpTimeStamp);
-
     void setY(double newY);
     void setX(double newX);
-
-
+    void playerAccelerated();
+    void playerJumped();
+    void playerSlowedDown();
 signals:
-    void jump();
-    void accelerate();
-    void slowdown();
     void playerMoved();
-
 public slots:
     /**
      * @brief updatePosition updates the player's potision
@@ -124,5 +118,4 @@ public slots:
      */
     void updateAnimation();
 };
-
-#endif // PLAYER_H
+#endif //PLAYER_H

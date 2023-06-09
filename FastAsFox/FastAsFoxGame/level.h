@@ -118,6 +118,12 @@ public:
     Player * getPlayer();
     GameObject * getEndingObject();
 
+    Player* getPlayer() const;
+
+    QGraphicsScene* getScene() const;
+
+    QGraphicsView* getView() const;
+
     bool levelCleared;
 
 public slots:

@@ -33,6 +33,27 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+
+void MainWindow::keyPressEvent(QKeyEvent * event){
+    switch (event->key()) {
+        case Qt::Key::Key_Z:
+        case Qt::Key::Key_Up:
+            this->level->getPlayer()->playerJumped();
+        break;
+        case Qt::Key::Key_D:
+        case Qt::Key::Key_Right:
+            this->level->getPlayer()->playerAccelerated();
+        break;
+        case Qt::Key::Key_Q:
+        case Qt::Key::Key_Left:
+            this->level->getPlayer()->playerSlowedDown();
+        break;
+    default:
+        break;
+    }
+}
+
+
 void MainWindow::printText(const QString &text, int x, int y, int z, const QColor &color) {
     QFont font(mFontFamily);
     font.setPointSize(z);

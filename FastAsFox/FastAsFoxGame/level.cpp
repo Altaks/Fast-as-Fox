@@ -16,6 +16,8 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
     player = new Player(map, AStartingPosition, nullptr);
     map->setItsPlayer(player);
     player->setInAir(true);
+    map->setItsPlayer(player);
+    scene = map->getScene();
     mwindow=mainwindow;
     pair<int,int>endpose(70,5);
     endingObject=new BerriesPile(scene,endpose,map->getSections().at(0)->getSectionHeight());
@@ -33,6 +35,21 @@ Level::~Level(){
     delete player;
     delete endingObject;
     delete map;
+}
+
+Player *Level::getPlayer() const
+{
+    return player;
+}
+
+QGraphicsScene *Level::getScene() const
+{
+    return scene;
+}
+
+QGraphicsView *Level::getView() const
+{
+    return view;
 }
 
 void Level::loadMap(){
