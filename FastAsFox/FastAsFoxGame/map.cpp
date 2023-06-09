@@ -84,8 +84,8 @@ void Map::load(){
 
         // for each tile entry: x ,  y  : tileid
             for(std::map<std::pair<int, int>, int>::iterator tileCoord =
-                section->getCoordinatesToTileId().begin(); tileCoord !=
-                section->getCoordinatesToTileId().end(); tileCoord++){
+                section->getCoordinatesToTileId()->begin(); tileCoord !=
+                section->getCoordinatesToTileId()->end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;

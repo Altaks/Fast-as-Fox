@@ -7,7 +7,7 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     endingObject=AnEndingObject;
     map=AMap;
     scene = map->getScene();
-    player = new Player(map, AStartingPosition);
+    player = new Player(map, AStartingPosition, nullptr);
     map->setItsPlayer(player);
     player->setInAir(true);
     mwindow=mainwindow;

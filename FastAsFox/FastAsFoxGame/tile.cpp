@@ -15,11 +15,11 @@ int Tile::getY() const
     return y;
 }
 
-Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameObject{parent}
+Tile::Tile(QPixmap *texture, int tileId, int x, int y, QObject *parent) : GameObject{parent}
 {
     this->texture = texture;
     this->tile = new QGraphicsPixmapItem(*texture);
-    this->tileId = tileid;
+    this->tileId = tileId;
     this->x = x;
     this->y = y;
 }
