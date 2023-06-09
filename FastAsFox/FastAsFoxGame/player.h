@@ -26,7 +26,7 @@ public:
 
     bool isOnAir() const;
     bool isOnGround() const;
-    bool isStillOnGround(std::optional<CollisionSide> collisionCompute) const;
+    bool isStillOnGround(std::pair<std::optional<CollisionSide>, std::optional<CollisionSide> > collisionCompute) const;
 
 
     void setVelocity(int x, int y);

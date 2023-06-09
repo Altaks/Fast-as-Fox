@@ -35,7 +35,7 @@ void Fox::updateFrame() {
         int frameWidth = isRunning ? 53 : 53;
         int totalFrames = currentSpriteSheet->width() / frameWidth;
 
-        QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 53);
+        QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 31);
 
         this->setPixmap(currentSpriteSheet->copy(frameRect));
 

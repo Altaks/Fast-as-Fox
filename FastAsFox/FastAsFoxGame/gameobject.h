@@ -16,7 +16,7 @@ public:
     GameObject(QObject *parent = nullptr);
     const QRect &getRectangle() const;
     void setRectangle(const QRect &newRectangle);
-    static std::optional<CollisionSide> collides(QRect hitBoxTile, QRect hitBoxObject);
+    static std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collides(QRect hitBoxTile, QRect hitBoxObject);
 };
 
 #endif // GAMEOBJECT_H

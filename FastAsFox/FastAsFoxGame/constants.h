@@ -31,6 +31,6 @@ const double running_speed = 0.5;
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(40,10);
 const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
 
-#define COLLISION_OFFSET 5
+#define COLLISION_OFFSET 16
 
 #endif // CONSTANTS_H
