@@ -9,6 +9,8 @@
 #include <QGraphicsPixmapItem>
 #include <QElapsedTimer>
 
+
+
 class Fox : public QObject, public QGraphicsPixmapItem {
 
 public:
