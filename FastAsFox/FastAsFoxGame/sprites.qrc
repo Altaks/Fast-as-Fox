@@ -159,11 +159,22 @@
         <file>sprites/userInterface/UI_Flat_Slot_02_Unavailable.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_01.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_02.png</file>
+        <file>sprites/userInterface/ribbon.png</file>
+        <file>sprites/userInterface/woodboard.png</file>
+        <file>sprites/userInterface/cadrelcd.png</file>
+        <file>sprites/userInterface/sablier.gif</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>
     </qresource>
     <qresource prefix="/fruits">
         <file>sprites/fruits/fruits.png</file>
+    </qresource>
+    <qresource prefix="/particules">
+        <file>sprites/particules/fireworks.gif</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>sprites/sounds/levelFinished.mp3</file>
+        <file>sprites/sounds/fireworks.mp3</file>
     </qresource>
 </RCC>
