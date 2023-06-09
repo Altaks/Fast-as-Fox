@@ -29,8 +29,11 @@ public:
     QGraphicsView * getView();
     std::vector<Tile *> *getActuallyLoadedTiles() const;
 
+    std::vector<MapSection *> getSections() const;
+
 private slots:
     void updateView(GameObject * obj);
 };
 
 #endif // MAP_H
+

@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     animatedsprite.cpp \
+    berriespile.cpp \
     gameobject.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    berriespile.h \
     collisionside.h \
     constants.h \
     gameobject.h \

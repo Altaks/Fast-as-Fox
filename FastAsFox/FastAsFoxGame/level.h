@@ -13,6 +13,7 @@ using namespace std;
 
 #include "player.h"
 #include "gameobject.h"
+#include "berriespile.h"
 #include "map.h"
 
 
@@ -22,7 +23,7 @@ class Level : public QObject
 private:
     QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    GameObject * endingObject;
+    BerriesPile * endingObject;
     Player * player;
     Map * map;
     void loadMap();
@@ -40,7 +41,7 @@ private slots:
     void updateLCD();
 
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
+    Level(pair<int,int> startingPosition, Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
     void finish();
@@ -48,6 +49,7 @@ public:
     void showUI();
     void updateLCDPosition();
     void setPlayer(Player * Aplayer);
+    GameObject * getEndingObject();
 };
 
 

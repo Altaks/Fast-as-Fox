@@ -27,9 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     map->load();
 
     std::pair<int,int> intpair(1,1);
-    GameObject * gameobjectvitefait;
-    gameobjectvitefait = new GameObject();
-    level = new Level(intpair,gameobjectvitefait,map,this);
+    level = new Level(intpair,map,this);
     level->start();
 
 }
