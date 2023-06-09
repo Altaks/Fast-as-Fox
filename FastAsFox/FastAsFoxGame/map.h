@@ -6,10 +6,12 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
+#include <QPair>
 #include "gameobject.h"
-#include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
+#include "tileset.h"
+#include <map>
 
 class Player; //Forward declaration of player, to avoid creating an circular inclusion, as map.h is already included in player.h
 
@@ -18,13 +20,15 @@ class Map : public QObject
     Q_OBJECT
 
 private:
+    Player *itsPlayer;
     QGraphicsScene * mapScene = nullptr;
     QGraphicsView * mapView = nullptr;
     std::vector<MapSection *> sections;
     std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
-    std::vector<Tile *> * actuallyLoadedTiles = nullptr;
-    Player* itsPlayer;
+    std::vector<Tile *> *actuallyLoadedTiles = nullptr;
+    std::map<std::pair<int, int>, Tile *> nearbyTiles;
+
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
     ~Map();
@@ -34,7 +38,9 @@ public:
     QGraphicsView * getView();
     std::vector<Tile *> *getActuallyLoadedTiles() const;
     void setItsPlayer(Player* player);
-    Player* getItsPlayer();
+    Player *getItsPlayer();
+    std::map<std::pair<int, int>, Tile *> getNearbyTiles() const;
+
 public slots:
     void updateView();
 };

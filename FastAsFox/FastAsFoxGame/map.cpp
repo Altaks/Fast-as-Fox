@@ -2,7 +2,8 @@
 #include "player.h"
 #include "tile.h"
 
-Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
+Map::Map(MapSection *defaultSection,
+         std::vector<TileSet *, std::allocator<TileSet *> > *availableTileSets)
 {
     // add the first/default section of the map
 
@@ -41,6 +42,11 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
 std::vector<Tile *> *Map::getActuallyLoadedTiles() const
 {
     return actuallyLoadedTiles;
+}
+
+std::map<std::pair<int, int>, Tile *> Map::getNearbyTiles() const
+{
+    return nearbyTiles;
 }
 
 void Map::setItsPlayer(Player* player)
@@ -132,5 +138,5 @@ void Map::updateView()
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
-    qInfo("Called update view");
+    //qInfo("Called update view");
 }
