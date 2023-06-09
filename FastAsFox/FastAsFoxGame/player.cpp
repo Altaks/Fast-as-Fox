@@ -229,7 +229,12 @@ void Player::updatePosition()
         if(collisionSide.first.value()==TOP and collisionSide.second.value()==RIGHT)
         {
             vx=0;
-            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
+            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32+64;
+        }
+        if(collisionSide.first.value()==BOTTOM and collisionSide.second.value()==RIGHT)
+        {
+            setInAir(true);
+            vx=0;
         }
     }
     else if(collisionSide.first.has_value() and !collisionSide.second.has_value())
