@@ -84,6 +84,7 @@ public:
      * @brief setItsPlayer setter for itsPlayer
      * @param playerthe Player to be set as our current map's player
      */
+    std::vector<MapSection *> getSections() const;
     void setItsPlayer(Player* player);
     /**
      * @brief getItsPlayer getter for itsPlayer

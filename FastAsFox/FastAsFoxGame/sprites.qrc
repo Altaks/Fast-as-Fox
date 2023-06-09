@@ -166,4 +166,7 @@
     <qresource prefix="/fruits">
         <file>sprites/fruits/fruits.png</file>
     </qresource>
+    <qresource prefix="/tasDeBaies">
+        <file>sprites/tasDeBaies.png</file>
+    </qresource>
 </RCC>

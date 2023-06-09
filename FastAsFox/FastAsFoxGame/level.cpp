@@ -1,16 +1,17 @@
 ﻿#include "level.h"
 #include "QtCore/qtimer.h"
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
+Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
-    endingObject=AnEndingObject;
     map=AMap;
     scene = map->getScene();
     player = new Player(map, AStartingPosition, nullptr);
     map->setItsPlayer(player);
     player->setInAir(true);
     mwindow=mainwindow;
+    pair<int,int>endpose(70,5);
+    endingObject=new BerriesPile(scene,endpose,map->getSections().at(0)->getSectionHeight());
     count=0.00;
 
     QTimer * playerUpdatePositionClock = new QTimer();
@@ -111,3 +112,8 @@ Map * Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
+
+GameObject * Level::getEndingObject(){
+    return endingObject;
+}
+

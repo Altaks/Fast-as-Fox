@@ -13,6 +13,7 @@ using namespace std;
 
 #include "player.h"
 #include "gameobject.h"
+#include "berriespile.h"
 #include "map.h"
 
 
@@ -28,13 +29,7 @@ private:
      * @brief startingPosition the starting position of the player
      */
     pair<int,int> startingPosition;
-    /**
-     * @brief endingObject the objective the player must reach
-     */
-    GameObject * endingObject;
-    /**
-     * @brief playerthe player that will vnture the level
-     */
+    BerriesPile * endingObject;
     Player * player;
     /**
      * @brief map the map that represents the level
@@ -92,7 +87,7 @@ public:
      * @param AMap the map of the level
      * @param mainwindow the window of the program (in which to display the level)
      */
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
+    Level(pair<int,int> startingPosition, Map * AMap, QMainWindow * mainwindow);
     ~Level();
     /**
      * @brief start loads and shows the map, the level, and the timer
@@ -118,6 +113,7 @@ public:
      * @param Aplayer the player to be set as the level's player
      */
     void setPlayer(Player * Aplayer);
+    GameObject * getEndingObject();
 };
 
 

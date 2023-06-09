@@ -4,11 +4,6 @@
 #include <iostream>
 #include <map>
 
-/**
- * @brief The MapSection class represents a section of the game map.
- *
- * A MapSection is a portion of the game map that contains tiles.
- */
 class MapSection
 {
 private:
@@ -31,7 +26,7 @@ public:
      * @brief getCoordinatesToTileId getter for coordinaeToTileId
      * @return  coordinaeToTileId
      */
-    std::map<std::pair<int, int>, int> * getCoordinatesToTileId() const;
+     std::map<std::pair<int, int>, int> * getCoordinatesToTileId() const;
     /**
      * @brief getSectionWidth getter for sectionWidth
      * @return sectionWidth

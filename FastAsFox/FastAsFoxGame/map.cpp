@@ -2,6 +2,11 @@
 #include "player.h"
 #include "tile.h"
 
+std::vector<MapSection *> Map::getSections() const
+{
+    return sections;
+}
+
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
@@ -83,9 +88,7 @@ void Map::load(){
         MapSection* section = this->sections.at(sectionId);
 
         // for each tile entry: x ,  y  : tileid
-            for(std::map<std::pair<int, int>, int>::iterator tileCoord =
-                section->getCoordinatesToTileId()->begin(); tileCoord !=
-                section->getCoordinatesToTileId()->end(); tileCoord++){
+        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin(); tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++){
 
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
