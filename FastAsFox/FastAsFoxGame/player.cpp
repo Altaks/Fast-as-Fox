@@ -257,6 +257,7 @@ void Player::playerJumped(){
         this->setInAir(true);
         playerJump = true;
         onGround = false;
+        this->getAnimation()->setIsRunning(false);
     }
 }
 
