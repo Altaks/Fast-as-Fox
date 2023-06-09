@@ -209,12 +209,12 @@ void Player::updatePosition()
                     break;
                 default:
                     break;
-            }
-            /* std::cout << "Tile of ID : " << tile->getTileId() << " "
+            }*/
+            /*std::cout << "Tile of ID : " << tile->getTileId() << " "
                       << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
                       << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
                       << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
-            */
+*/
          // else qDebug("Didn't collide with tile");
     }
 
@@ -226,12 +226,12 @@ void Player::updatePosition()
 
     if(collisionSide.first.has_value() and collisionSide.second.has_value())
     {
-        if(collisionSide.first.value()==TOP and collisionSide.second.value()==RIGHT)
+        if(collisionSide.first.value()==TOP and collisionSide.second.value()==LEFT)
         {
             vx=0;
-            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32+64;
+            yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
         }
-        if(collisionSide.first.value()==BOTTOM and collisionSide.second.value()==RIGHT)
+        else if(collisionSide.first.value()==BOTTOM and collisionSide.second.value()==LEFT)
         {
             setInAir(true);
             vx=0;
@@ -245,7 +245,7 @@ void Player::updatePosition()
             inAir = false;
             yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
         }
-        if(collisionSide.first.value()==BOTTOM)
+        else if(collisionSide.first.value()==BOTTOM)
         {
             setInAir(true);
             yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 - collidedTopTileRect.height()/32;
@@ -253,7 +253,7 @@ void Player::updatePosition()
     }
     else if(!collisionSide.first.has_value() and collisionSide.second.has_value())
     {
-        if(collisionSide.second.value()==RIGHT)
+        if(collisionSide.second.value()==LEFT)
         {
             setInAir(true);
             vx=0;
@@ -270,7 +270,7 @@ void Player::updatePosition()
     yPlayer *= 32;
     yPlayer = this->map->getScene()->height() - yPlayer;
 
-    /*if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
+    if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
            double gameX = this->spawnCoords.first * 32;
            double gameY = this->spawnCoords.second * 32;
 
@@ -280,7 +280,7 @@ void Player::updatePosition()
 
            emit playerMoved();
            return;
-    }*/
+    }
     this->animation->setPos(xPlayer, yPlayer);
     emit playerMoved();
 }

@@ -46,6 +46,6 @@ const int WALK_SPRITE_HEIGHT = 31;
 const int WALK_SPRITE_N_OF_FRAME = 9;
 
 
-#define COLLISION_OFFSET 16
+#define COLLISION_OFFSET 2
 
 #endif // CONSTANTS_H
