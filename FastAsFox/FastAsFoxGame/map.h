@@ -6,8 +6,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
+#include <QPair>
 #include "gameobject.h"
-#include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
 #include <QMovie>
