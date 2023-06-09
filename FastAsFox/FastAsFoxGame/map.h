@@ -42,7 +42,7 @@ public:
     void setItsPlayer(Player* player);
     Player *getItsPlayer();
     std::map<std::pair<int, int>, Tile *> getNearbyTiles() const;
-    std::map<std::pair<int, int>, Tile *> collectNearbyTiles();
+    std::map<std::pair<int, int>, Tile*> collectNearbyTiles(std::vector<Tile*>* tiles, int proximity, double predictedX, double predictedY);
     Tile *getTileAtCoordinates(int x, int y);
 
     void setNearbyTiles(const std::map<std::pair<int, int>, Tile *> &newNearbyTiles);

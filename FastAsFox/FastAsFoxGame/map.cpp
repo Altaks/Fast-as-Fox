@@ -10,6 +10,7 @@ Map::Map(MapSection *defaultSection,
     // add the first/default section of the map
 
     this->actuallyLoadedTiles = new std::vector<Tile*>();
+    this->nearbyTiles=  std::map<std::pair<int, int>, Tile *>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -67,20 +68,21 @@ Tile *Map::getTileAtCoordinates(int x, int y)
     return nullptr; // No tile found at the specified coordinates
 }
 
-std::map<std::pair<int, int>, Tile *> Map::collectNearbyTiles()
-{
+/**
     // Player coordinates
     double xPlayer = (double) (getItsPlayer()->getAnimation()->x()) / 32;
     double yPlayer = (double) (getScene()->height() - getItsPlayer()->getAnimation()->y()) / 32;
 
     // Search distance
     int k = 5;
-
-    std::map<std::pair<int, int>, Tile *> nearbyTiles;
+    **/
+std::map<std::pair<int, int>, Tile*> Map::collectNearbyTiles(std::vector<Tile*>* tiles, int proximity, double predictedX, double predictedY)
+{
+    std::map<std::pair<int, int>, Tile*> nearbyTiles;
 
     // Perform wide search of nearby tiles
-    std::queue<Tile *> tileQueue;
-    Tile *initialTile = getTileAtCoordinates((int)(xPlayer), (int)(yPlayer));
+    std::queue<Tile*> tileQueue;
+    Tile* initialTile = getTileAtCoordinates((int)(predictedX), (int)(predictedY));
     tileQueue.push(initialTile);
 
     // Marked tiles
@@ -97,7 +99,7 @@ std::map<std::pair<int, int>, Tile *> Map::collectNearbyTiles()
         nearbyTiles[std::make_pair(currentTile->getX(), currentTile->getY())] = currentTile;
 
         // Check if the search distance is exceeded in either x or y direction
-        if (std::abs(xPlayer - currentTile->getX()) >= k || std::abs(yPlayer - currentTile->getY()) >= k)
+        if (std::abs(predictedX - currentTile->getX()) >= proximity || std::abs(predictedY - currentTile->getY()) >= proximity)
         {
             break; // Stop the search
         }
@@ -135,6 +137,7 @@ std::map<std::pair<int, int>, Tile *> Map::collectNearbyTiles()
     return nearbyTiles;
 }
 
+//setNearbyTiles(nearbyTiles);
 void Map::setItsPlayer(Player *player)
 {
     itsPlayer = player;
