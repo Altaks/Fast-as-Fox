@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // Skipping the menu
-    //m_menuWidget->skipMenu();
+    m_menuWidget->skipMenu();
 }
 
 
