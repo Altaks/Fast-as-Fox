@@ -206,5 +206,9 @@
         <file>sprites/menu/saga.jpg</file>
         <file>sprites/menu/menu.mp3</file>
         <file>sprites/menu/bgstart.gif</file>
+        <file>sprites/menu/logo.png</file>
+        <file>sprites/menu/oldLogo.png</file>
+        <file>sprites/menu/startcursor.gif</file>
+        <file>sprites/menu/playsound.mp3</file>
     </qresource>
 </RCC>

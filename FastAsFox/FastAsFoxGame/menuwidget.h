@@ -34,6 +34,8 @@ public:
     void resetBackground();
     void initMenu();
     void createPlayButton();
+    void playButtonClicked();
+    void logoSwitchAnimation();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -64,6 +66,266 @@ signals:
     void finished();
 
 
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// mdr bien joué
+
+
+
+
+
+class LogoLabel : public QLabel {
+    Q_OBJECT
+    Q_PROPERTY(float fadeFraction READ fadeFraction WRITE setFadeFraction)
+public:
+    LogoLabel(QWidget* parent = nullptr) : QLabel(parent), m_fadeFraction(0) {
+        m_oldLogo.load(":/menu/sprites/menu/oldLogo.png");
+        m_newLogo.load(":/menu/sprites/menu/logo.png");
+    }
+    float fadeFraction() const {
+        return m_fadeFraction;
+    }
+    void setFadeFraction(float fraction) {
+        m_fadeFraction = fraction;
+        update();  // This will cause a repaint
+    }
+protected:
+    void paintEvent(QPaintEvent *event) override {
+        QPainter painter(this);
+        painter.drawPixmap(0, 0, m_oldLogo);
+        QLinearGradient gradient(0, height(), 0, 0);
+        gradient.setColorAt(0, QColor(255, 255, 255, 0));
+        gradient.setColorAt(m_fadeFraction, QColor(255, 255, 255, 255));
+        painter.setBrush(gradient);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        painter.drawPixmap(0, 0, m_newLogo);
+    }
+private:
+    QPixmap m_oldLogo;
+    QPixmap m_newLogo;
+    float m_fadeFraction;
 };
 
 #endif // MENUWIDGET_H

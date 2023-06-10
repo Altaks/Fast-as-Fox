@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <QTimer>
 #include <iostream>
+#include <QPushButton>
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
 {
@@ -359,12 +360,101 @@ void MenuWidget::saga()
             label->setMovie(movie);
             label->show();
 
+            // Create a QLabel for the logo and a QPixmap to load the logo
+            QLabel *logoLabel = new QLabel(this);
+            logoLabel->setObjectName("logoLabel");
+            QPixmap logoPixmap(":/menu/sprites/menu/logo.png");
+
+            // Scale the logo by 2
+            logoPixmap = logoPixmap.scaled(logoPixmap.width() * 1, logoPixmap.height() * 1);
+
+            logoLabel->setPixmap(logoPixmap);
+            logoLabel->setScaledContents(true);
+            // Set the logo size as you need
+            logoLabel->setFixedSize(logoPixmap.size());
+            // Position the logo at the center of the window
+            logoLabel->move((this->width() - logoLabel->width()) / 2, (this->height() - logoLabel->height()) / 2);
+            logoLabel->show();
+
+
+            // Load the font from the file into the application
+            int fontId = QFontDatabase::addApplicationFont(":/menu/sprites/menu/retro.ttf");
+            QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+
+                QFont retroFont(family);
+
+                // Create the QPushButton
+                QPushButton *playButton = new QPushButton("PLAY !", this);
+
+                // Set the font
+                playButton->setFont(retroFont);
+
+                // Set the button width
+                playButton->setFixedWidth(200);
+
+                // Apply the 3D effect by modifying the stylesheet
+                playButton->setStyleSheet(
+                    "QPushButton {"
+                    "background-color: #444;"
+                    "color: #fff;"
+                    "padding: 10px;"
+                    "font-size: 20px;"
+                    "border: 1px solid #555;" // border color
+                    "border-radius: 5px;" // rounded corners
+                    "}"
+                    "QPushButton:pressed {"
+                    "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                    "stop: 0 #888, stop: 1 #555);" // gradient effect when button is pressed
+                    "}"
+                    );
+
+                playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20)); // 20 pixels below logoLabel
+
+                connect(playButton, &QPushButton::clicked, this, &MenuWidget::initMenu);
+                // Connect the clicked() signal of the playButton to the playButtonClicked() slot
+                connect(playButton, &QPushButton::clicked, this, &MenuWidget::playButtonClicked);
+                playButton->show();
+
+
+
+                QLabel *cursorLabel = new QLabel(this);
+                QMovie *cursorMovie = new QMovie(":/menu/sprites/menu/startcursor.gif");
+
+                // Load the movie to get its size
+                cursorMovie->jumpToFrame(0);
+                QSize originalSize = cursorMovie->frameRect().size();
+
+                // Set the QLabel to one-fourth the size of the original image, keeping aspect ratio
+                cursorLabel->setFixedSize(originalSize / 4);
+                cursorLabel->setMovie(cursorMovie);
+                cursorLabel->setScaledContents(true);
+
+                // Position the QLabel to the left of the button with a slight space
+                cursorLabel->move(playButton->x() - cursorLabel->width() - 10, playButton->y() + (playButton->height() - cursorLabel->height()) / 2); // adjusted the y-coordinate to center vertically
+
+                // Show the QLabel and start the gif
+                cursorLabel->show();
+                cursorMovie->start();
+
+
+
+
+
+
             // Start the gif
             movie->start();
 
             // Play the menu.mp3
             m_sagaPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menu.mp3"));
             m_sagaPlayer->play();
+
+            // Baisser le volume de 50%
+            float volume = m_sagaPlayer->volume();
+            volume *= 0.5; // Réduire le volume de moitié
+
+            m_sagaPlayer->setVolume(volume);
+
+
 
             // Create a QEventLoop
             QEventLoop loop;
@@ -380,11 +470,17 @@ void MenuWidget::saga()
             delete label;
             delete movie;
 
+            // Hide and delete the logoLabel
+            logoLabel->hide();
+            delete logoLabel;
+
             setBackgroundImage(":/menu/sprites/menu/menubg.png");
             initMenu();
         }
     });
 }
+
+
 
 
 
@@ -405,10 +501,16 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
 
     // If the central QLabel exists, resize it
     QLabel *label = this->findChild<QLabel*>();
+    QLabel *logoLabel = this->findChild<QLabel*>("logoLabel");
     if(label && label->movie())
     {
         QSize newSize = event->size();
         label->resize(newSize);
+
+        // Reposition logoLabel according to the new size
+        if (logoLabel) {
+            logoLabel->move((newSize.width() - logoLabel->width()) / 2, (newSize.height() - logoLabel->height()) / 2);
+        }
 
         // Reposition titleView according to the new size
         titleView->move((newSize.width() - titleView->width()) / 2, titleView->y());
@@ -416,5 +518,67 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
         // Reposition gifLabel according to the new size
         gifLabel->move((newSize.width() - gifLabel->width()) / 2, gifLabel->y());
     }
+    // If the play button exists, move it
+    QPushButton *playButton = this->findChild<QPushButton*>();
+    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+    if (playButton) {
+        playButton->move((event->size().width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20));
+        // If cursorLabel exists, move it to the right of the playButton and adjust the size
+        if (cursorLabel) {
+            cursorLabel->move(playButton->x() + playButton->width() + 10, playButton->y() + playButton->height() / 4);
+            cursorLabel->setFixedSize(playButton->size() / 2);
+        }
+    }
 }
 
+
+void MenuWidget::playButtonClicked()
+{
+    initMenu();
+
+    // Find all needed widgets
+    QPushButton *playButton = this->findChild<QPushButton*>();
+    QLabel *label = this->findChild<QLabel*>();
+
+    // Hide and delete the playButton
+    if(playButton) {
+        playButton->hide();
+        delete playButton;
+    }
+
+    // Hide and delete the label
+    if(label && label->movie()) {
+        label->hide();
+        delete label->movie();
+        delete label;
+    }
+
+    // Find logoLabel and hide/delete it
+    QLabel *logoLabel = this->findChild<QLabel*>("logoLabel");
+    if(logoLabel) {
+        logoLabel->hide();
+        delete logoLabel;
+    }
+    // Find cursorLabel and hide/delete it
+    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+    if(cursorLabel) {
+        cursorLabel->hide();
+        delete cursorLabel->movie();
+        delete cursorLabel;
+    }
+
+    // Create a media player to play the sound
+    QMediaPlayer *player = new QMediaPlayer;
+
+    // Set the media source and play the sound
+    player->setMedia(QUrl("qrc:/menu/sprites/menu/playsound.mp3"));
+    player->setVolume(100);
+    player->play();
+
+    // Cleanup the media player after the sound finished
+    connect(player, &QMediaPlayer::stateChanged, [=](QMediaPlayer::State newState) {
+        if (newState == QMediaPlayer::StoppedState) {
+            player->deleteLater();
+        }
+    });
+}
