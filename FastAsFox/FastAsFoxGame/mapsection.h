@@ -4,40 +4,37 @@
 #include <iostream>
 #include <map>
 
-/**
- * @brief The MapSection class represents a section of the game map.
- *
- * A MapSection is a portion of the game map that contains tiles.
- */
 class MapSection
 {
 private:
-    std::map<std::pair<int, int>, int> coordinatesToTileId; /**< The mapping of coordinates to tile IDs. */
-    int sectionWidth; /**< The width of the section. */
-    int sectionHeight; /**< The height of the section. */
-
+    /**
+     * @brief coordinatesToTileId stores the coordinates of a tile, as well as its ID
+     */
+    std::map<std::pair<int, int>, int> * coordinatesToTileId;
+    /**
+     * @brief sectionWidth the width of the mapSection
+     * @brief sectionHeight the height of the mapSection
+     */
+    int sectionWidth, sectionHeight;
 public:
     /**
-     * @brief Constructs a MapSection object with the specified level path.
-     * @param levelpath The path to the level file.
+     * @brief MapSection the constructor for the mapSection class
+     * @param levelpath the path to the file that contains the level
      */
     MapSection(std::string levelpath);
-
     /**
-     * @brief Returns the mapping of coordinates to tile IDs.
-     * @return The mapping of coordinates to tile IDs.
+     * @brief getCoordinatesToTileId getter for coordinaeToTileId
+     * @return  coordinaeToTileId
      */
-    std::map<std::pair<int, int>, int> getCoordinatesToTileId() const;
-
+     std::map<std::pair<int, int>, int> * getCoordinatesToTileId() const;
     /**
-     * @brief Returns the width of the section.
-     * @return The width of the section.
+     * @brief getSectionWidth getter for sectionWidth
+     * @return sectionWidth
      */
     int getSectionWidth() const;
-
     /**
-     * @brief Returns the height of the section.
-     * @return The height of the section.
+     * @brief getSectionHeight getter for sectionHeight
+     * @return sectionHeight
      */
     int getSectionHeight() const;
 };

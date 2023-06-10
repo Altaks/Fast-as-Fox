@@ -1,22 +1,51 @@
-#ifndef CONSTANTS_H
+﻿#ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define TILE_SIZE 32 /**< The size of a tile in pixels. */
-const float gravity = 9.81; /**< The acceleration due to gravity. */
-const int jump_angle = 45; /**< The angle at which the fox jumps. */
+#include "qpoint.h"
+#include <utility>
+#define TILE_SIZE 32
 
-#define FOX_RUN ":/fox/sprites/fox/run.png" /**< The file path to the running fox sprite sheet. */
-#define FOX_WALK ":/fox/sprites/fox/walk.png" /**< The file path to the walking fox sprite sheet. */
-#define FOX_DEAD ":/fox/sprites/fox/dead.png" /**< The file path to the dead fox sprite. */
-#define FOX_JUMP ":/fox/sprites/fox/pounce.png" /**< The file path to the jumping fox sprite. */
-#define FOX_LAND ":/fox/sprites/fox/landing.png" /**< The file path to the landing fox sprite. */
+// ----------------< PHYSICS CONSTANTS >---------------- //
+const float gravity = 9.81/100; // to set to 9.81
+const int alpha = 45;
+const double V0 = 0.6;
+// ----------------------------------------------------- //
 
-#define FRUITS ":/fruits/sprites/fruits/fruits.png" /**< The file path to the fruits sprite sheet. */
-#define GROUND_TILES ":/texture/sprites/texture/TX Tileset Ground.png" /**< The file path to the ground tiles sprite sheet. */
-#define LEVEL_ONE ":/level/level/level1.json" /**< The file path to the first level configuration file. */
+// ----------------< MOVEMENT CONSTANTS >--------------- //
+const double walking_speed = 0.1/5;
+const double running_speed = 0.2/5;
+// ----------------------------------------------------- //
 
-#define DEFAULT_FONT ":/font/sprites/font/font.TTF" /**< The file path to the font used. */
+// ----------------< PATHS CONSTANTS >------------------ //
+#define FOX_RUN       ":/fox/sprites/fox/run.png"
+#define FOX_WALK      ":/fox/sprites/fox/walk.png"
+#define FOX_DEAD      ":/fox/sprites/fox/dead.png"
+#define FOX_JUMP      ":/fox/sprites/fox/pounce.png"
+#define FOX_LAND      ":/fox/sprites/fox/landing.png"
+#define FRUITS        ":/fruits/sprites/fruits/fruits.png"
+#define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
+#define LEVEL_ONE     ":/level/level/level1.json"
+#define LEVEL_TWO     ":/level/level/level2.json"
+// ----------------------------------------------------- //
 
-#define COLLISION_OFFSET 5 /**< The offset used for collision detection. */
+// ----------< STARTING POSITION CONSTANTS >------------ //
+const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(40,10);
+const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
+
+const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
+
+
+// ----------------< FOX SPRITE SIZE >------------------ //
+
+const int RUN_SPRITE_WIDTH = 72;
+const int RUN_SPRITE_HEIGHT = 32;
+const int RUN_SPRITE_N_OF_FRAME = 7;
+
+const int WALK_SPRITE_WIDTH = 53;
+const int WALK_SPRITE_HEIGHT = 31;
+const int WALK_SPRITE_N_OF_FRAME = 9;
+
+
+#define COLLISION_OFFSET 2
 
 #endif // CONSTANTS_H

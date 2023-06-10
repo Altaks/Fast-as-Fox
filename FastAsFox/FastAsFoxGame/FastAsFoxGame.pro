@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     animatedsprite.cpp \
+    berriespile.cpp \
     gameobject.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    berriespile.h \
     collisionside.h \
     constants.h \
     gameobject.h \
