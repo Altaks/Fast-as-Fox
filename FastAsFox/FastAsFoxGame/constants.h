@@ -9,13 +9,13 @@
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
 const float gravity = 9.81/100; // to set to 9.81
-const double alpha = (2 * PI * ((double)45 / 360)); // 25 is the angle in degrees
+const double alpha = (2 * PI * ((double)30 / 360)); // 25 is the angle in degrees
 const double V0 = 0.2;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
-const double walking_speed = 0.1/5;
-const double running_speed = 0.5;
+const double walking_speed = 0.02;
+const double running_speed = 0.1;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //

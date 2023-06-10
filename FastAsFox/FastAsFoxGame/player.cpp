@@ -50,7 +50,7 @@ bool Player::isOnGround() const
 
 bool Player::isStillOnGround(std::optional<CollisionSide> collision) const
 {
-    if(!collision.has_value() and onGround==true)
+    if(!collision.has_value() && onGround==true)
     {
         return false;
     }
