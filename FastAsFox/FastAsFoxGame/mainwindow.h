@@ -15,6 +15,7 @@
 #include <QKeyEvent>
 #include "level.h"
 #include "map.h"
+#include "menuwidget.h"
 
 /*enum class FruitType {
     Apple,
@@ -31,6 +32,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     //void displayFruit(FruitType fruitType, int versionId, int x, int y);
     void showEndOfMapMessage();
+    void handleLevelSelection(int levelIndex);
+    void handleMenuFinished();
+
 
 private slots:
     void addText();
@@ -48,6 +52,7 @@ private:
     Map *map;
     int height=25;
     int  weight=30;
+    MenuWidget *m_menuWidget;
     Level * level;
 
 

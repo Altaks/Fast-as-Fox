@@ -236,11 +236,11 @@ void Map::displayAnimation() {
     this->getScene()->addItem(woodboardItem);
 
     QMediaPlayer *mediaPlayer = new QMediaPlayer;
-    mediaPlayer->setSource(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    mediaPlayer->setMedia(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
     mediaPlayer->play();
 
     QMediaPlayer *mediaPlayer2 = new QMediaPlayer;
-    mediaPlayer2->setSource(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    mediaPlayer2->setMedia(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
     mediaPlayer2->play();
 }
 

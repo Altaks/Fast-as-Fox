@@ -18,6 +18,7 @@ SOURCES += \
     mainwindow.cpp \
     map.cpp \
     mapsection.cpp \
+    menuwidget.cpp \
     player.cpp \
     tile.cpp \
     tileset.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     mainwindow.h \
     map.h \
     mapsection.h \
+    menuwidget.h \
     player.h \
     tile.h \
     tileset.h \
