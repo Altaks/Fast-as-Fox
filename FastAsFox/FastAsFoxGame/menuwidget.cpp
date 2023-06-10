@@ -14,17 +14,16 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
 {
     numberOfLevelsUnlocked=aNumberOfLevelsUnlocked;
 
-    setupImagesLayout();
-    this->setLayout(m_layout);
-    this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
-
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
     m_selectPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
     m_selectedPlayer = new QMediaPlayer(this);
     m_selectedPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
 
-    setBackgroundImage(":/menu/sprites/menu/menubg.png");
+    m_sagaPlayer = new QMediaPlayer(this);  // initialize the m_sagaPlayer here
+    m_sagaPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
+
+    this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
 
     // Load the cursor image.
     QPixmap cursorPixmap(":/menu/sprites/menu/pointeurMouse.png");
@@ -32,6 +31,7 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
 
     menuSkipped = false;
 
+    saga();
 }
 
 
@@ -336,3 +336,85 @@ bool MenuWidget::isMenuSkipped() const
 {
     return menuSkipped;
 }
+
+void MenuWidget::saga()
+{
+    // Play the saga.mp3 and set the saga.jpg as background
+    m_sagaPlayer->play();
+    setBackgroundImage(":/menu/sprites/menu/saga.jpg");
+
+    // If saga.mp3 has finished playing, set the backgroundImage to menubg.png
+    connect(m_sagaPlayer, &QMediaPlayer::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
+        if (status == QMediaPlayer::EndOfMedia) {
+            // Create a QLabel and a QMovie for the gif
+            QLabel *label = new QLabel(this);
+            QMovie *movie = new QMovie(":/menu/sprites/menu/bgstart.gif");
+
+            // Set the QLabel to the size of the window
+            label->setGeometry(0, 0, this->width(), this->height());
+            label->setMovie(movie);
+            label->setScaledContents(true);
+
+            // Set the movie to the QLabel
+            label->setMovie(movie);
+            label->show();
+
+            // Start the gif
+            movie->start();
+
+            // Play the menu.mp3
+            m_sagaPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menu.mp3"));
+            m_sagaPlayer->play();
+
+            // Create a QEventLoop
+            QEventLoop loop;
+
+            // When the movie finishes, quit the loop
+            connect(movie, &QMovie::finished, &loop, &QEventLoop::quit);
+
+            // Start the loop
+            loop.exec();
+
+            // When the gif has finished, hide the QLabel and delete it
+            label->hide();
+            delete label;
+            delete movie;
+
+            setBackgroundImage(":/menu/sprites/menu/menubg.png");
+            initMenu();
+        }
+    });
+}
+
+
+
+
+
+
+void MenuWidget::initMenu()
+{
+    setupImagesLayout();
+    this->setLayout(m_layout);
+
+    setBackgroundImage(":/menu/sprites/menu/menubg.png");
+}
+
+void MenuWidget::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    // If the central QLabel exists, resize it
+    QLabel *label = this->findChild<QLabel*>();
+    if(label && label->movie())
+    {
+        QSize newSize = event->size();
+        label->resize(newSize);
+
+        // Reposition titleView according to the new size
+        titleView->move((newSize.width() - titleView->width()) / 2, titleView->y());
+
+        // Reposition gifLabel according to the new size
+        gifLabel->move((newSize.width() - gifLabel->width()) / 2, gifLabel->y());
+    }
+}
+

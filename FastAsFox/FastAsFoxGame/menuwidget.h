@@ -7,7 +7,6 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QGraphicsView>
@@ -29,11 +28,17 @@ public:
     int getSelectedLevelIndex();
     void skipMenu();
     bool isMenuSkipped() const;
-
+    void saga();
+    QMediaPlayer *m_sagaPlayer;
+    QTimer *m_timer;
+    void resetBackground();
+    void initMenu();
+    void createPlayButton();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     QMediaPlayer *m_selectPlayer;
@@ -52,6 +57,7 @@ private:
     int numberOfLevelsUnlocked;
     int selectedLevelIndex;
     bool menuSkipped;
+
 
 signals:
     void levelSelected(int levelIndex);

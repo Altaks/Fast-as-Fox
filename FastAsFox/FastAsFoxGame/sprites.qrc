@@ -202,5 +202,9 @@
         <file>sprites/menu/menuSelection.mp3</file>
         <file>sprites/menu/pointeurMouse.png</file>
         <file>sprites/menu/retro.ttf</file>
+        <file>sprites/menu/saga.mp3</file>
+        <file>sprites/menu/saga.jpg</file>
+        <file>sprites/menu/menu.mp3</file>
+        <file>sprites/menu/bgstart.gif</file>
     </qresource>
 </RCC>
