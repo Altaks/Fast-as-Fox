@@ -5,10 +5,12 @@
 #include <utility>
 #define TILE_SIZE 32
 
+#define PI 3.14159
+
 // ----------------< PHYSICS CONSTANTS >---------------- //
 const float gravity = 9.81/100; // to set to 9.81
-const int alpha = 45;
-const double V0 = 0.6;
+const double alpha = (2 * PI * ((double)45 / 360)); // 25 is the angle in degrees
+const double V0 = 0.2;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //

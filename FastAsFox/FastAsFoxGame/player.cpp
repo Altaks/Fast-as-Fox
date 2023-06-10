@@ -116,8 +116,8 @@ void Player::updatePosition()
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
         double t = time.count();
 
-        vx = V0 * sin(alpha);
-        vy = - gravity * t + V0 * cos(alpha);
+        vx = V0 * cos(alpha);
+        vy = - gravity * t + V0 * sin(alpha);
 
     }
     else if(this->isOnGround()){
@@ -140,11 +140,11 @@ void Player::updatePosition()
         double t = time.count();
 
         if(this->animation->getIsRunning())
-            vx = running_speed * sin(alpha);
+            vx = running_speed * cos(alpha);
         else
-            vx = walking_speed * sin(alpha);
+            vx = walking_speed * cos(alpha);
 
-        vy = - gravity * t * cos(alpha);
+        vy = - gravity * t * sin(alpha);
     }
 
 
