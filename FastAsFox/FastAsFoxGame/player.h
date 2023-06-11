@@ -14,6 +14,8 @@ private:
     bool onGround;
     bool playerJump;
     bool fast;
+    bool againstWall;
+    bool isJumping;
     QVector2D velocity;
     Fox* animation;
     Map * map;
