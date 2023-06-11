@@ -314,7 +314,15 @@ void Player::updatePosition()
     if(collisionSide.second.has_value())
     {
         if(collisionSide.second.value()==LEFT)
+        {
             againstWall=true;
+            if(!collisionSide.first.has_value())
+                if(inAir==false)
+                {
+                    setInAir(true);
+                    onGround=false;
+                }
+        }
     }
     else
         againstWall=false;
