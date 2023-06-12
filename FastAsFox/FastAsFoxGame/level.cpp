@@ -14,16 +14,23 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     count=0.00;
     hedgehogs = new std::vector<Hedgehog*>();
 
+    QTimer * playerUpdatePositionClock = new QTimer();
+    QTimer * hedgehogUpdatePositionClock = new QTimer();
+
+
     for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
     {
         hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
+        connect(hedgehogUpdatePositionClock, &QTimer::timeout, hedgehogs->at(i), &Hedgehog::updatePosition);
     }
-
-    QTimer * playerUpdatePositionClock = new QTimer();
+    connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
-    playerUpdatePositionClock->start(10); // 20 tps
+    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
+
+    playerUpdatePositionClock->start(10); // 100 tps
+    hedgehogUpdatePositionClock->start(20); // 50 tps
 }
 
 Level::~Level(){
@@ -45,6 +52,49 @@ QGraphicsScene *Level::getScene() const
 QGraphicsView *Level::getView() const
 {
     return view;
+}
+
+void Level::changeHedgehogsDirection()
+{
+    for(int i=0; i<hedgehogs->size(); i++)
+    {
+        std::pair<int,int> hedgehogTilePosition = hedgehogs->at(i)->getSpritePosition();
+        std::pair<int,int> testTilePosition = hedgehogs->at(i)->getSpritePosition();
+
+        hedgehogTilePosition.first = hedgehogTilePosition.first/32;
+        hedgehogTilePosition.second = scene->height()/32 - hedgehogTilePosition.second/32;
+
+        testTilePosition.first=hedgehogTilePosition.first;
+        testTilePosition.second=hedgehogTilePosition.second-1;
+        if(map->getMap()->at(0)->getCoordinatesToTileId()->at(testTilePosition)==0)
+            hedgehogs->at(i)->changeDirection();
+
+        testTilePosition.first=hedgehogTilePosition.first+1;
+        if(map->getMap()->at(0)->getCoordinatesToTileId()->at(testTilePosition)==0)
+            hedgehogs->at(i)->changeDirection();
+
+        testTilePosition.first=hedgehogTilePosition.first;
+        testTilePosition.second=hedgehogTilePosition.second;
+        if(map->getMap()->at(0)->getCoordinatesToTileId()->at(testTilePosition)!=0)
+            hedgehogs->at(i)->changeDirection();
+
+        testTilePosition.first=hedgehogTilePosition.first+1;
+        if(map->getMap()->at(0)->getCoordinatesToTileId()->at(testTilePosition)!=0)
+            hedgehogs->at(i)->changeDirection();
+    }
+}
+
+void Level::playerCollidesHedgehog()
+{
+    for(int i=0; i<hedgehogs->size(); i++)
+    {
+        if(player->getAnimation()->getIsRunning())
+        {
+            if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH and
+               player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH)
+                std::cout << "DEAD" << endl;
+        }
+    }
 }
 
 void Level::loadMap(){

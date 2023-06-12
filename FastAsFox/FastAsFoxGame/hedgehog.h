@@ -15,8 +15,9 @@ public:
     explicit Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition);
     void updateFrame();
     std::pair<int,int> getSpritePosition() const;
-    void updatePosition();
     QGraphicsScene *getScene() const;
+    void changeDirection();
+    void setAttacking(bool newAttacking);
 
 private:
     QPixmap *walkSpriteSheet;
@@ -26,11 +27,13 @@ private:
     QElapsedTimer *elapsedTimer;
     int walkCurrentFrame;
     int attackCurrentFrame;
+    int speed;
     bool attacking;
+    bool goingRight;
     std::pair<int,int> spritePosition;
 
-private slots:
-
+public slots:
+    void updatePosition();
 
 
 };

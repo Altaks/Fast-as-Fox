@@ -75,8 +75,6 @@ QGraphicsView * Map::getView(){
 
 void Map::load(){
 
-    qDebug(("Index de tile max : " + std::to_string(this->loadedTiles.size())).c_str());
-
     // inject map at coordinates
     int anchorX = 0;
     for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
@@ -122,14 +120,14 @@ void Map::updateView()
 {
     QPointF center = this->itsPlayer->getAnimation()->pos();
 
-    center.rx() += mapView->viewport()->width() / 2;
+    center.rx() += mapView->viewport()->width() / 3;
 
     center.setX(qMin(qMax(center.x(), mapView->viewport()->width() / 2.0),
                      mapScene->sceneRect().width() - mapView->viewport()->width() / 2.0));
-    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 2.0),
+    center.setY(qMin(qMax(center.y(), mapView->viewport()->height() / 3.0),
                      mapScene->sceneRect().height() - mapView->viewport()->height() / 2.0));
 
     float lerpFactor = 0.1f;
-    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
+    mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1 - lerpFactor)
                       + center * lerpFactor);
 }

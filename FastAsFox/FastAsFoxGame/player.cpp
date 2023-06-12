@@ -21,6 +21,11 @@ void Player::setLastJumpTimeStamp(std::chrono::time_point<std::chrono::system_cl
     lastJumpTimeStamp = newLastJumpTimeStamp;
 }
 
+const std::pair<int, int> &Player::getSpritePosition() const
+{
+    return spritePosition;
+}
+
 Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
@@ -112,17 +117,17 @@ void Player::updatePosition()
 
         double t = time.count();
 
-        vx = V0 * cos(alpha);
-        vy = - gravity * t + V0 * sin(alpha);
+        vx = V0 * cos(ALPHA);
+        vy = - GRAVITY * t + V0 * sin(ALPHA);
     }
 
     else if(this->isOnGround()){
             if(this->animation->getIsRunning()){
-                vx = running_speed;
+                vx = RUNNING_SPEED;
             }
             else {
                 // walking by default
-                vx = walking_speed;
+                vx = WALKING_SPEED;
             }
     } //else qWarning("None condition of movement have been implied in position update");
     else
@@ -133,11 +138,11 @@ void Player::updatePosition()
         double t = time.count();
 
         if(this->animation->getIsRunning())
-            vx = running_speed * cos(alpha);
+            vx = RUNNING_SPEED * cos(ALPHA);
         else
-            vx = walking_speed * cos(alpha);
+            vx = WALKING_SPEED * cos(ALPHA);
 
-        vy = - gravity * t * sin(alpha);
+        vy = - GRAVITY * t * sin(ALPHA);
     }
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
@@ -399,6 +404,7 @@ void Player::updatePosition()
            return;
     }
     this->animation->setPos(xPlayer, yPlayer);
+    this->spritePosition = {xPlayer,yPlayer};
     emit playerMoved();
 }
 

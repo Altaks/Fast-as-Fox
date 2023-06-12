@@ -2,6 +2,8 @@
 #include "constants.h"
 #include "qgraphicsscene.h"
 #include "qtimer.h"
+#include <iostream>
+#include <random>
 
 Hedgehog::Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition) : QGraphicsPixmapItem(nullptr)
 {
@@ -13,7 +15,19 @@ Hedgehog::Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition
     walkCurrentFrame = 0;
     attackCurrentFrame = 0;
     attacking = false;
-    this->spritePosition = {spawnPosition.first*32, scene->height() - spawnPosition.second*32};
+
+    std::random_device rd;
+    std::default_random_engine eng(rd());
+    std::uniform_int_distribution<int> distr(0, 1);
+
+    goingRight = distr(eng);
+
+    if(goingRight)
+        speed = 1;
+    else
+        speed = -1;
+
+    this->spritePosition = {spawnPosition.first*32, scene->height() - spawnPosition.second*32 + TILE_SIZE - HEDGEHOG_WALK_SPRITE_HEIGHT};
 
     setPos(this->spritePosition.first,this->spritePosition.second);
     scene->addItem(this);
@@ -73,10 +87,22 @@ std::pair<int, int> Hedgehog::getSpritePosition() const
 
 void Hedgehog::updatePosition()
 {
-
+    this->spritePosition.first+=speed;
+    this->setPos(this->spritePosition.first,this->spritePosition.second);
 }
 
 QGraphicsScene *Hedgehog::getScene() const
 {
     return this->scene;
+}
+
+void Hedgehog::changeDirection()
+{
+    this->goingRight=!this->goingRight;
+    this->speed*=-1;
+}
+
+void Hedgehog::setAttacking(bool newAttacking)
+{
+    attacking = newAttacking;
 }

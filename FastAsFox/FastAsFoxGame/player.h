@@ -21,6 +21,7 @@ private:
     Map * map;
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
+    std::pair<int,int> spritePosition;
 public:
     Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent = nullptr);
     ~Player();
@@ -40,6 +41,8 @@ public:
     void playerAccelerated();
     void playerJumped();
     void playerSlowedDown();
+    const std::pair<int, int> &getSpritePosition() const;
+
 signals:
     void playerMoved();
 public slots:

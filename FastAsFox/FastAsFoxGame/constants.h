@@ -8,14 +8,14 @@
 #define PI 3.14159
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
-const float gravity = 9.81/100; // to set to 9.81
-const double alpha = (2 * PI * ((double)30 / 360)); // 25 is the angle in degrees
+const float GRAVITY = 9.81/100; // to set to 9.81
+const double ALPHA = (2 * PI * ((double)30 / 360)); // 25 is the angle in degrees
 const double V0 = 0.2;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
-const double walking_speed = 0.02;
-const double running_speed = 0.1;
+const double WALKING_SPEED = 0.02;
+const double RUNNING_SPEED = 0.1;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //
@@ -38,9 +38,9 @@ const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
 
 const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
 
-const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(30,8);
-//const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(40,10);
-const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1};
+const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,2);
+const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,8);
+const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1,HEDGEHOG_LEVEL_ONE_POS2};
 // ----------------------------------------------------- //
 
 // ----------------< FOX SPRITE SIZE >------------------ //
