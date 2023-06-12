@@ -24,7 +24,9 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
     m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
 
     m_sagaPlayer = new QMediaPlayer(this);  // initialize the m_sagaPlayer here
-    m_sagaPlayer->setSource(QUrl(":/menu/sprites/menu/saga.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput; // create an audio output
+    m_sagaPlayer->setAudioOutput(audioOutput); // set the audio output for the player
+    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3")); // set the source
 
     this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
 
