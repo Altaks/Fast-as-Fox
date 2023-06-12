@@ -116,7 +116,7 @@ void Map::load(){
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
 
-            Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
+            Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second, true);//Change true to the isCollideable value of the tile's tileset
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();

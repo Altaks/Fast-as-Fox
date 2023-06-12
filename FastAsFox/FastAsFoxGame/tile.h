@@ -40,7 +40,7 @@ public:
      * @param y the vertical position of the tile
      * @param parent the parent of the tile object (required for QObects)
      */
-    explicit Tile(QPixmap * texture, int tileId, int x, int y, QObject *parent = nullptr);
+    explicit Tile(QPixmap * texture, int tileId, int x, int y, bool collideable, QObject *parent = nullptr);
     /**
      * @brief getTileItem getter for the tile class
      * @return the tile object

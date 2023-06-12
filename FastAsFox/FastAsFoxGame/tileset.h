@@ -44,7 +44,7 @@ public:
      * @param sideSize the size of a side of the tileMap
      * @param startingIndex the index at the beginning of the tileset
      */
-    TileSet(std::string filepath, int sideSize, int startingIndex);
+    TileSet(std::string filepath, bool collideable, int sideSize, int startingIndex);
     /**
      * @brief TileSet the default constructor for the TileSet class
      */
