@@ -169,5 +169,7 @@
     <qresource prefix="/hedgehog">
         <file>sprites/hedgehog/hedgehog_attack_sprite.png</file>
         <file>sprites/hedgehog/hedgehog_walk_sprite.png</file>
+        <file>sprites/hedgehog/hedgehog_attack_sprite_backward.png</file>
+        <file>sprites/hedgehog/hedgehog_walk_sprite_backward.png</file>
     </qresource>
 </RCC>

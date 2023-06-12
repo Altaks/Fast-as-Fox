@@ -24,8 +24,12 @@ const double RUNNING_SPEED = 0.1;
 #define FOX_DEAD      ":/fox/sprites/fox/dead.png"
 #define FOX_JUMP      ":/fox/sprites/fox/pounce.png"
 #define FOX_LAND      ":/fox/sprites/fox/landing.png"
-#define HEDGEHOG_WALK ":/hedgehog/sprites/hedgehog/hedgehog_walk_sprite.png"
-#define HEDGEHOG_ATTACK  ":/hedgehog/sprites/hedgehog/hedgehog_attack_sprite.png"
+
+#define HEDGEHOG_WALK               ":/hedgehog/sprites/hedgehog/hedgehog_walk_sprite.png"
+#define HEDGEHOG_ATTACK             ":/hedgehog/sprites/hedgehog/hedgehog_attack_sprite.png"
+#define HEDGEHOG_WALK_BACKWARD      ":/hedgehog/sprites/hedgehog/hedgehog_walk_sprite_backward.png"
+#define HEDGEHOG_ATTACK_BACKWARD    ":/hedgehog/sprites/hedgehog/hedgehog_attack_sprite_backward.png"
+
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
 #define LEVEL_ONE     ":/level/level/level1.json"

@@ -9,6 +9,8 @@ Hedgehog::Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition
 {
     walkSpriteSheet = new QPixmap(HEDGEHOG_WALK);
     attackSpriteSheet = new QPixmap(HEDGEHOG_ATTACK);
+    walkSpriteSheetBackward = new QPixmap(HEDGEHOG_WALK_BACKWARD);
+    attackSpriteSheetBackward = new QPixmap(HEDGEHOG_ATTACK_BACKWARD);
     scene = parentScene;
     timer = new QTimer();
     elapsedTimer = new QElapsedTimer();
@@ -41,13 +43,16 @@ Hedgehog::Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition
 void Hedgehog::updateFrame()
 {
     int msSinceLastFrame = elapsedTimer->elapsed();
-
     if (msSinceLastFrame >= 50) {  // 50 ms corresponds to 20 FPS
 
         if(!attacking)
         {
             QRect frameRect(walkCurrentFrame * HEDGEHOG_WALK_SPRITE_WIDTH, 0, HEDGEHOG_WALK_SPRITE_WIDTH, HEDGEHOG_WALK_SPRITE_HEIGHT);
-            this->setPixmap(walkSpriteSheet->copy(frameRect));
+
+            if(goingRight)
+                this->setPixmap(walkSpriteSheet->copy(frameRect));
+            else
+                this->setPixmap(walkSpriteSheetBackward->copy(frameRect));
 
             this->update(); // Request redraw
 
@@ -61,7 +66,10 @@ void Hedgehog::updateFrame()
         {
             QRect frameRect(attackCurrentFrame * HEDGEHOG_ATTACK_SPRITE_WIDTH, 0, HEDGEHOG_ATTACK_SPRITE_WIDTH, HEDGEHOG_ATTACK_SPRITE_HEIGHT);
 
-            this->setPixmap(attackSpriteSheet->copy(frameRect));
+            if(goingRight)
+                this->setPixmap(attackSpriteSheet->copy(frameRect));
+            else
+                this->setPixmap(attackSpriteSheetBackward->copy(frameRect));
 
             this->update(); // Request redraw
 
@@ -88,7 +96,11 @@ std::pair<int, int> Hedgehog::getSpritePosition() const
 void Hedgehog::updatePosition()
 {
     this->spritePosition.first+=speed;
-    this->setPos(this->spritePosition.first,this->spritePosition.second);
+    if(!attacking)
+        this->setPos(this->spritePosition.first,this->spritePosition.second);
+    else
+        this->setPos(this->spritePosition.first,this->spritePosition.second - HEDGEHOG_ATTACK_SPRITE_HEIGHT + HEDGEHOG_WALK_SPRITE_HEIGHT);
+
 }
 
 QGraphicsScene *Hedgehog::getScene() const

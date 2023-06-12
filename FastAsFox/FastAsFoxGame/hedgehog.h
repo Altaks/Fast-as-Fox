@@ -22,6 +22,8 @@ public:
 private:
     QPixmap *walkSpriteSheet;
     QPixmap *attackSpriteSheet;
+    QPixmap *walkSpriteSheetBackward;
+    QPixmap *attackSpriteSheetBackward;
     QGraphicsScene *scene;
     QTimer *timer;
     QElapsedTimer *elapsedTimer;
