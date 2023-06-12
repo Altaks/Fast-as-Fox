@@ -13,7 +13,7 @@
 #include <QAudioOutput>
 
 
-MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
+MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0),playButtonClickedOnce(false), settingsButtonClickedOnce(false)
 {
     numberOfLevelsUnlocked = aNumberOfLevelsUnlocked;
 
@@ -50,6 +50,7 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isResta
     else{
         saga();
     }
+
 }
 
 
@@ -425,12 +426,39 @@ void MenuWidget::saga()
                     );
 
                 playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() - 80)); // 20 pixels below logoLabel play with - and +
-
-                connect(playButton, &QPushButton::clicked, this, &MenuWidget::initMenu);
-                // Connect the clicked() signal of the playButton to the playButtonClicked() slot
-                connect(playButton, &QPushButton::clicked, this, &MenuWidget::playButtonClicked);
                 playButton->show();
 
+                settingsButton = new QPushButton("Settings", this);
+                settingsButton->setFont(retroFont);
+                settingsButton->setFixedWidth(200);
+                settingsButton->setStyleSheet(
+                    "QPushButton {"
+                    "background-color: #444;"
+                    "color: #fff;"
+                    "padding: 10px;"
+                    "font-size: 20px;"
+                    "border: 1px solid #555;"
+                    "border-radius: 5px;"
+                    "}"
+                    "QPushButton:pressed {"
+                    "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                    "stop: 0 #888, stop: 1 #555);"
+                    "}"
+                    );
+                settingsButton->move((this->width() - settingsButton->width()) / 2, playButton->y() + playButton->height() + 20); // 20 pixels below playButton
+                settingsButton->show();
+
+                cursorLabel2 = new QLabel(this);
+                cursorLabel2->setObjectName("cursorLabel2");
+                QMovie *cursorMovie2 = new QMovie(":/menu/sprites/menu/startcursor.gif");
+                cursorMovie2->jumpToFrame(0);
+                QSize originalSize2 = cursorMovie2->frameRect().size();
+                cursorLabel2->setFixedSize(originalSize2 / 4);
+                cursorLabel2->setMovie(cursorMovie2);
+                cursorLabel2->setScaledContents(true);
+                cursorLabel2->move(settingsButton->x() - cursorLabel2->width() - 10, settingsButton->y() + (settingsButton->height() - cursorLabel2->height()) / 2);
+                cursorMovie2->start();
+                cursorLabel2->hide();
 
 
                 cursorLabel = new QLabel(this);
@@ -452,6 +480,69 @@ void MenuWidget::saga()
                 // Show the QLabel and start the gif
                 cursorLabel->show();
                 cursorMovie->start();
+
+                // Connect the clicked() signal of the playButton to the playButtonClicked() slot
+                connect(playButton, &QPushButton::clicked, this, [=]() {
+                    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+                    QLabel *cursorLabel2 = this->findChild<QLabel*>("cursorLabel2");
+
+                    if (playButtonClickedOnce) {
+                        movie->stop();
+                        label->hide();
+                        logoLabel->hide();
+
+                        QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+                        QLabel *cursorLabel2 = this->findChild<QLabel*>("cursorLabel2");
+                        if (cursorLabel) {
+                            cursorLabel->hide();
+                        }
+                        if (cursorLabel2) {
+                            cursorLabel2->hide();
+                        }
+
+                        playButton->hide();
+                        settingsButton->hide();
+
+                        this->initMenu();
+                        playButtonClickedOnce = false;
+                    }
+                    else {
+                        if (cursorLabel2) {
+                            cursorLabel2->hide();
+                        }
+                        if (cursorLabel) {
+                            cursorLabel->show();
+                        }
+                        playButtonClickedOnce = true;
+                        settingsButtonClickedOnce = false;
+                    }
+                });
+
+                // Connect the clicked() signal of the settingsButton to the settingsButtonClicked() slot
+                connect(settingsButton, &QPushButton::clicked, this, [=]() {
+                    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+                    QLabel *cursorLabel2 = this->findChild<QLabel*>("cursorLabel2");
+
+                    if (settingsButtonClickedOnce) {
+                        this->settingsButtonClicked();
+                        settingsButtonClickedOnce = false;
+                    } else {
+                        if (cursorLabel) {
+                            cursorLabel->hide();
+                        }
+                        if (cursorLabel2) {
+                            cursorLabel2->show();
+                        }
+                        settingsButtonClickedOnce = true;
+                        playButtonClickedOnce = false;
+                    }
+                });
+
+
+
+
+
+
 
 
 
@@ -499,9 +590,22 @@ void MenuWidget::saga()
 
 
 
+void MenuWidget::settingsButtonClicked()
+{
+    // Create the settings window widget
+    QWidget *settingsWindow = new QWidget;
+    settingsWindow->setWindowTitle("Settings");
 
+    // You can add your settings UI here.
+    // For example, you might add a layout and some controls.
 
+    // Show the settings window
+    settingsWindow->show();
 
+    // Note: You will need to manage the memory for settingsWindow.
+    // If you want it to be deleted when closed, you can set this attribute:
+    settingsWindow->setAttribute(Qt::WA_DeleteOnClose);
+}
 
 
 void MenuWidget::initMenu()
@@ -535,17 +639,30 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
         // Reposition gifLabel according to the new size
         gifLabel->move((newSize.width() - gifLabel->width()) / 2, gifLabel->y());
     }
-    // If the play button exists, move it
-    QPushButton *playButton = this->findChild<QPushButton*>();
-    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
-    if (playButton) {
-        playButton->move((event->size().width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20));
-        // If cursorLabel exists, move it to the right of the playButton and adjust the size
-        if (cursorLabel) {
-            cursorLabel->move(playButton->x() + playButton->width() + 10, playButton->y() + playButton->height() / 4);
-            cursorLabel->setFixedSize(playButton->size() / 2);
-        }
-    }
+
+//    // If the play button exists, move it
+//    QPushButton *playButton = this->findChild<QPushButton*>();
+//    QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
+//    if (playButton) {
+//        playButton->move((event->size().width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20));
+//        // If cursorLabel exists, move it to the left of the playButton and adjust the size
+//        if (cursorLabel) {
+//            cursorLabel->move(playButton->x() - cursorLabel->width() - 10, playButton->y() + (playButton->height() - cursorLabel->height()) / 2);
+//            cursorLabel->setFixedSize(playButton->size() / 2);
+//        }
+//    }
+
+//    // If the settings button exists, move it
+//    QPushButton *settingsButton = this->findChild<QPushButton*>("settingsButton");
+//    QLabel *cursorLabel2 = this->findChild<QLabel*>("cursorLabel2");
+//    if (settingsButton) {
+//        settingsButton->move((event->size().width() - settingsButton->width()) / 2, (playButton->y() + playButton->height() + 20));
+//        // If cursorLabel2 exists, move it to the left of the settingsButton and adjust the size
+//        if (cursorLabel2) {
+//            cursorLabel2->move(settingsButton->x() - cursorLabel2->width() - 10, settingsButton->y() + (settingsButton->height() - cursorLabel2->height()) / 2);
+//            cursorLabel2->setFixedSize(settingsButton->size() / 2);
+//        }
+//    }
 }
 
 
@@ -563,6 +680,10 @@ void MenuWidget::launchPlayButtonClickedProcess()
     if(playButton) {
         playButton->hide();
         delete playButton;
+    }
+    if(settingsButton) {
+        settingsButton->hide();
+        delete settingsButton;
     }
 
     // Hide and delete the label
@@ -586,6 +707,15 @@ void MenuWidget::launchPlayButtonClickedProcess()
         if (cursorLabel->movie())
             cursorLabel->movie()->deleteLater();
         cursorLabel->deleteLater();
+    }
+
+    // Find cursorLabel2 and hide/delete it
+    QLabel *cursorLabel2 = this->findChild<QLabel*>("cursorLabel2");
+    if(cursorLabel2) {
+        cursorLabel2->hide();
+        if (cursorLabel2->movie())
+            cursorLabel2->movie()->deleteLater();
+        cursorLabel2->deleteLater();
     }
 
     // Create a media player to play the sound

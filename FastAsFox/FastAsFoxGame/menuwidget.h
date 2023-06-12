@@ -38,6 +38,7 @@ public:
     void logoSwitchAnimation();
     void restartGame();
     void launchPlayButtonClickedProcess();
+    void settingsButtonClicked();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -63,6 +64,21 @@ private:
     bool menuSkipped;
     QLabel *cursorLabel;
     QMovie *cursorMovie;
+    QPushButton *m_activeButton;
+    QPushButton *playButton;
+    QPushButton * settingsButton;
+    QPushButton *selectedButton;
+    QLabel * cursorLabel2;
+    QMovie * cursorMovie2;
+    QTimer *m_playButtonTimer;
+    QTimer *m_settingsButtonTimer;
+    bool playButtonClickedOnce;
+    bool settingsButtonClickedOnce;
+
+
+
+
+
 
 
 signals:
