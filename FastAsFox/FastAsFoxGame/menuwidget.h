@@ -59,6 +59,8 @@ private:
     int numberOfLevelsUnlocked;
     int selectedLevelIndex;
     bool menuSkipped;
+    QLabel *cursorLabel;
+    QMovie *cursorMovie;
 
 
 signals:

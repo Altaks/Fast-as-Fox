@@ -421,8 +421,9 @@ void MenuWidget::saga()
 
 
 
-                QLabel *cursorLabel = new QLabel(this);
-                QMovie *cursorMovie = new QMovie(":/menu/sprites/menu/startcursor.gif");
+                cursorLabel = new QLabel(this);
+                cursorLabel->setObjectName("cursorLabel");
+                cursorMovie = new QMovie(":/menu/sprites/menu/startcursor.gif");
 
                 // Load the movie to get its size
                 cursorMovie->jumpToFrame(0);
@@ -563,13 +564,17 @@ void MenuWidget::playButtonClicked()
         logoLabel->hide();
         delete logoLabel;
     }
+
     // Find cursorLabel and hide/delete it
     QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
     if(cursorLabel) {
         cursorLabel->hide();
-        delete cursorLabel->movie();
-        delete cursorLabel;
+        if (cursorLabel->movie())
+            cursorLabel->movie()->deleteLater();
+        cursorLabel->deleteLater();
     }
+
+
 
     // Create a media player to play the sound
     QMediaPlayer *player = new QMediaPlayer;
