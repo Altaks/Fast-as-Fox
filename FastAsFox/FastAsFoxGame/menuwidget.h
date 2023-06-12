@@ -36,6 +36,7 @@ public:
     void createPlayButton();
     void playButtonClicked();
     void logoSwitchAnimation();
+    void restartGame();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

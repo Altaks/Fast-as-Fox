@@ -140,4 +140,10 @@ void MainWindow::handleMenuFinished()
 
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+    connect(map, &Map::homeButtonClicked, this, &MainWindow::onHomeButtonClicked);
+
+}
+
+void MainWindow::onHomeButtonClicked() {
+
 }

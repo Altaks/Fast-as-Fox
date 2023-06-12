@@ -164,6 +164,7 @@
         <file>sprites/userInterface/woodboard.png</file>
         <file>sprites/userInterface/cadrelcd.png</file>
         <file>sprites/userInterface/sablier.gif</file>
+        <file>sprites/userInterface/homeButton.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>

@@ -7,8 +7,11 @@
 #include <QPropertyAnimation>
 #include <QGraphicsOpacityEffect>
 #include <iostream>
+#include <QGraphicsProxyWidget>
 #include <QAudioOutput>
+#include <QStyle>
 #include <QTimeLine>
+#include <QPushButton>
 #include <QGraphicsItemAnimation>
 
 std::vector<MapSection *> Map::getSections() const

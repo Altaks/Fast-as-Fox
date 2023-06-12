@@ -40,6 +40,7 @@ private slots:
     void addText();
     void printText(const QString &text, int x, int y, int z, const QColor &color);
     void updateLCD();
+    void onHomeButtonClicked();
 
 private:
     QString mFontFamily;
