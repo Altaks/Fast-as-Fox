@@ -15,7 +15,7 @@
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
 {
-    numberOfLevelsUnlocked=aNumberOfLevelsUnlocked;
+    numberOfLevelsUnlocked = aNumberOfLevelsUnlocked;
 
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
@@ -23,16 +23,16 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
     m_selectedPlayer = new QMediaPlayer(this);
     m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
 
-    m_sagaPlayer = new QMediaPlayer(this);  // initialize the m_sagaPlayer here
-    QAudioOutput *audioOutput = new QAudioOutput; // create an audio output
-    m_sagaPlayer->setAudioOutput(audioOutput); // set the audio output for the player
-    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3")); // set the source
+    m_sagaPlayer = new QMediaPlayer(this);
+    QAudioOutput *audioOutput = new QAudioOutput;
+    m_sagaPlayer->setAudioOutput(audioOutput);
+    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
 
-    this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
+    this->setFocusPolicy(Qt::StrongFocus);
 
     // Load the cursor image.
     QPixmap cursorPixmap(":/menu/sprites/menu/pointeurMouse.png");
-    m_customCursor = QCursor(cursorPixmap, -1, -1);  // The second and third parameters define the hotspot of the cursor.
+    m_customCursor = QCursor(cursorPixmap, -1, -1);
 
     menuSkipped = false;
 
@@ -412,7 +412,7 @@ void MenuWidget::saga()
                     "}"
                     );
 
-                playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20)); // 20 pixels below logoLabel
+                playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() - 80)); // 20 pixels below logoLabel play with - and +
 
                 connect(playButton, &QPushButton::clicked, this, &MenuWidget::initMenu);
                 // Connect the clicked() signal of the playButton to the playButtonClicked() slot
