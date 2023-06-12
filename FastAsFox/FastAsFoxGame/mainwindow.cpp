@@ -5,13 +5,43 @@
 #include "mapsection.h"
 #include "constants.h"
 #include "map.h"
+#include <QCoreApplication>
+#include <QProcess>
+
 #include <QKeyEvent>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 
-    m_menuWidget = new MenuWidget(this,4);
+    int nbMode = 4; // Default value
+
+    QFile file(QCoreApplication::applicationDirPath() + "restart.txt");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+        bool ok;
+        int val = in.readLine().toInt(&ok);
+        if (ok)
+        {
+            nbMode = val;
+        }
+        else
+        {
+            qDebug() << "Failed to convert file content to int";
+        }
+        file.close();
+    }
+    else
+    {
+        qDebug() << "Failed to open the file";
+    }
+
+    m_menuWidget = new MenuWidget(this, 4, nbMode);
     setCentralWidget(m_menuWidget);
     //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
     connect(m_menuWidget, &MenuWidget::finished, this, &MainWindow::handleMenuFinished);
@@ -25,9 +55,22 @@ MainWindow::MainWindow(QWidget *parent)
     // Skipping the menu
     //m_menuWidget->skipMenu();
 
+    bool isRestarting = false;
 }
 
-
+void MainWindow::writeToFile(bool value) {
+    QFile file(QCoreApplication::applicationDirPath() + "restart.txt");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+        out << (value ? "1" : "0");
+        file.close();
+    }
+    else
+    {
+        qDebug() << "Failed to open file for writing.";
+    }
+}
 
 
 void MainWindow::keyPressEvent(QKeyEvent * event){
@@ -47,6 +90,18 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
     default:
         break;
     }
+
+    if (event->key() == Qt::Key_P)
+    {
+        isRestarting = true;
+        writeToFile(true);
+
+        qApp->quit();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+    }
+
+
+
 }
 
 
@@ -140,10 +195,15 @@ void MainWindow::handleMenuFinished()
 
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
-    connect(map, &Map::homeButtonClicked, this, &MainWindow::onHomeButtonClicked);
 
 }
 
-void MainWindow::onHomeButtonClicked() {
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (!isRestarting)
+    {
+        writeToFile(false);
+    }
 
+    QWidget::closeEvent(event);
 }

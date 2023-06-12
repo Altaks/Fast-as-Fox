@@ -18,7 +18,7 @@ class MenuWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked);
+    explicit MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart); //isRestart=1 => Le programme vient de redémarrer
     void setBackgroundImage(const QString &imagePath);
     void setupImagesLayout();
 
@@ -37,6 +37,7 @@ public:
     void playButtonClicked();
     void logoSwitchAnimation();
     void restartGame();
+    void launchPlayButtonClickedProcess();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

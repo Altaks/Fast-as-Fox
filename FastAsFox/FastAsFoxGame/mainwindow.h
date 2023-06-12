@@ -15,7 +15,9 @@
 #include <QKeyEvent>
 #include "level.h"
 #include "map.h"
+#include <QCloseEvent>
 #include "menuwidget.h"
+
 
 /*enum class FruitType {
     Apple,
@@ -34,13 +36,13 @@ public:
     void showEndOfMapMessage();
     void handleLevelSelection(int levelIndex);
     void handleMenuFinished();
+    void writeToFile(bool value);
 
 
 private slots:
     void addText();
     void printText(const QString &text, int x, int y, int z, const QColor &color);
     void updateLCD();
-    void onHomeButtonClicked();
 
 private:
     QString mFontFamily;
@@ -55,12 +57,14 @@ private:
     int  weight=30;
     MenuWidget *m_menuWidget;
     Level * level;
+    bool isRestarting;
 
 
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

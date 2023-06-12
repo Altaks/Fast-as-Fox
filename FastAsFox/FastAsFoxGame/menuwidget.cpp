@@ -13,9 +13,10 @@
 #include <QAudioOutput>
 
 
-MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
+MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
 {
     numberOfLevelsUnlocked = aNumberOfLevelsUnlocked;
+
 
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
@@ -41,7 +42,14 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
 
     menuSkipped = false;
 
-    saga();
+    //isRestart=1 => Le programme vient de redémarrer
+    if (isRestart==1)
+    {
+        initMenu();
+    }
+    else{
+        saga();
+    }
 }
 
 
@@ -541,7 +549,9 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
 }
 
 
-void MenuWidget::playButtonClicked()
+
+
+void MenuWidget::launchPlayButtonClickedProcess()
 {
     initMenu();
 
@@ -578,8 +588,6 @@ void MenuWidget::playButtonClicked()
         cursorLabel->deleteLater();
     }
 
-
-
     // Create a media player to play the sound
     QMediaPlayer *player = new QMediaPlayer;
 
@@ -597,37 +605,8 @@ void MenuWidget::playButtonClicked()
     });
 }
 
-void MenuWidget::restartGame()
+void MenuWidget::playButtonClicked()
 {
-    // Play a specific sound effect or music for game restart if desired.
-    // For example, use m_selectPlayer to play a restart sound.
-    // m_selectPlayer->setSource(QUrl("qrc:/menu/sprites/menu/restart.mp3"));
-    // m_selectPlayer->play();
-
-    // Reset the numberOfLevelsUnlocked back to its initial value.
-    numberOfLevelsUnlocked = 1;
-
-    // Reset or reinitialize other game variables as needed.
-    // For example, if you have a score variable, reset it to 0.
-    // score = 0;
-
-    // Remove and delete the old layout.
-    if(m_layout) {
-        QLayoutItem *item;
-        while ((item = m_layout->takeAt(0)) != 0) {
-            if (QWidget* widget = item->widget())
-                delete widget;
-            delete item;
-        }
-        delete m_layout;
-    }
-
-    // Reset layout and images.
-    m_layout = new QGridLayout;
-    setupImagesLayout();
-    this->setLayout(m_layout);
-
-    // If you want to reset the game music or game background, you can do that here.
-    // m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
-    // setBackgroundImage(":/menu/sprites/menu/saga.jpg");
+    launchPlayButtonClickedProcess();
 }
+
