@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
         fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     }
 
-    TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
+    TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1); //Ground TileSet
     MapSection * section = new MapSection(LEVEL_ONE);
 
     std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();

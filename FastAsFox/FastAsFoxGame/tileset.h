@@ -59,6 +59,11 @@ public:
      * @return a map containing the sprite of every tile, as well as their ID
      */
     std::map<int, QPixmap*>* load();
+    /**
+     * @brief getIsCollideable getter for isCollideable
+     * @return isCollideable
+     */
+    bool getIsCollideable();
 };
 
 #endif // TILESET_H
