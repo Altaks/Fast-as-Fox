@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // Skipping the menu
-    //m_menuWidget->skipMenu();
+    m_menuWidget->skipMenu();
 }
 
 
@@ -57,59 +57,6 @@ void MainWindow::printText(const QString &text, int x, int y, int z, const QColo
     textItem->setDefaultTextColor(color);
     mScene->addItem(textItem);
 }
-
-/*void MainWindow::displayFruit(FruitType fruitType, int versionId, int x, int y)
-{
-    // Define constants for the locations and widths of the fruit types in your sprite sheet
-    const int APPLE_START_X = 0;
-    const int APPLE_WIDTH = 16;
-
-    const int GRAPE_START_X = 48;
-    const int GRAPE_WIDTH = 16;
-
-    const int CHERRY_START_X = 225;
-    const int CHERRY_WIDTH = 15;
-
-    const int LEMON_START_X = 272;
-    const int LEMON_WIDTH = 16;
-
-    const int PEACH_START_X = 190;
-    const int PEACH_WIDTH = 19;
-
-    // Determine the fruitId based on the fruitType
-    int fruitId;
-    switch (fruitType) {
-    case FruitType::Apple:
-        fruitId = APPLE_START_X / APPLE_WIDTH;
-        break;
-    case FruitType::Grape:
-        fruitId = GRAPE_START_X / GRAPE_WIDTH;
-        break;
-    case FruitType::Cherry:
-        fruitId = CHERRY_START_X / CHERRY_WIDTH;
-        break;
-    case FruitType::Lemon:
-        fruitId = LEMON_START_X / LEMON_WIDTH;
-        break;
-    case FruitType::Peach:
-        fruitId = PEACH_START_X / PEACH_WIDTH;
-        break;
-    }
-
-    if (fruitId < 0 || fruitId >= 38 || versionId < 0 || versionId >= 6)
-        return;
-
-    int fruitX = fruitId * 16;       // 16 pixels width per fruit
-    int fruitY = versionId * 16;     // 16 pixels height per fruit version
-    int fruitWidth = 16;
-    int fruitHeight = 16;
-
-    QPixmap fruit = mFruits.copy(fruitX, fruitY, fruitWidth, fruitHeight);
-    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(fruit);
-    item->setPos(x, y);
-    mScene->addItem(item);
-}*/
-
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
 //    QMainWindow::resizeEvent(event);

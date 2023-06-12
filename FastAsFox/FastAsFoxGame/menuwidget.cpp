@@ -34,9 +34,8 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
     QPixmap cursorPixmap(":/menu/sprites/menu/pointeurMouse.png");
     m_customCursor = QCursor(cursorPixmap, -1, -1);  // The second and third parameters define the hotspot of the cursor.
 
-    menuSkipped = false;
-
     saga();
+
 }
 
 

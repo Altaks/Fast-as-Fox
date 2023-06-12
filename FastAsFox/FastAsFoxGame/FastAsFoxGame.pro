@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     animatedsprite.cpp \
     berriespile.cpp \
+    berry.cpp \
     gameobject.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
     mapsection.cpp \
     menuwidget.cpp \
     player.cpp \
+    powerup.cpp \
     tile.cpp \
     tileset.cpp \
     level.cpp
@@ -27,6 +29,7 @@ SOURCES += \
 HEADERS += \
     animatedsprite.h \
     berriespile.h \
+    berry.h \
     collisionside.h \
     constants.h \
     gameobject.h \
@@ -35,6 +38,7 @@ HEADERS += \
     mapsection.h \
     menuwidget.h \
     player.h \
+    powerup.h \
     tile.h \
     tileset.h \
     mainwindow.h \

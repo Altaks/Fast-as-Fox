@@ -46,6 +46,16 @@ const int WALK_SPRITE_HEIGHT = 31;
 const int WALK_SPRITE_N_OF_FRAME = 9;
 
 
+// ----------------< PowerUpType's Enum >------------------ //
+enum PowerUpType{
+    Dash=1,
+    Double_Jump=2,
+    ChronoFreeze=3,
+    Speed=4,
+    Revive=5,
+};
+
+
 #define COLLISION_OFFSET 2
 
 #endif // CONSTANTS_H
