@@ -7,6 +7,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsOpacityEffect>
 #include <iostream>
+#include <QAudioOutput>
 #include <QTimeLine>
 #include <QGraphicsItemAnimation>
 
@@ -237,11 +238,16 @@ void Map::displayAnimation() {
 
     QMediaPlayer *mediaPlayer = new QMediaPlayer;
     mediaPlayer->setSource(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    mediaPlayer->setAudioOutput(audioOutput);
     mediaPlayer->play();
 
     QMediaPlayer *mediaPlayer2 = new QMediaPlayer;
     mediaPlayer2->setSource(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    QAudioOutput *audioOutput2 = new QAudioOutput;
+    mediaPlayer2->setAudioOutput(audioOutput2);
     mediaPlayer2->play();
+
 }
 
 

@@ -29,6 +29,8 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
 
     playerUpdatePositionClock->start(10); // 20 tps
 
+
+
 }
 
 Level::~Level(){

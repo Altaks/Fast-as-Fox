@@ -10,6 +10,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
     m_menuWidget = new MenuWidget(this,4);
     setCentralWidget(m_menuWidget);
     //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
@@ -133,6 +134,10 @@ void MainWindow::handleMenuFinished()
     Map * map = new Map(section, tilesets);
     map->load();
     level = new Level(LEVEL_ONE_START_POS,map,this);
+
+    QPixmap background(":/texture/sprites/texture/bg.jpg");
+    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
 }

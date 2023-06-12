@@ -20,8 +20,13 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
     m_selectPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
+    QAudioOutput *selectOutput = new QAudioOutput(this);
+    m_selectPlayer->setAudioOutput(selectOutput);
     m_selectedPlayer = new QMediaPlayer(this);
     m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
+    QAudioOutput *selectedOutput = new QAudioOutput(this);
+    m_selectedPlayer->setAudioOutput(selectedOutput);
+
 
     m_sagaPlayer = new QMediaPlayer(this);
     QAudioOutput *audioOutput = new QAudioOutput;
@@ -210,7 +215,6 @@ void MenuWidget::keyPressEvent(QKeyEvent *event)
             // Restore the cursor to its normal design
             QCursor normalCursor(Qt::ArrowCursor);
             QApplication::setOverrideCursor(normalCursor);
-
             return;
         }
     }
@@ -581,6 +585,8 @@ void MenuWidget::playButtonClicked()
 
     // Set the media source and play the sound
     player->setSource(QUrl("qrc:/menu/sprites/menu/playsound.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    player->setAudioOutput(audioOutput);
     player->play();
 
     // Cleanup the media player after the sound finished
