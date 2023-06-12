@@ -26,6 +26,10 @@ private:
      * @brief y the vertical position of the tile
      */
     int y;
+    /**
+     * @brief isCollideable boolean defining if the tile is collideable
+     */
+    bool isCollideable;
 
 public:
     /**
@@ -57,6 +61,11 @@ public:
      * @return y
      */
     int getY() const;
+    /**
+     * @brief getIsCollideable getter for isCollideable
+     * @return isCollideable
+     */
+    bool getIsCollideable();
 };
 
 #endif // TILE_H

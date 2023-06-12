@@ -33,6 +33,10 @@ private:
      * @brief sideSize the size of a side of the tileMap
      */
     int sideSize;
+    /**
+     * @brief isCollideable boolean that determines if the tiles of the tileset are collideable
+     */
+    bool isCollideable;
 public:
     /**
      * @brief TileSet the constructor for the TileSet class

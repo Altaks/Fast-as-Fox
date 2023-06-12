@@ -27,6 +27,11 @@ std::map<int, QPixmap*>* TileSet::load(){
     return this->tiles;
 }
 
+bool TileSet::getIsCollideable()
+{
+    return isCollideable;
+}
+
 std::map<int, QPixmap *>* TileSet::split()
 {
     QPixmap tileset = QPixmap(QString::fromStdString(filepath));

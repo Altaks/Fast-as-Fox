@@ -15,6 +15,11 @@ int Tile::getY() const
     return y;
 }
 
+bool Tile::getIsCollideable()
+{
+    return isCollideable;
+}
+
 Tile::Tile(QPixmap *texture, int tileId, int x, int y, QObject *parent) : GameObject{parent}
 {
     this->texture = texture;
