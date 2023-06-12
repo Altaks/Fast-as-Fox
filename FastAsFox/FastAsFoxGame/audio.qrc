@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/audio">
+        <file>audio/audio1.wav</file>
+        <file>audio/audio2.wav</file>
+        <file>audio/audio3.wav</file>
+        <file>audio/audio4.wav</file>
+        <file>audio/audio5.wav</file>
+        <file>audio/audio6.wav</file>
+        <file>audio/audio7.wav</file>
+        <file>audio/audio8.wav</file>
+        <file>audio/audio9.wav</file>
+        <file>audio/audio10.wav</file>
+    </qresource>
+</RCC>

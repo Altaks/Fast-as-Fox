@@ -166,4 +166,8 @@
     <qresource prefix="/fruits">
         <file>sprites/fruits/fruits.png</file>
     </qresource>
+    <qresource prefix="/hedgehog">
+        <file>sprites/hedgehog/hedgehog_attack_sprite.png</file>
+        <file>sprites/hedgehog/hedgehog_walk_sprite.png</file>
+    </qresource>
 </RCC>

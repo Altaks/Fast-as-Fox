@@ -12,6 +12,12 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     scene = map->getScene();
     mwindow=mainwindow;
     count=0.00;
+    hedgehogs = new std::vector<Hedgehog*>();
+
+    for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
+    {
+        hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
+    }
 
     QTimer * playerUpdatePositionClock = new QTimer();
 
