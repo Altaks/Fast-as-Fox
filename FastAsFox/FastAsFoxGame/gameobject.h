@@ -25,6 +25,10 @@ public:
      * @param parent The parent QObject of the GameObject.
      */
     GameObject(QObject *parent = nullptr);
+    /**
+     * @brief getRectangle get the area of the game object
+     * @return a rectangle that represents the area of the object
+     */
     const QRect &getRectangle() const;
 
     /**
@@ -32,7 +36,13 @@ public:
      * @param newRectangle The new rectangle to set.
      */
     void setRectangle(const QRect &newRectangle);
-    static std::optional<CollisionSide> collides(QRect hitBoxTile, QRect hitBoxObject);
+    /**
+     * @brief collides returns the side of a tile the current object collided on
+     * @param hitBoxTile the rectangle of the tile
+     * @param hitBoxObject the rectangle our current object
+     * @return the side of the tile our object has collided on
+     */
+static std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collides(QRect hitBoxTile, QRect hitBoxObject);
 };
 
 #endif // GAMEOBJECT_H

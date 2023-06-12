@@ -12,22 +12,37 @@
 class TileSet
 {
 private:
-    int startingIndex; /**< The starting index for tile IDs. */
-    std::map<int, QPixmap*>* tiles; /**< The map of tile IDs to QPixmap pointers. */
-    std::string filepath; /**< The file path of the tileset image. */
-    int sideSize; /**< The size (width and height) of each tile in pixels. */
-
+    /**
+     * @brief startingIndex the index at the beginning of the tileset
+     */
+    int startingIndex;
+    /**
+     * @brief tiles map containing the tiles of the tileset, as well as their ID
+     */
+    std::map<int, QPixmap*>* tiles = nullptr;
+    /**
+     * @brief split Splits the tileset to get each tile separately
+     * @return map containing the tiles of the tileset, as well as their ID
+     */
+    std::map<int, QPixmap*>* split();
+    /**
+     * @brief filepath the path to the file containing the tileset
+     */
+    std::string filepath;
+    /**
+     * @brief sideSize the size of a side of the tileMap
+     */
+    int sideSize;
 public:
     /**
-     * @brief Constructs a TileSet object with the specified tileset image file path, side size, and starting index.
-     * @param filepath The file path of the tileset image.
-     * @param sideSize The size (width and height) of each tile in pixels.
-     * @param startingIndex The starting index for tile IDs.
+     * @brief TileSet the constructor for the TileSet class
+     * @param filepath the path to the file containing the tileset
+     * @param sideSize the size of a side of the tileMap
+     * @param startingIndex the index at the beginning of the tileset
      */
     TileSet(std::string filepath, int sideSize, int startingIndex);
-
     /**
-     * @brief Default constructor for the TileSet class.
+     * @brief TileSet the default constructor for the TileSet class
      */
     TileSet();
 
@@ -35,19 +50,11 @@ public:
      * @brief Destructor for the TileSet class.
      */
     ~TileSet();
-
     /**
-     * @brief Loads and splits the tileset image into individual tiles.
-     * @return A map of tile IDs to QPixmap pointers.
+     * @brief load loads the tiles in the tileset
+     * @return a map containing the sprite of every tile, as well as their ID
      */
     std::map<int, QPixmap*>* load();
-
-private:
-    /**
-     * @brief Splits the tileset image into individual tiles.
-     * @return A map of tile IDs to QPixmap pointers.
-     */
-    std::map<int, QPixmap*>* split();
 };
 
 #endif // TILESET_H

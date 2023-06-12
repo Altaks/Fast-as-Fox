@@ -11,7 +11,8 @@ Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
       scene(parentScene), // Updated paths to resources, assuming Qt resources are being used
       timer(new QTimer(this)),
       elapsedTimer(new QElapsedTimer()),
-      currentFrame(0),
+      currentFrameWalk(0),
+      currentFrameRun(0),
       isRunning(false),
       spritePosition(LEVEL_ONE_START_POS)
 {
@@ -32,25 +33,36 @@ void Fox::updateFrame() {
 
     if (msSinceLastFrame >= 50) {  // 50 ms corresponds to 20 FPS
         QPixmap *currentSpriteSheet = isRunning ? runSpriteSheet : walkSpriteSheet;
-        int frameWidth = isRunning ? 53 : 53;
-        int totalFrames = currentSpriteSheet->width() / frameWidth;
 
-        QRect frameRect(currentFrame * frameWidth, 0, frameWidth, 53);
+        if(isRunning)
+        {
+            QRect frameRect(currentFrameRun * RUN_SPRITE_WIDTH, 0, RUN_SPRITE_WIDTH, RUN_SPRITE_HEIGHT);
+            this->setPixmap(currentSpriteSheet->copy(frameRect));
 
-        this->setPixmap(currentSpriteSheet->copy(frameRect));
+            this->update(); // Request redraw
 
-//        QPixmap coloredPlayer = this->pixmap().copy();
-//        coloredPlayer.fill(Qt::red);
-//        this->setPixmap(coloredPlayer);
-//        this->setZValue(1);
-
-        this->update(); // Request redraw
-
-        if (currentFrame == totalFrames - 1) {
-            currentFrame = 0;
-        } else {
-            currentFrame++;
+            if (currentFrameRun == RUN_SPRITE_N_OF_FRAME - 1) {
+                currentFrameRun = 0;
+            } else {
+                currentFrameRun++;
+            }
         }
+        else
+        {
+            QRect frameRect(currentFrameWalk * WALK_SPRITE_WIDTH, 0, WALK_SPRITE_WIDTH, WALK_SPRITE_HEIGHT);
+
+            this->setPixmap(currentSpriteSheet->copy(frameRect));
+
+            this->update(); // Request redraw
+
+            if (currentFrameWalk == WALK_SPRITE_N_OF_FRAME - 1) {
+                currentFrameWalk = 0;
+            } else {
+                currentFrameWalk++;
+            }
+        }
+
+
 
         // Reset the timer to start counting again from this frame.
         elapsedTimer->restart();
@@ -81,4 +93,3 @@ QGraphicsScene *Fox::getScene() const
 {
     return scene;
 }
-
