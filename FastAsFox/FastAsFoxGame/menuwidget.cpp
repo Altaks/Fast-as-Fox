@@ -10,6 +10,8 @@
 #include <QTimer>
 #include <iostream>
 #include <QPushButton>
+#include <QAudioOutput>
+
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
 {
@@ -17,12 +19,12 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(p
 
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
-    m_selectPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
+    m_selectPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
     m_selectedPlayer = new QMediaPlayer(this);
-    m_selectedPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
+    m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
 
     m_sagaPlayer = new QMediaPlayer(this);  // initialize the m_sagaPlayer here
-    m_sagaPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
+    m_sagaPlayer->setSource(QUrl(":/menu/sprites/menu/saga.mp3"));
 
     this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
 
@@ -445,14 +447,14 @@ void MenuWidget::saga()
             movie->start();
 
             // Play the menu.mp3
-            m_sagaPlayer->setMedia(QUrl("qrc:/menu/sprites/menu/menu.mp3"));
+            m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menu.mp3"));
             m_sagaPlayer->play();
 
             // Baisser le volume de 50%
-            float volume = m_sagaPlayer->volume();
-            volume *= 0.5; // Réduire le volume de moitié
-
-            m_sagaPlayer->setVolume(volume);
+            QMediaPlayer *player = new QMediaPlayer;
+            QAudioOutput *audioOutput = new QAudioOutput;
+            player->setAudioOutput(audioOutput);
+            audioOutput->setVolume(0.5); // Set the volume to half
 
 
 
@@ -571,12 +573,11 @@ void MenuWidget::playButtonClicked()
     QMediaPlayer *player = new QMediaPlayer;
 
     // Set the media source and play the sound
-    player->setMedia(QUrl("qrc:/menu/sprites/menu/playsound.mp3"));
-    player->setVolume(100);
+    player->setSource(QUrl("qrc:/menu/sprites/menu/playsound.mp3"));
     player->play();
 
     // Cleanup the media player after the sound finished
-    connect(player, &QMediaPlayer::stateChanged, [=](QMediaPlayer::State newState) {
+    connect(player, &QMediaPlayer::playbackStateChanged, [=](QMediaPlayer::PlaybackState newState) {
         if (newState == QMediaPlayer::StoppedState) {
             player->deleteLater();
         }
