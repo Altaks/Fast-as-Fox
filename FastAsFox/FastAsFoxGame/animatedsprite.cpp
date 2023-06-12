@@ -4,6 +4,8 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QDebug>
+#include <QGraphicsColorizeEffect>
+
 
 Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
       walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")),
@@ -26,6 +28,10 @@ Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
     connect(timer, &QTimer::timeout, this, &Fox::updateFrame);
     timer->start(50);
     elapsedTimer->start();
+
+    colorizeEffect = new QGraphicsColorizeEffect(this);
+    this->setGraphicsEffect(colorizeEffect);
+    originalColor = QColor();
 }
 
 void Fox::updateFrame() {
@@ -92,4 +98,11 @@ void Fox::setIsRunning(bool newIsRunning)
 QGraphicsScene *Fox::getScene() const
 {
     return scene;
+}
+
+void Fox::setColor(QColor color) {
+    colorizeEffect->setColor(color);
+}
+void Fox::resetColor() {
+    colorizeEffect->setColor(originalColor);
 }

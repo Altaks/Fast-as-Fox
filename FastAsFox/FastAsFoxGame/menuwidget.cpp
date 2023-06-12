@@ -11,7 +11,7 @@
 #include <iostream>
 #include <QPushButton>
 #include <QAudioOutput>
-
+#include "animatedsprite.h"
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0),playButtonClickedOnce(false), settingsButtonClickedOnce(false)
 {
@@ -589,23 +589,142 @@ void MenuWidget::saga()
 }
 
 
-
 void MenuWidget::settingsButtonClicked()
 {
     // Create the settings window widget
-    QWidget *settingsWindow = new QWidget;
+    settingsWindow = new QWidget;
     settingsWindow->setWindowTitle("Settings");
 
-    // You can add your settings UI here.
-    // For example, you might add a layout and some controls.
+    // Set a fixed size for the settings window
+    settingsWindow->setFixedSize(800, 600);
+
+    // Set the background image using a QPalette
+    QPalette palette;
+    QPixmap backgroundImage(":/menu/sprites/menu/peinture.jpg"); // Load the background image
+    palette.setBrush(QPalette::Window, backgroundImage.scaled(settingsWindow->size())); // Scale the image to fit the window size
+    settingsWindow->setPalette(palette);
+
+    // Create a QLabel to show the gif
+    QLabel *label = new QLabel(settingsWindow);
+    QMovie *movie = new QMovie(":/menu/sprites/menu/painter.gif");
+
+    // Get original movie size
+    QSize originalSize = movie->scaledSize();
+
+    // Reduce movie size by 2
+    movie->setScaledSize(originalSize / 2);
+
+    label->setMovie(movie);
+    movie->start();
+
+    // Create a layout and add the QLabel to it
+    QGridLayout *layout = new QGridLayout;
+
+    // Adjust horizontal spacing and margins
+    layout->setHorizontalSpacing(5);  // Sets the space between items in the layout to 10 pixels
+    layout->setContentsMargins(5, 5, 5, 5); // Sets the margins around the layout to 10 pixels
+    layout->addWidget(label, 0, 0, 1, 2, Qt::AlignBottom | Qt::AlignRight); // spans two columns
+
+    // Create a new QGraphicsView and QGraphicsScene
+    QGraphicsScene *scene = new QGraphicsScene(settingsWindow);
+    QGraphicsView *view = new QGraphicsView(scene, settingsWindow);
+    view->setStyleSheet("background: transparent; border: none;");
+
+
+    // Create the fox
+    // Create the fox with a scale of 4
+    fox = new Fox(scene);
+    fox->setScale(4); // assuming your Fox class has this method
+
+    // Move fox to the desired position
+    // Add a smaller spacer to the left of the view
+    QSpacerItem* leftSpacer = new QSpacerItem(5, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+    layout->addItem(leftSpacer, 3, 0, 2, 1);
+
+    // Add a larger spacer to the right of the view
+    QSpacerItem* rightSpacer = new QSpacerItem(200, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    layout->addItem(rightSpacer, 3, 2, 2, 1);
+
+    // Move the view to the second column
+    layout->addWidget(view, 3, 1, 2, 2);
+
+    // Create an array of colors for each element
+    colors = { QColor("darkred"), QColor("gold"), QColor("darkgreen"), QColor("darkturquoise"), QColor("darkblue"), QColor("darkmagenta"), QColor("deeppink") };
+
+    // Create a single column grid for "minifox1.png"
+    for(int i=0; i<colors.size(); i++) {
+        ClickableLabel* foxLabel = new ClickableLabel(settingsWindow);
+        QPixmap foxPixmap(":/menu/sprites/menu/minifox1.png");
+
+        QSize newSize = foxPixmap.size() / 2;
+        QPixmap scaledPixmap = foxPixmap.scaled(newSize, Qt::KeepAspectRatio);
+
+        QGraphicsColorizeEffect *colorize = new QGraphicsColorizeEffect;
+        colorize->setColor(colors.at(i));
+        foxLabel->setGraphicsEffect(colorize);
+
+        foxLabel->setPixmap(scaledPixmap);
+        layout->addWidget(foxLabel, i + 1, 2, Qt::AlignRight);
+
+        // Connect the signal emitted when the label is clicked to the slot in the Fox class
+        connect(foxLabel, &ClickableLabel::clicked, fox, [this, color = colors.at(i)](){
+            this->fox->setColor(color);
+            this->selectedColor = color;
+        });
+
+    }
+
+    // Create the "Original" button
+    originalButton = new QPushButton("Original", settingsWindow);
+    originalButton->setFixedSize(100, 50);  // Set a fixed size for the button
+    originalButton->setStyleSheet("background-color: #556B2F; color: white; font: bold; border-radius: 10px;"); // Add CSS
+
+    // Create the "Validate" button
+    validateButton = new QPushButton("Validate", settingsWindow);
+    validateButton->setFixedSize(100, 50);  // Set a fixed size for the button
+    validateButton->setStyleSheet("background-color: #008B8B; color: white; font: bold; border-radius: 10px;"); // Add CSS
+
+    // Create a QVBoxLayout for buttons
+    QVBoxLayout *buttonsLayout = new QVBoxLayout;
+
+    // Add buttons to the layout
+    buttonsLayout->addWidget(originalButton, 0, Qt::AlignCenter);
+    buttonsLayout->addWidget(validateButton, 0, Qt::AlignCenter);
+
+    // Add a stretch at the bottom of the buttons layout to make sure the buttons are at the top
+    buttonsLayout->addStretch(1);
+
+    // Add buttons layout to the grid layout
+    layout->addLayout(buttonsLayout, 3, 0, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
+
+
+    connect(originalButton, &QPushButton::clicked, this, &MenuWidget::originalButtonClicked);
+    connect(validateButton, &QPushButton::clicked, this, &MenuWidget::validateButtonClicked);
+
+
+
+    // Set the layout for the settings window
+    settingsWindow->setLayout(layout);
 
     // Show the settings window
     settingsWindow->show();
 
-    // Note: You will need to manage the memory for settingsWindow.
-    // If you want it to be deleted when closed, you can set this attribute:
+    // Set the attribute to delete the settingsWindow when it is closed
     settingsWindow->setAttribute(Qt::WA_DeleteOnClose);
 }
+
+
+
+void MenuWidget::originalButtonClicked() {
+    fox->resetColor();  // Reset the color of the fox
+    settingsWindow->close();  // Close the settings window
+}
+
+void MenuWidget::validateButtonClicked() {
+    fox->setColor(selectedColor);  // Set the color of the fox
+    settingsWindow->close();  // Close the settings window
+}
+
 
 
 void MenuWidget::initMenu()

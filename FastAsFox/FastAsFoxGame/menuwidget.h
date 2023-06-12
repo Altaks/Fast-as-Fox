@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QMediaPlayer>
+#include "animatedsprite.h"
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QGraphicsView>
@@ -39,6 +40,7 @@ public:
     void restartGame();
     void launchPlayButtonClickedProcess();
     void settingsButtonClicked();
+    void applyColor();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -74,11 +76,20 @@ private:
     QTimer *m_settingsButtonTimer;
     bool playButtonClickedOnce;
     bool settingsButtonClickedOnce;
+    QWidget *settingsWindow;
+    Fox *fox;
+    QList<QColor> colors;
+    QPushButton* originalButton;
+    QPushButton* validateButton;
+    QColor selectedColor;
 
 
 
 
+private slots:
+    void originalButtonClicked();
 
+    void validateButtonClicked();
 
 
 signals:
@@ -347,5 +358,25 @@ private:
     QPixmap m_newLogo;
     float m_fadeFraction;
 };
+
+
+
+
+
+class ClickableLabel : public QLabel {
+    Q_OBJECT
+
+public:
+    explicit ClickableLabel(QWidget* parent = 0) : QLabel(parent) {}
+
+signals:
+    void clicked();
+
+protected:
+    void mousePressEvent(QMouseEvent* event) {
+        emit clicked();
+    }
+};
+
 
 #endif // MENUWIDGET_H
