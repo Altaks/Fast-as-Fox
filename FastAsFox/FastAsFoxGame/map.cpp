@@ -1,6 +1,14 @@
 ﻿#include "map.h"
 #include "player.h"
 #include "tile.h"
+#include <random>
+#include <QMediaPlayer>
+#include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+#include <iostream>
+#include <QTimeLine>
+#include <QGraphicsItemAnimation>
 
 std::vector<MapSection *> Map::getSections() const
 {
@@ -138,3 +146,124 @@ void Map::updateView()
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1.0 - lerpFactor)
                       + center * lerpFactor);
 }
+
+void Map::displayAnimation() {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> distW(0, mapView->viewport()->width()); // distribution in range of width
+    std::uniform_int_distribution<std::mt19937::result_type> distH(0, mapView->viewport()->height()); // distribution in range of height
+
+    for(int i = 0; i < 4; i++) {
+         GifItem *gifItem = new GifItem(":/particules/sprites/particules/fireworks.gif");
+         QPointF randPos = mapView->mapToScene(distW(rng), distH(rng));
+         gifItem->setPos(randPos);
+         this->getScene()->addItem(gifItem);
+    }
+
+    QPixmap originalPixmap(":/userInterface/sprites/userInterface/ribbon.png");
+    QPixmap ribbonPixmap = originalPixmap.scaled(originalPixmap.width() * 4, originalPixmap.height() * 4);
+
+    QGraphicsPixmapItem *ribbon = new QGraphicsPixmapItem(ribbonPixmap);
+
+    int x = (mapView->viewport()->width() - ribbonPixmap.width()) / 2;
+    int y = 200;
+    QPointF ribbonPos = mapView->mapToScene(x, y);
+    ribbon->setPos(ribbonPos);
+
+    QTransform transform;
+    transform.translate(ribbonPixmap.width() / 2, ribbonPixmap.height() / 2);
+    transform.rotate(180);
+    transform.translate(-ribbonPixmap.width() / 2, -ribbonPixmap.height() / 2);
+    ribbon->setTransform(transform);
+
+    this->getScene()->addItem(ribbon);
+
+    QPixmap woodboardPixmap(":/userInterface/sprites/userInterface/woodboard.png");
+
+    QGraphicsPixmapItem *woodboardItem = new QGraphicsPixmapItem(woodboardPixmap);
+
+    woodboardItem->setPos(mapView->viewport()->width(), 0);
+    woodboardItem->setVisible(false);
+
+    QGraphicsTextItem *textItem = new QGraphicsTextItem(QString::fromStdString(lcdCount));
+
+    QFont font;
+    font.setPointSize(20);
+    textItem->setFont(font);
+
+    woodboardPixmap = woodboardPixmap.scaled(textItem->boundingRect().width() + 20, textItem->boundingRect().height() + 20);
+    woodboardItem->setPixmap(woodboardPixmap);
+
+    int textX = (mapView->viewport()->width() - textItem->boundingRect().width()) / 2;
+    int textY = 60 + ribbonPixmap.height();
+
+    QPointF textPos = mapView->mapToScene(textX, textY);
+    textItem->setPos(textPos);
+    textItem->setVisible(false);
+
+    woodboardItem->setPos(textItem->pos().x() - 10, textItem->pos().y() - 10);
+
+    this->getScene()->addItem(woodboardItem);
+
+    this->getScene()->addItem(textItem);
+
+    QTimeLine *timeLine = new QTimeLine(2000);
+    timeLine->setFrameRange(0, 100);
+
+    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+    animation->setItem(ribbon);
+    animation->setTimeLine(timeLine);
+
+    for (int i = 0; i <= 100; ++i) {
+        animation->setScaleAt(i / 100.0, i / 100.0, i / 100.0);
+    }
+
+    timeLine->start();
+
+    AnimationHelper *woodboardHelper = new AnimationHelper(woodboardItem);
+
+    QPropertyAnimation *woodboardAnimation = new QPropertyAnimation(woodboardHelper, "pos");
+    woodboardAnimation->setDuration(1000);
+    woodboardAnimation->setStartValue(QPointF(textItem->pos().x() - 10, -woodboardPixmap.height()));
+    woodboardAnimation->setEndValue(QPointF(textItem->pos().x() - 10, textItem->pos().y() - 10));
+    woodboardAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    // Create a AnimationHelper for the textItem
+    AnimationHelper *textItemHelper = new AnimationHelper(textItem);
+
+    // Create a QPropertyAnimation for the textItem sliding effect
+    QPropertyAnimation *textItemAnimation = new QPropertyAnimation(textItemHelper, "pos");
+    textItemAnimation->setDuration(1000);
+    textItemAnimation->setStartValue(QPointF(textItem->pos().x(), -textItem->boundingRect().height()));
+    textItemAnimation->setEndValue(QPointF(textItem->pos().x(), textItem->pos().y()));
+    textItemAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    QObject::connect(timeLine, &QTimeLine::finished, [=]() {
+        woodboardItem->setVisible(true);
+        textItem->setVisible(true);
+        woodboardAnimation->start();
+        textItemAnimation->start();
+    });
+
+    QObject::connect(woodboardAnimation, &QPropertyAnimation::finished, woodboardAnimation, &QPropertyAnimation::deleteLater);
+    QObject::connect(textItemAnimation, &QPropertyAnimation::finished, textItemAnimation, &QPropertyAnimation::deleteLater);
+
+    this->getScene()->addItem(woodboardItem);
+
+    QMediaPlayer *player = new QMediaPlayer;
+    player->setMedia(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    player->play();
+
+    QMediaPlayer *player2 = new QMediaPlayer;
+    player2->setMedia(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    player2->play();
+}
+
+
+
+void Map::setLcdCount(const std::string &value) {
+    lcdCount = value;
+}
+
+
+

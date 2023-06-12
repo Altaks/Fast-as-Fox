@@ -36,6 +36,9 @@ private:
     QLCDNumber * lcd;
     double count;
     QTimer * timer;
+    std::string lcdCount;
+
+
 
 private slots:
     void updateLCD();
@@ -50,9 +53,11 @@ public:
     void setPlayer(Player * Aplayer);
     Player * getPlayer();
     GameObject * getEndingObject();
+    std::string getLcdCount();
 
 public slots:
         void finish();
+    
 };
 
 
