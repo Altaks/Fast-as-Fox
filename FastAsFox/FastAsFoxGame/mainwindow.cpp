@@ -91,17 +91,6 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
         break;
     }
 
-    if (event->key() == Qt::Key_P)
-    {
-        isRestarting = true;
-        writeToFile(true);
-
-        qApp->quit();
-        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-    }
-
-
-
 }
 
 
@@ -195,6 +184,7 @@ void MainWindow::handleMenuFinished()
 
     level->start();
     connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+    QObject::connect(map, &Map::golevelMenu, this, &MainWindow::handleLevelMenu);
 
 }
 
@@ -206,4 +196,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 
     QWidget::closeEvent(event);
+}
+
+void MainWindow::handleLevelMenu()
+{
+    isRestarting = true;
+    writeToFile(true);
+
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }

@@ -203,13 +203,13 @@ void MenuWidget::keyPressEvent(QKeyEvent *event)
     int newActiveFrame = m_currentActiveFrame;
 
     // Change the current active frame based on the key input
-    if (event->key() == Qt::Key_Up)
+    if (event->key() == Qt::Key_Z)
         newActiveFrame = std::max(0, m_currentActiveFrame - 5); // 5 is the number of frames per row
-    else if (event->key() == Qt::Key_Down)
+    else if (event->key() == Qt::Key_S)
         newActiveFrame = std::min(numberOfLevelsUnlocked - 1, m_currentActiveFrame + 5);
-    else if (event->key() == Qt::Key_Left)
+    else if (event->key() == Qt::Key_Q)
         newActiveFrame = std::max(0, m_currentActiveFrame - 1);
-    else if (event->key() == Qt::Key_Right)
+    else if (event->key() == Qt::Key_D)
         newActiveFrame = std::min(numberOfLevelsUnlocked - 1, m_currentActiveFrame + 1);
     else if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         if (newActiveFrame < numberOfLevelsUnlocked) {

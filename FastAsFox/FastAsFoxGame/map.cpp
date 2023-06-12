@@ -251,6 +251,24 @@ void Map::displayAnimation() {
     mediaPlayer2->setAudioOutput(audioOutput2);
     mediaPlayer2->play();
 
+    // load the icon
+    QPixmap homeButtonPixmap(":/userInterface/sprites/userInterface/homeButton.png");
+
+    // reduce the size of the pixmap by 2
+    QPixmap scaledPixmap = homeButtonPixmap.scaled(homeButtonPixmap.size() / 2);
+
+    // create the button
+    LevelMenuButton *homeButton = new LevelMenuButton(scaledPixmap);
+    this->getScene()->addItem(homeButton);
+
+    // position the button at the bottom of the woodboard
+    QPointF buttonPos = woodboardItem->pos();
+    buttonPos.setY(buttonPos.y() + woodboardPixmap.height()+30);
+    homeButton->setPos(buttonPos);
+    QObject::connect(homeButton, &LevelMenuButton::golevelMenu, this, &Map::handleLevelMenuButton);
+
+
+
 }
 
 

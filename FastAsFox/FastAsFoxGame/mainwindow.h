@@ -37,6 +37,7 @@ public:
     void handleLevelSelection(int levelIndex);
     void handleMenuFinished();
     void writeToFile(bool value);
+    void handleLevelMenu();
 
 
 private slots:

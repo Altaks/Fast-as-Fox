@@ -106,15 +106,34 @@ public slots:
      * @brief updateView updates the view to follow the player
      */
     void updateView();
+    void handleLevelMenuButton() {
+        emit golevelMenu();
+    }
 
 signals:
     void homeButtonClicked();
+    void golevelMenu();
 };
 
 
 
 
 
+class LevelMenuButton : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT
+
+public:
+    LevelMenuButton(QPixmap pixmap, QGraphicsItem *parent = nullptr)
+        : QObject(), QGraphicsPixmapItem(pixmap, parent) {}
+
+signals:
+    void golevelMenu();
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override {
+        emit golevelMenu();
+    }
+};
 
 
 
