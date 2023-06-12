@@ -10,6 +10,7 @@
 #include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
+#include <QPushButton>
 #include "tileset.h"
 #include <QMovie>
 
@@ -52,6 +53,7 @@ private:
      */
     Player* itsPlayer;
     std::string lcdCount;
+    QPushButton *homeButton;
 public:
     /**
      * @brief Map the constructor of the map class
@@ -104,6 +106,9 @@ public slots:
      * @brief updateView updates the view to follow the player
      */
     void updateView();
+
+signals:
+    void homeButtonClicked();
 };
 
 

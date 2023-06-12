@@ -10,7 +10,12 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // load the font from resources
+
+    m_menuWidget = new MenuWidget(this,4);
+    setCentralWidget(m_menuWidget);
+    //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
+    connect(m_menuWidget, &MenuWidget::finished, this, &MainWindow::handleMenuFinished);
+
     int fontId = QFontDatabase::addApplicationFont(":/font/sprites/font/font.TTF");
     QString fontFamily;
     if (fontId != -1) {
@@ -31,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 }
+
+
 
 
 void MainWindow::keyPressEvent(QKeyEvent * event){
@@ -117,6 +124,36 @@ void MainWindow::printText(const QString &text, int x, int y, int z, const QColo
 
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
-    QMainWindow::resizeEvent(event);
-    level->updateLCDPosition();
+//    QMainWindow::resizeEvent(event);
+//    if (!m_menuWidget->isMenuSkipped()) {
+//        level->updateLCDPosition();
+//    }
+}
+
+
+
+
+void MainWindow::handleMenuFinished()
+{
+    TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
+    MapSection * section = new MapSection(LEVEL_ONE);
+
+    std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();
+    tilesets->push_back(set);
+
+    Map * map = new Map(section, tilesets);
+    map->load();
+    level = new Level(LEVEL_ONE_START_POS,map,this);
+
+    QPixmap background(":/texture/sprites/texture/bg.jpg");
+    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    level->start();
+    connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+    connect(map, &Map::homeButtonClicked, this, &MainWindow::onHomeButtonClicked);
+
+}
+
+void MainWindow::onHomeButtonClicked() {
+
 }
