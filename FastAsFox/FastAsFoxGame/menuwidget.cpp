@@ -13,29 +13,43 @@
 #include <QAudioOutput>
 
 
-MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
+MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0)
 {
-    numberOfLevelsUnlocked=aNumberOfLevelsUnlocked;
+    numberOfLevelsUnlocked = aNumberOfLevelsUnlocked;
+
 
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
     m_selectPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
+    QAudioOutput *selectOutput = new QAudioOutput(this);
+    m_selectPlayer->setAudioOutput(selectOutput);
     m_selectedPlayer = new QMediaPlayer(this);
     m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
+    QAudioOutput *selectedOutput = new QAudioOutput(this);
+    m_selectedPlayer->setAudioOutput(selectedOutput);
 
-    m_sagaPlayer = new QMediaPlayer(this);  // initialize the m_sagaPlayer here
-    QAudioOutput *audioOutput = new QAudioOutput; // create an audio output
-    m_sagaPlayer->setAudioOutput(audioOutput); // set the audio output for the player
-    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3")); // set the source
 
-    this->setFocusPolicy(Qt::StrongFocus); // Enable the widget to receive keyboard focus
+    m_sagaPlayer = new QMediaPlayer(this);
+    QAudioOutput *audioOutput = new QAudioOutput;
+    m_sagaPlayer->setAudioOutput(audioOutput);
+    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
+
+    this->setFocusPolicy(Qt::StrongFocus);
 
     // Load the cursor image.
     QPixmap cursorPixmap(":/menu/sprites/menu/pointeurMouse.png");
-    m_customCursor = QCursor(cursorPixmap, -1, -1);  // The second and third parameters define the hotspot of the cursor.
+    m_customCursor = QCursor(cursorPixmap, -1, -1);
 
-    saga();
+    menuSkipped = false;
 
+    //isRestart=1 => Le programme vient de redémarrer
+    if (isRestart==1)
+    {
+        initMenu();
+    }
+    else{
+        saga();
+    }
 }
 
 
@@ -189,13 +203,13 @@ void MenuWidget::keyPressEvent(QKeyEvent *event)
     int newActiveFrame = m_currentActiveFrame;
 
     // Change the current active frame based on the key input
-    if (event->key() == Qt::Key_Up)
+    if (event->key() == Qt::Key_Z)
         newActiveFrame = std::max(0, m_currentActiveFrame - 5); // 5 is the number of frames per row
-    else if (event->key() == Qt::Key_Down)
+    else if (event->key() == Qt::Key_S)
         newActiveFrame = std::min(numberOfLevelsUnlocked - 1, m_currentActiveFrame + 5);
-    else if (event->key() == Qt::Key_Left)
+    else if (event->key() == Qt::Key_Q)
         newActiveFrame = std::max(0, m_currentActiveFrame - 1);
-    else if (event->key() == Qt::Key_Right)
+    else if (event->key() == Qt::Key_D)
         newActiveFrame = std::min(numberOfLevelsUnlocked - 1, m_currentActiveFrame + 1);
     else if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         if (newActiveFrame < numberOfLevelsUnlocked) {
@@ -209,7 +223,6 @@ void MenuWidget::keyPressEvent(QKeyEvent *event)
             // Restore the cursor to its normal design
             QCursor normalCursor(Qt::ArrowCursor);
             QApplication::setOverrideCursor(normalCursor);
-
             return;
         }
     }
@@ -411,7 +424,7 @@ void MenuWidget::saga()
                     "}"
                     );
 
-                playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() + 20)); // 20 pixels below logoLabel
+                playButton->move((this->width() - playButton->width()) / 2, (logoLabel->y() + logoLabel->height() - 80)); // 20 pixels below logoLabel play with - and +
 
                 connect(playButton, &QPushButton::clicked, this, &MenuWidget::initMenu);
                 // Connect the clicked() signal of the playButton to the playButtonClicked() slot
@@ -420,8 +433,9 @@ void MenuWidget::saga()
 
 
 
-                QLabel *cursorLabel = new QLabel(this);
-                QMovie *cursorMovie = new QMovie(":/menu/sprites/menu/startcursor.gif");
+                cursorLabel = new QLabel(this);
+                cursorLabel->setObjectName("cursorLabel");
+                cursorMovie = new QMovie(":/menu/sprites/menu/startcursor.gif");
 
                 // Load the movie to get its size
                 cursorMovie->jumpToFrame(0);
@@ -535,7 +549,9 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
 }
 
 
-void MenuWidget::playButtonClicked()
+
+
+void MenuWidget::launchPlayButtonClickedProcess()
 {
     initMenu();
 
@@ -562,12 +578,14 @@ void MenuWidget::playButtonClicked()
         logoLabel->hide();
         delete logoLabel;
     }
+
     // Find cursorLabel and hide/delete it
     QLabel *cursorLabel = this->findChild<QLabel*>("cursorLabel");
     if(cursorLabel) {
         cursorLabel->hide();
-        delete cursorLabel->movie();
-        delete cursorLabel;
+        if (cursorLabel->movie())
+            cursorLabel->movie()->deleteLater();
+        cursorLabel->deleteLater();
     }
 
     // Create a media player to play the sound
@@ -575,6 +593,8 @@ void MenuWidget::playButtonClicked()
 
     // Set the media source and play the sound
     player->setSource(QUrl("qrc:/menu/sprites/menu/playsound.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    player->setAudioOutput(audioOutput);
     player->play();
 
     // Cleanup the media player after the sound finished
@@ -584,3 +604,9 @@ void MenuWidget::playButtonClicked()
         }
     });
 }
+
+void MenuWidget::playButtonClicked()
+{
+    launchPlayButtonClickedProcess();
+}
+

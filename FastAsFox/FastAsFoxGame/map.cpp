@@ -7,7 +7,11 @@
 #include <QPropertyAnimation>
 #include <QGraphicsOpacityEffect>
 #include <iostream>
+#include <QGraphicsProxyWidget>
+#include <QAudioOutput>
+#include <QStyle>
 #include <QTimeLine>
+#include <QPushButton>
 #include <QGraphicsItemAnimation>
 
 std::vector<MapSection *> Map::getSections() const
@@ -237,11 +241,34 @@ void Map::displayAnimation() {
 
     QMediaPlayer *mediaPlayer = new QMediaPlayer;
     mediaPlayer->setSource(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    mediaPlayer->setAudioOutput(audioOutput);
     mediaPlayer->play();
 
     QMediaPlayer *mediaPlayer2 = new QMediaPlayer;
     mediaPlayer2->setSource(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    QAudioOutput *audioOutput2 = new QAudioOutput;
+    mediaPlayer2->setAudioOutput(audioOutput2);
     mediaPlayer2->play();
+
+    // load the icon
+    QPixmap homeButtonPixmap(":/userInterface/sprites/userInterface/homeButton.png");
+
+    // reduce the size of the pixmap by 2
+    QPixmap scaledPixmap = homeButtonPixmap.scaled(homeButtonPixmap.size() / 2);
+
+    // create the button
+    LevelMenuButton *homeButton = new LevelMenuButton(scaledPixmap);
+    this->getScene()->addItem(homeButton);
+
+    // position the button at the bottom of the woodboard
+    QPointF buttonPos = woodboardItem->pos();
+    buttonPos.setY(buttonPos.y() + woodboardPixmap.height()+30);
+    homeButton->setPos(buttonPos);
+    QObject::connect(homeButton, &LevelMenuButton::golevelMenu, this, &Map::handleLevelMenuButton);
+
+
+
 }
 
 

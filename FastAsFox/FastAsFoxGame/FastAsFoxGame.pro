@@ -51,4 +51,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     level.qrc \
+    logs.qrc \
     sprites.qrc
