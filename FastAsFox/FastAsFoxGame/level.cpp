@@ -22,12 +22,6 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
     pair<int,int>endpose(70,5);
     endingObject=new BerriesPile(scene,endpose,map->getSections().at(0)->getSectionHeight());
     count=0.00;
-    hedgehogs = new std::vector<Hedgehog*>();
-
-    for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
-    {
-        hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
-    }
 
     QTimer * playerUpdatePositionClock = new QTimer();
 

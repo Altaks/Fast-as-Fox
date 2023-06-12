@@ -14,7 +14,6 @@ SOURCES += \
     animatedsprite.cpp \
     berriespile.cpp \
     gameobject.cpp \
-    hedgehog.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
@@ -30,7 +29,6 @@ HEADERS += \
     collisionside.h \
     constants.h \
     gameobject.h \
-    hedgehog.h \
     mainwindow.h \
     map.h \
     mapsection.h \

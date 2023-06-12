@@ -179,8 +179,5 @@
     <qresource prefix="/sounds">
         <file>sprites/sounds/levelFinished.mp3</file>
         <file>sprites/sounds/fireworks.mp3</file>
-    <qresource prefix="/hedgehog">
-        <file>sprites/hedgehog/hedgehog_attack_sprite.png</file>
-        <file>sprites/hedgehog/hedgehog_walk_sprite.png</file>
     </qresource>
 </RCC>

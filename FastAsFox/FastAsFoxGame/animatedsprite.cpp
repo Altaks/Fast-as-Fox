@@ -36,12 +36,12 @@ void Fox::updateFrame() {
 
         if(isRunning)
         {
-            QRect frameRect(currentFrameRun * FOX_RUN_SPRITE_WIDTH, 0, FOX_RUN_SPRITE_WIDTH, FOX_RUN_SPRITE_HEIGHT);
+            QRect frameRect(currentFrameRun * RUN_SPRITE_WIDTH, 0, RUN_SPRITE_WIDTH, RUN_SPRITE_HEIGHT);
             this->setPixmap(currentSpriteSheet->copy(frameRect));
 
             this->update(); // Request redraw
 
-            if (currentFrameRun == FOX_RUN_SPRITE_N_OF_FRAME - 1) {
+            if (currentFrameRun == RUN_SPRITE_N_OF_FRAME - 1) {
                 currentFrameRun = 0;
             } else {
                 currentFrameRun++;
@@ -49,13 +49,13 @@ void Fox::updateFrame() {
         }
         else
         {
-            QRect frameRect(currentFrameWalk * FOX_WALK_SPRITE_WIDTH, 0, FOX_WALK_SPRITE_WIDTH, FOX_WALK_SPRITE_HEIGHT);
+            QRect frameRect(currentFrameWalk * WALK_SPRITE_WIDTH, 0, WALK_SPRITE_WIDTH, WALK_SPRITE_HEIGHT);
 
             this->setPixmap(currentSpriteSheet->copy(frameRect));
 
             this->update(); // Request redraw
 
-            if (currentFrameWalk == FOX_WALK_SPRITE_N_OF_FRAME - 1) {
+            if (currentFrameWalk == WALK_SPRITE_N_OF_FRAME - 1) {
                 currentFrameWalk = 0;
             } else {
                 currentFrameWalk++;
