@@ -4,17 +4,16 @@
 #include "qpoint.h"
 #include <utility>
 #define TILE_SIZE 32
-#define PI 3.14159
 
 // ----------------< PHYSICS CONSTANTS >---------------- //
 const float gravity = 9.81/100; // to set to 9.81
-const double alpha = (2 * PI * ((double)30 / 360)); // 25 is the angle in degrees
-const double V0 = 0.2;
+const int alpha = 45;
+const double V0 = 0.6;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
-const double walking_speed = 0.02;
-const double running_speed = 0.1;
+const double walking_speed = 0.1/5;
+const double running_speed = 0.2/5;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //
@@ -47,6 +46,6 @@ const int WALK_SPRITE_HEIGHT = 31;
 const int WALK_SPRITE_N_OF_FRAME = 9;
 
 
-#define COLLISION_OFFSET 8
+#define COLLISION_OFFSET 2
 
 #endif // CONSTANTS_H

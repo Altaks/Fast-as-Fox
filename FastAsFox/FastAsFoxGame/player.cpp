@@ -26,8 +26,6 @@ Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : Ga
 {
     this->inAir = false;
     this->onGround = true;
-    this->playerJump = false;
-    this->velocity = QVector2D(0, 0);
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
     this->map = map;
@@ -107,14 +105,14 @@ void Player::updatePosition()
 
     std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionSide;
 
-    if(this->isOnAir() && this->isJumping){
+    if(this->isOnAir() && this->playerJump){
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
 
         double t = time.count();
 
-        vx = V0 * cos(alpha);
-        vy = - gravity * t + V0 * sin(alpha);
+        vx = V0 * sin(alpha);
+        vy = - gravity * t + V0 * cos(alpha);
     }
 
     else if(this->isOnGround()){
@@ -134,11 +132,10 @@ void Player::updatePosition()
         double t = time.count();
 
         if(this->animation->getIsRunning())
-            vx = running_speed * cos(alpha);
+            vx = running_speed * sin(alpha);
         else
-            vx = walking_speed * cos(alpha);
-
-        vy = - gravity * t * sin(alpha);
+            vx = walking_speed * sin(alpha);
+        vy = - gravity * t + walking_speed * cos(alpha);
     }
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
@@ -166,59 +163,7 @@ void Player::updatePosition()
 
         std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionCompute = GameObject::collides(tileRect, playerRect);
 
-        if(!collisionSide.first.has_value())
-        {
-            if (collisionCompute.first.has_value())
-            {
-                if (collisionCompute.first.value()==TOP)
-                {
-                    collidedTopTileRect = tileRect;
-                    collisionSide.first.emplace(TOP);
-                }
-                else if (collisionCompute.first.value()==BOTTOM)
-                {
-                    collidedBottomTileRect = tileRect;
-                    collisionSide.first.emplace(BOTTOM);
-                }
-            }
-        }
-
-        if(!collisionSide.second.has_value())
-        {
-            if (collisionCompute.second.has_value())
-            {
-                if (collisionCompute.second.value()==LEFT)
-                {
-                    collidedRightTileRect = tileRect;
-                    collisionSide.second.emplace(LEFT);
-                }
-                else if (collisionCompute.second.value()==RIGHT)
-                {
-                    collidedLeftTileRect = tileRect;
-                    collisionSide.second.emplace(RIGHT);
-                }
-            }
-        }
-
-        if(collisionSide.first.has_value())
-            if(collisionSide.first.value()==BOTTOM)
-                if(collisionCompute.first.has_value())
-                    if (collisionCompute.first.value()==TOP){
-                        collidedTopTileRect = tileRect;
-                        collisionSide.first.emplace(TOP);
-                    }
-
-        if(collisionSide.second.has_value())
-            if(collisionSide.second.value()==LEFT)
-                if(collisionCompute.second.has_value())
-                    if (collisionCompute.second.value()==LEFT)
-                    {
-                        collidedRightTileRect = tileRect;
-                        collisionSide.second.emplace(LEFT);
-                    }
-
-
-       /* if(collisionCompute.first.has_value())
+        if(collisionCompute.first.has_value())
         {
             if (collisionCompute.first.value()==TOP){
                 collidedTopTileRect = tileRect;
@@ -241,7 +186,7 @@ void Player::updatePosition()
                 collidedLeftTileRect = tileRect;
                 //collisionSide.second.emplace(LEFT);
             }
-        }*/
+        }
 
  /*       if(collisionCompute.first.has_value()){
             // switch sur le côté de la tile qui collide avec l'object
@@ -274,72 +219,12 @@ void Player::updatePosition()
          // else qDebug("Didn't collide with tile");
     }
 
-    if(collisionSide.first.has_value())
+    if(!isStillOnGround(collisionSide))
     {
-
-        if (collisionSide.first.value()==TOP)
-        {
-
-            if(!playerJump && !isJumping)
-            {
-                onGround=true;
-                inAir=false;
-            }
-
-            if(!playerJump && isJumping)
-            {
-                onGround=true;
-                inAir=false;
-                isJumping=false;
-            }
-
-            if(againstWall && playerJump && !isJumping)
-            {
-                onGround=true;
-                if(playerJump)
-                {
-                    vy=1;
-                    onGround=false;
-                }
-            }
-        }
-
-    }
-    else
-    {
-        if(this->inAir==false)
-            this->setInAir(true);
-        this->onGround=false;
+        onGround=false;
+        setInAir(true);
     }
 
-    if(collisionSide.second.has_value())
-    {
-        if(collisionSide.second.value()==LEFT)
-        {
-            againstWall=true;
-            if(!collisionSide.first.has_value())
-                if(inAir==false)
-                {
-                    setInAir(true);
-                    onGround=false;
-                }
-        }
-    }
-    else
-        againstWall=false;
-
-    if(onGround)
-        yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
-
-    if(againstWall)
-        vx=0;
-
-    if(playerJump)
-        playerJump=false;
-
-
-
-    /*
     if(collisionSide.first.has_value() and collisionSide.second.has_value())
     {
         if(collisionSide.first.value()==TOP and collisionSide.second.value()==LEFT)
@@ -347,7 +232,7 @@ void Player::updatePosition()
             vx=0;
             yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
         }
-        if(collisionSide.first.value()==BOTTOM and collisionSide.second.value()==LEFT)
+        else if(collisionSide.first.value()==BOTTOM and collisionSide.second.value()==LEFT)
         {
             setInAir(true);
             vx=0;
@@ -374,9 +259,7 @@ void Player::updatePosition()
             setInAir(true);
             vx=0;
         }
-    }*/
-
-
+    }
 
     // Applies the whole velocity logic
     xPlayer += vx;
@@ -416,7 +299,6 @@ void Player::updatePosition()
             qInfo() << "Player jumped \n";
             this->setInAir(true);
             playerJump = true;
-            isJumping = true;
             onGround = false;
             this->getAnimation()->setIsRunning(false);
         }
