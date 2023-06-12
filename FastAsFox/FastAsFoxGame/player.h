@@ -19,7 +19,7 @@ private:
      */
     bool onGround;
     /**
-     * @brief playerJump set to true if the player is jumping, false if he isnt
+     * @brief playerJump set to true if the player is jumping, false if he isn't
      */
     bool playerJump;
     /**

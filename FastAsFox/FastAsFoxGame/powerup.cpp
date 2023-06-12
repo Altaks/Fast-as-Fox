@@ -73,6 +73,8 @@ void PowerUp::applyEffect(Player * player, Level * level){
         }
         case Double_Jump:
         {
+            player->setInAir(true);
+            player->playerJumped();
             break;
         }
         case ChronoFreeze:
@@ -84,11 +86,12 @@ void PowerUp::applyEffect(Player * player, Level * level){
         case Speed:
         {
 
+            break;
         }
         case Revive:
         {
             player->setRevival();
-
+            break;
         }
         default:
             break;

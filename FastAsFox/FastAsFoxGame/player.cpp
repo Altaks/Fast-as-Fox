@@ -295,13 +295,11 @@ void Player::playerAccelerated()
 }
 
 void Player::playerJumped(){
-    if(!playerJump){
-        qInfo() << "Player jumped \n";
-        this->setInAir(true);
-        playerJump = true;
-        onGround = false;
-        this->getAnimation()->setIsRunning(false);
-    }
+    qInfo() << "Player jumped \n";
+    this->setInAir(true);
+    playerJump = true;
+    onGround = false;
+    this->getAnimation()->setIsRunning(false);
 }
 
 void Player::updateAnimation()

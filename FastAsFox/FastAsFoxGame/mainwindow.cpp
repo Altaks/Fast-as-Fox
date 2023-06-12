@@ -114,8 +114,6 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 }
 
 
-
-
 void MainWindow::handleMenuFinished()
 {
     TileSet * set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
