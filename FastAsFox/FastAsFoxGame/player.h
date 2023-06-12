@@ -26,6 +26,10 @@ private:
      * @brief fast set to true if the player is running, false if he is walking
      */
     bool fast;
+
+    bool againstWall;
+    bool isJumping;
+
     /**
      * @brief velocity stores the velocity of the player
      */
