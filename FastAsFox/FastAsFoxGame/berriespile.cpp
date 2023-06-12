@@ -18,9 +18,9 @@ BerriesPile::BerriesPile(QGraphicsScene * theScene, pair<int, int> endPose, int 
         this->tasDeBaies->setRectangle(placement);
 
         double graphicsX = endPose.first * 32;
-        double graphicxY = (sectionHeight - endPose.second) * 32;
+        double graphicsY = (sectionHeight - endPose.second) * 32;
 
-        setPos(graphicsX, graphicxY);
+        setPos(graphicsX, graphicsY);
 
         scene->addItem(this);
         *BerriesPileSprite=BerriesPileSprite->scaled(32,32);

@@ -6,9 +6,10 @@
 
 class PowerUp : public Berry
 {
-
+private:
+    Level * level;
 public:
-    PowerUp();
+    PowerUp(QGraphicsScene * theScene, Level * level);
     void onCollide(GameObject* obj);
     void applyEffect(Player * player, Level * level);
 };

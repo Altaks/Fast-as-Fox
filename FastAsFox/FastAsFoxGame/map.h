@@ -10,7 +10,6 @@
 #include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
-#include "tileset.h"
 #include <QMovie>
 
 
@@ -88,13 +87,16 @@ public:
      * @brief setItsPlayer setter for itsPlayer
      * @param playerthe Player to be set as our current map's player
      */
-    std::vector<MapSection *> getSections() const;
+
     void setItsPlayer(Player* player);
     /**
      * @brief getItsPlayer getter for itsPlayer
      * @return itsPlayer
      */
     Player* getItsPlayer();
+
+    std::vector<MapSection *> getSections() const;
+
     void setLcdCount(const std::string &value);
     void displayAnimation();
 

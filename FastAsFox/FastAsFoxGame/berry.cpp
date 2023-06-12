@@ -9,7 +9,7 @@ Berry::Berry()
 }
 
 
-int Berry::getRandom(){
+int Berry::generateRandom(){
     random_device rd;
     default_random_engine eng(rd());
     uniform_int_distribution<int> distr(1,5);
