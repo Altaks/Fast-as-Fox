@@ -3,6 +3,7 @@
 
 #include "gameobject.h"
 #include "constants.h"
+#include "player.h"
 
 #include <QPixmap>
 
@@ -12,12 +13,12 @@ protected:
     PowerUpType powerUpType;
     int X;
     int y;
-    QPixmap * Sprite;
+    QPixmap * BerriesSprite;
 public:
     Berry();
     int getRandom();
-    virtual void onCollide();
-    virtual void applyEffect()=0;
+    virtual void onCollide(GameObject* obj);
+    virtual void applyEffect(Player * player)=0;
 };
 
 #endif // BERRY_H

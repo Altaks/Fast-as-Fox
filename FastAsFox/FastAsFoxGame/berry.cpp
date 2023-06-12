@@ -17,10 +17,9 @@ int Berry::getRandom(){
     return distr(eng);
 }
 
-void Berry::onCollide(){
-    int deux = 1+1;
+void Berry::onCollide(GameObject* obj){
 }
 
-void Berry::applyEffect(){
+void Berry::applyEffect(Player * player){
 
 }

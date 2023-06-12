@@ -286,32 +286,54 @@ void Player::updatePosition()
     emit playerMoved();
 }
 
-    void Player::playerAccelerated()
+void Player::playerAccelerated()
+{
+    if(!animation->getIsRunning()){
+        qInfo() << "Player accelerated\n";
+        this->getAnimation()->setIsRunning(true);
+    }
+}
+
+void Player::playerJumped(){
+    if(!playerJump){
+        qInfo() << "Player jumped \n";
+        this->setInAir(true);
+        playerJump = true;
+        onGround = false;
+        this->getAnimation()->setIsRunning(false);
+    }
+}
+
+void Player::updateAnimation()
     {
-        if(!animation->getIsRunning()){
-            qInfo() << "Player accelerated\n";
-            this->getAnimation()->setIsRunning(true);
-        }
-    }
-
-    void Player::playerJumped(){
-        if(!playerJump){
-            qInfo() << "Player jumped \n";
-            this->setInAir(true);
-            playerJump = true;
-            onGround = false;
-            this->getAnimation()->setIsRunning(false);
-        }
-    }
-
-    void Player::updateAnimation()
-    {
 
     }
 
-    void Player::playerSlowedDown(){
-        if(animation->getIsRunning()){
-            qInfo() << "Player slowed down\n";
-            this->getAnimation()->setIsRunning(false);
-        }
+void Player::playerSlowedDown(){
+    if(animation->getIsRunning()){
+        qInfo() << "Player slowed down\n";
+        this->getAnimation()->setIsRunning(false);
     }
+}
+
+void Player::eatBerry(){
+//    if (actualBerry==nullptr){
+//    }
+//    else {
+//        actualBerry->applyEffect(this);
+//    }
+}
+
+/*
+Berry* Player::getActualBerry(){
+    return actualBerry;
+}*/
+
+void Player::setRevival(){
+    revivalEnabled=!revivalEnabled;
+}
+
+bool Player::getRevival(){
+    return revivalEnabled;
+}
+

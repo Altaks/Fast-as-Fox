@@ -1,11 +1,11 @@
-﻿
-#ifndef PLAYER_H
+﻿#ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
 #include "animatedsprite.h"
 #include "constants.h"
 #include "tile.h"
 #include "map.h"
+
 class Player : public GameObject
 {
     Q_OBJECT
@@ -43,6 +43,10 @@ private:
      */
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
+
+    bool revivalEnabled=false; // boolean if the revival berrys got eaten
+
+   // Berry * actualBerry; //the berry he got
 public:
     /**
      * @brief Player Constructor for the player class
@@ -106,6 +110,11 @@ public:
     void playerAccelerated();
     void playerJumped();
     void playerSlowedDown();
+
+    void eatBerry();// function to eat a berry that the player get
+    //Berry* getActualBerry(); // get for the actual berry stocked in the player
+    void setRevival();
+    bool getRevival();
 signals:
     void playerMoved();
 public slots:

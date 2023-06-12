@@ -113,10 +113,6 @@ void Level::initLCD()
     gifLabel->setFixedSize(100, 100);  // adjust dimensions as needed
 }
 
-
-
-
-
 void Level::updateLCD()
 {
 
@@ -174,7 +170,6 @@ GameObject * Level::getEndingObject(){
     return endingObject;
 }
 
-
 Player * Level::getPlayer(){
     return player;
 }
@@ -182,4 +177,8 @@ Player * Level::getPlayer(){
 std::string Level::getLcdCount()
 {
     return lcdCount;
+}
+
+QLCDNumber* Level::getLCD(){
+    return lcd;
 }

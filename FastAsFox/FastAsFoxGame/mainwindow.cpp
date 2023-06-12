@@ -42,6 +42,8 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
         case Qt::Key::Key_Left:
             this->level->getPlayer()->playerSlowedDown();
         break;
+        case Qt::Key::Key_E:
+        this->level->getPlayer()->eatBerry();
     default:
         break;
     }

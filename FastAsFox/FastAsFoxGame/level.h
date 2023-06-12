@@ -124,6 +124,8 @@ public:
 
     QGraphicsView* getView() const;
 
+    QLCDNumber* getLCD();
+
     bool levelCleared;
 
 public slots:
