@@ -14,8 +14,8 @@ const double V0 = 0.2;
 // ----------------------------------------------------- //
 
 // ----------------< MOVEMENT CONSTANTS >--------------- //
-const double WALKING_SPEED = 0.02;
-const double RUNNING_SPEED = 0.1;
+const double WALKING_SPEED = 0.03;
+const double RUNNING_SPEED = 0.06;
 // ----------------------------------------------------- //
 
 // ----------------< PATHS CONSTANTS >------------------ //
