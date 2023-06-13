@@ -13,6 +13,8 @@
 #include <QAudioOutput>
 #include "animatedsprite.h"
 #include <QFile>
+#include <functional>
+
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0),playButtonClickedOnce(false), settingsButtonClickedOnce(false)
 {
@@ -703,6 +705,10 @@ void MenuWidget::settingsButtonClicked()
 
     // Set the attribute to delete the settingsWindow when it is closed
     settingsWindow->setAttribute(Qt::WA_DeleteOnClose);
+    // Connect destroyed() signal of settingsWindow to stop the m_sagaPlayer
+    connect(settingsWindow, &QObject::destroyed, this, [this]() {
+        m_sagaPlayer->stop();
+    });
 }
 
 
