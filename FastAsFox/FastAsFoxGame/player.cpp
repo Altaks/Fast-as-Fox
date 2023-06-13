@@ -98,8 +98,8 @@ std::vector<Tile *> filterNearbyTiles(std::vector<Tile *>* tiles, int proximity,
 
 void Player::updatePosition()
 {
-    // Query the tiles from the Map of the level
-    std::vector<Tile *>* tiles = map->getActuallyLoadedTiles();
+    // Query the filtered tiles from the Map of the level
+    std::set<Tile *>* tiles = map->getToCheckForCollision();
 
     // Get the "game real" coordinates
     double xPlayer = ((double)this->animation->x() / 32); // get the x as usual
@@ -156,9 +156,6 @@ void Player::updatePosition()
 
     //std::cout << "Player is supposed to go at " << predictedX << ", " << predictedY << std::endl;
     this->setRectangle(this->animation->pixmap().rect());
-
-    // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
-    std::vector<Tile *> nearbyTiles = filterNearbyTiles(tiles, 5, predictedX, predictedY);
 
     QRect collidedTopTileRect;
     QRect collidedBottomTileRect;

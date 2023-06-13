@@ -5,8 +5,8 @@
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
-
     this->actuallyLoadedTiles = new std::vector<Tile*>();
+    this->toCheckForCollision = new std::set<Tile*>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -75,6 +75,8 @@ QGraphicsView * Map::getView(){
 
 void Map::load(){
 
+    std::map<std::pair<int, int>, Tile*> coordinatesToTile;
+
     // inject map at coordinates
     int anchorX = 0;
     for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
@@ -92,9 +94,9 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // set @ null if tile not found
+            if(this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0; // set @ null if tile not found
 
-            qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
+            qDebug() << "Id de la tile : " << std::to_string(tileID) << "\n";
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
 
             Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
@@ -106,14 +108,65 @@ void Map::load(){
             // add the item to the scene
             this->getScene()->addItem(correspondingTile->getTileItem());
             this->actuallyLoadedTiles->push_back(correspondingTile);
+            coordinatesToTile.emplace(std::pair<int, int>(correspondingTile->getX(), correspondingTile->getY()), correspondingTile);
         }
 
         anchorX += section->getSectionWidth();
     }
+
+    // apply pointers for each tile
+    for(Tile * tile : *this->actuallyLoadedTiles){
+        if(tile->getTileId() == 0) continue;
+        int tileX = tile->getX();
+        int tileY = tile->getY();
+
+        std::pair<int, int> upPair       = std::pair<int, int>(tileX, tileY+1);
+        std::pair<int, int> bottomPair   = std::pair<int, int>(tileX, tileY-1);
+        std::pair<int, int> leftPair     = std::pair<int, int>(tileX-1, tileY);
+        std::pair<int, int> rightPair    = std::pair<int, int>(tileX+1, tileY);
+
+        if(coordinatesToTile.find(upPair) != coordinatesToTile.end()){
+            tile->setUpTile(coordinatesToTile.at(upPair));
+        }
+        if(coordinatesToTile.find(bottomPair) != coordinatesToTile.end()){
+            tile->setBottomTile(coordinatesToTile.at(bottomPair));
+        }
+        if(coordinatesToTile.find(leftPair) != coordinatesToTile.end()){
+            tile->setLeftTile(coordinatesToTile.at(leftPair));
+        }
+        if(coordinatesToTile.find(rightPair) != coordinatesToTile.end()){
+            tile->setRightTile(coordinatesToTile.at(rightPair));
+        }
+    }
+
+    // collect all near-air tiles
+    for(Tile * tile : *this->actuallyLoadedTiles){
+
+        if(tile->getBottomTile() != nullptr && tile->getBottomTile()->getTileId() == 0){
+            this->toCheckForCollision->emplace(tile);
+        } else if(tile->getUpTile() != nullptr && tile->getUpTile()->getTileId() == 0){
+            this->toCheckForCollision->emplace(tile);
+        } else if(tile->getLeftTile() != nullptr && tile->getLeftTile()->getTileId() == 0){
+            this->toCheckForCollision->emplace(tile);
+        } else if(tile->getRightTile() != nullptr && tile->getRightTile()->getTileId() == 0){
+            this->toCheckForCollision->emplace(tile);
+        }
+    }
+
+    /*
+    QPixmap * coll = new QPixmap(32, 32);
+    coll->fill(Qt::green);
+    for(Tile * tile : *this->toCheckForCollision) tile->getTileItem()->setPixmap(*coll);
+    */
+    return;
 }
 
 Player* Map::getItsPlayer(){
     return itsPlayer;
+}
+
+std::set<Tile *> *Map::getToCheckForCollision() const {
+    return this->toCheckForCollision;
 }
 
 void Map::updateView()
