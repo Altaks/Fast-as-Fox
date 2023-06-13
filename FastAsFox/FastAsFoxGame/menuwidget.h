@@ -12,15 +12,17 @@
 #include <QParallelAnimationGroup>
 #include <QGraphicsView>
 #include <QPushButton>
+#include <QAudioOutput>
 
 
-class MenuWidget : public QWidget
-{
+
+
+class MenuWidget: public QWidget {
     Q_OBJECT
 
 public:
-    explicit MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart); //isRestart=1 => Le programme vient de redémarrer
-    void setBackgroundImage(const QString &imagePath);
+    explicit MenuWidget(QWidget * parent, int aNumberOfLevelsUnlocked, int isRestart); //isRestart=1 => Le programme vient de redémarrer
+    void setBackgroundImage(const QString & imagePath);
     void setupImagesLayout();
 
     void animateSelection();
@@ -30,8 +32,8 @@ public:
     void skipMenu();
     bool isMenuSkipped() const;
     void saga();
-    QMediaPlayer *m_sagaPlayer;
-    QTimer *m_timer;
+    QMediaPlayer * m_sagaPlayer;
+    QTimer * m_timer;
     void resetBackground();
     void initMenu();
     void createPlayButton();
@@ -43,63 +45,164 @@ public:
     void applyColor();
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
+    void resizeEvent(QResizeEvent * event) override;
 
 private:
-    QMediaPlayer *m_selectPlayer;
-    QMediaPlayer *m_selectedPlayer;
+    QMediaPlayer * m_selectPlayer;
+    QMediaPlayer * m_selectedPlayer;
     QPixmap m_backgroundImage;
-    QList<QLabel*> m_imageLabels;
-    QGridLayout *m_layout;
+    QList < QLabel * > m_imageLabels;
+    QGridLayout * m_layout;
     int m_currentActiveFrame;
-    QLabel *infoLabel;
-    QList<QLabel*> m_infoLabels;
-    QWidget *imageHolder;
-    QLabel *gifLabel;
-    QGraphicsView *titleView;
+    QLabel * infoLabel;
+    QList < QLabel * > m_infoLabels;
+    QWidget * imageHolder;
+    QLabel * gifLabel;
+    QGraphicsView * titleView;
     QCursor m_customCursor;
     int m_startGrayscaleImage;
     int numberOfLevelsUnlocked;
     int selectedLevelIndex;
     bool menuSkipped;
-    QLabel *cursorLabel;
-    QMovie *cursorMovie;
-    QPushButton *m_activeButton;
-    QPushButton *playButton;
+    QLabel * cursorLabel;
+    QMovie * cursorMovie;
+    QPushButton * m_activeButton;
+    QPushButton * playButton;
     QPushButton * settingsButton;
-    QPushButton *selectedButton;
+    QPushButton * selectedButton;
     QLabel * cursorLabel2;
     QMovie * cursorMovie2;
-    QTimer *m_playButtonTimer;
-    QTimer *m_settingsButtonTimer;
+    QTimer * m_playButtonTimer;
+    QTimer * m_settingsButtonTimer;
     bool playButtonClickedOnce;
     bool settingsButtonClickedOnce;
-    QWidget *settingsWindow;
-    Fox *fox;
-    QList<QColor> colors;
-    QPushButton* originalButton;
-    QPushButton* validateButton;
+    QWidget * settingsWindow;
+    Fox * fox;
+    QList < QColor > colors;
+    QPushButton * originalButton;
+    QPushButton * validateButton;
     QColor selectedColor;
     bool originalClicked;
-    QMediaPlayer *player;
+    QMediaPlayer * player;
+    QAudioOutput * selectOutput;
+    QAudioOutput * audioOutput;
+    QGraphicsScene * scene;
+    QGraphicsDropShadowEffect * effect;
+    QGraphicsTextItem * titleItem;
+    QGridLayout * gridLayout;
+    QWidget * frame;
+    QVBoxLayout * vbox;
 
+    QLabel * imageLabel;
+    QMovie * movie;
+    QVBoxLayout * vLayout;
+    QHBoxLayout * hLayout;
+    QHBoxLayout * gifLayout;
+    QPropertyAnimation * anim;
+    QGraphicsDropShadowEffect * glow;
+    QPropertyAnimation * glowAnim;
+    QGraphicsOpacityEffect * opacity;
+    QPropertyAnimation * fadeAnim;
+    QWidget * selectedFrame;
+    QLabel * logoLabel;
 
-
+    QGraphicsView * view;
+    QSpacerItem * leftSpacer;
+    QSpacerItem * rightSpacer;
+    QGraphicsColorizeEffect * colorize;
+    QVBoxLayout * buttonsLayout;
+    QLabel * label;
 
 private slots:
     void originalButtonClicked();
-
     void validateButtonClicked();
-
 
 signals:
     void levelSelected(int levelIndex);
     void finished();
 
-
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -325,15 +428,11 @@ signals:
 
 // mdr bien joué
 
-
-
-
-
-class LogoLabel : public QLabel {
+class LogoLabel: public QLabel {
     Q_OBJECT
     Q_PROPERTY(float fadeFraction READ fadeFraction WRITE setFadeFraction)
 public:
-    LogoLabel(QWidget* parent = nullptr) : QLabel(parent), m_fadeFraction(0) {
+    LogoLabel(QWidget * parent = nullptr): QLabel(parent), m_fadeFraction(0) {
         m_oldLogo.load(":/menu/sprites/menu/oldLogo.png");
         m_newLogo.load(":/menu/sprites/menu/logo.png");
     }
@@ -342,10 +441,10 @@ public:
     }
     void setFadeFraction(float fraction) {
         m_fadeFraction = fraction;
-        update();  // This will cause a repaint
+        update(); // This will cause a repaint
     }
 protected:
-    void paintEvent(QPaintEvent *event) override {
+    void paintEvent(QPaintEvent * event) override {
         QPainter painter(this);
         painter.drawPixmap(0, 0, m_oldLogo);
         QLinearGradient gradient(0, height(), 0, 0);
@@ -361,24 +460,19 @@ private:
     float m_fadeFraction;
 };
 
-
-
-
-
-class ClickableLabel : public QLabel {
+class ClickableLabel: public QLabel {
     Q_OBJECT
 
 public:
-    explicit ClickableLabel(QWidget* parent = 0) : QLabel(parent) {}
+    explicit ClickableLabel(QWidget * parent = 0): QLabel(parent) {}
 
 signals:
     void clicked();
 
 protected:
-    void mousePressEvent(QMouseEvent* event) {
+    void mousePressEvent(QMouseEvent * event) {
         emit clicked();
     }
 };
-
 
 #endif // MENUWIDGET_H
