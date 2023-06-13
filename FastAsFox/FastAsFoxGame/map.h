@@ -2,7 +2,7 @@
 #define MAP_H
 
 #include <vector>
-
+#include <set>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -48,7 +48,10 @@ private:
      * @brief actuallyLoadedTiles vector storing every Tile object in the map
      */
     std::vector<Tile *> * actuallyLoadedTiles = nullptr;
-    /**
+
+    std::set<Tile*> * toCheckForCollision = nullptr;
+
+     /**
      * @brief itsPlayer the player that will venture the map
      */
     Player* itsPlayer;
@@ -97,9 +100,12 @@ public:
      * @return itsPlayer
      */
     Player* getItsPlayer();
+
     void setLcdCount(const std::string &value);
     void displayAnimation();
 
+
+    std::set<Tile *> * getToCheckForCollision() const;
 
 public slots:
     /**

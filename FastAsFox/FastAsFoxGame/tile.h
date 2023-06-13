@@ -30,6 +30,11 @@ private:
      * @brief isCollideable boolean defining if the tile is collideable
      */
     bool isCollideable;
+    
+    Tile * upTile = nullptr;
+    Tile * bottomTile = nullptr;
+    Tile * leftTile = nullptr;
+    Tile * rightTile = nullptr;
 
 public:
     /**
@@ -70,6 +75,15 @@ public:
      * @brief setIsCollideable setter for isCollideable
      */
     void setIsCollideable(bool isCollideable);
+    
+    Tile *getUpTile() const;
+    void setUpTile(Tile *newUpTile);
+    Tile *getBottomTile() const;
+    void setBottomTile(Tile *newBottomTile);
+    Tile *getLeftTile() const;
+    void setLeftTile(Tile *newLeftTile);
+    Tile *getRightTile() const;
+    void setRightTile(Tile *newRightTile);
 };
 
 #endif // TILE_H

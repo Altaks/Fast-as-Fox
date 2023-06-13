@@ -26,6 +26,11 @@ private:
      * @brief fast set to true if the player is running, false if he is walking
      */
     bool fast;
+    
+    bool againstWall;
+    bool isJumping;
+    int hp;
+
     /**
      * @brief velocity stores the velocity of the player
      */
@@ -43,6 +48,7 @@ private:
      */
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
+    std::pair<int,int> spritePosition;
 public:
     /**
      * @brief Player Constructor for the player class
@@ -106,8 +112,11 @@ public:
     void playerAccelerated();
     void playerJumped();
     void playerSlowedDown();
+    const std::pair<int, int> &getSpritePosition() const;
+
 signals:
     void playerMoved();
+    void playerDeath();
 public slots:
     /**
      * @brief updatePosition updates the player's potision
@@ -117,5 +126,7 @@ public slots:
      * @brief updateAnimation update the player's animation
      */
     void updateAnimation();
+    
+    void updateHealthbar();
 };
 #endif //PLAYER_H
