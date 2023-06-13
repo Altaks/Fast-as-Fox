@@ -216,5 +216,6 @@
         <file>sprites/menu/painter.gif</file>
         <file>sprites/menu/minifox1.png</file>
         <file>sprites/menu/minifox2.png</file>
+        <file>sprites/menu/paint.mp3</file>
     </qresource>
 </RCC>

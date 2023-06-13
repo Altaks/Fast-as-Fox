@@ -558,7 +558,7 @@ void MenuWidget::saga()
             m_sagaPlayer->play();
 
             // Baisser le volume de 50%
-            QMediaPlayer *player = new QMediaPlayer;
+            player = new QMediaPlayer;
             QAudioOutput *audioOutput = new QAudioOutput;
             player->setAudioOutput(audioOutput);
             audioOutput->setVolume(0.5); // Set the volume to half
@@ -592,6 +592,9 @@ void MenuWidget::saga()
 
 void MenuWidget::settingsButtonClicked()
 {
+
+    m_sagaPlayer->setSource(QUrl("qrc:/menu/sprites/menu/paint.mp3"));
+    m_sagaPlayer->play();
     originalClicked = false;
     // Create the settings window widget
     settingsWindow = new QWidget;

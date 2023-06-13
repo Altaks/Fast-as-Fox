@@ -83,6 +83,7 @@ private:
     QPushButton* validateButton;
     QColor selectedColor;
     bool originalClicked;
+    QMediaPlayer *player;
 
 
 
