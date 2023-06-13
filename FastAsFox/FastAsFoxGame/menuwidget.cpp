@@ -576,7 +576,8 @@ void MenuWidget::saga()
             loop.exec();
 
             // When the gif has finished, hide the QLabel and delete it
-            label->hide();
+            if (label){
+                label->hide();}
             delete label;
             delete movie;
 

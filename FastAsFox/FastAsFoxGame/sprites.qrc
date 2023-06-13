@@ -165,6 +165,7 @@
         <file>sprites/userInterface/cadrelcd.png</file>
         <file>sprites/userInterface/sablier.gif</file>
         <file>sprites/userInterface/homeButton.png</file>
+        <file>sprites/userInterface/camera.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>
@@ -195,7 +196,6 @@
         <file>sprites/menu/10.jpg</file>
         <file>sprites/menu/apple.png</file>
         <file>sprites/menu/font.TTF</file>
-        <file>sprites/menu/fox_animation_reel.gif</file>
         <file>sprites/menu/foxwaiting.gif</file>
         <file>sprites/menu/framelevel.png</file>
         <file>sprites/menu/framelevelClosed.png</file>
@@ -213,7 +213,6 @@
         <file>sprites/menu/startcursor.gif</file>
         <file>sprites/menu/playsound.mp3</file>
         <file>sprites/menu/peinture.jpg</file>
-        <file>sprites/menu/painter.gif</file>
         <file>sprites/menu/minifox1.png</file>
         <file>sprites/menu/minifox2.png</file>
         <file>sprites/menu/paint.mp3</file>

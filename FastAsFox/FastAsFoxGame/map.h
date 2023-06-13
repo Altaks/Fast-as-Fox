@@ -99,6 +99,7 @@ public:
     Player* getItsPlayer();
     void setLcdCount(const std::string &value);
     void displayAnimation();
+    void handleCameraButton() ;
 
 
 public slots:
