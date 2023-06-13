@@ -82,6 +82,7 @@ private:
     QPushButton* originalButton;
     QPushButton* validateButton;
     QColor selectedColor;
+    bool originalClicked;
 
 
 

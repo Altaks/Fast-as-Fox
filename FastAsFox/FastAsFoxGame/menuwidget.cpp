@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include <QAudioOutput>
 #include "animatedsprite.h"
+#include <QFile>
 
 MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isRestart) : QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0),playButtonClickedOnce(false), settingsButtonClickedOnce(false)
 {
@@ -591,6 +592,7 @@ void MenuWidget::saga()
 
 void MenuWidget::settingsButtonClicked()
 {
+    originalClicked = false;
     // Create the settings window widget
     settingsWindow = new QWidget;
     settingsWindow->setWindowTitle("Settings");
@@ -670,6 +672,7 @@ void MenuWidget::settingsButtonClicked()
         connect(foxLabel, &ClickableLabel::clicked, fox, [this, color = colors.at(i)](){
             this->fox->setColor(color);
             this->selectedColor = color;
+            originalClicked = false;
         });
 
     }
@@ -717,13 +720,83 @@ void MenuWidget::settingsButtonClicked()
 
 void MenuWidget::originalButtonClicked() {
     fox->resetColor();  // Reset the color of the fox
-    settingsWindow->close();  // Close the settings window
+    originalClicked = true;
+
+    // Prepare file path
+    QFile file(QCoreApplication::applicationDirPath() + "/color.txt");
+
+    // Try to open the file with read/write permissions, this will create the file if it doesn't exist
+    if(file.open(QIODevice::ReadWrite)) {
+        qDebug() << "File opened for reading and writing.";
+
+        // Read all lines into a QStringList
+        QStringList lines = QString(file.readAll()).split("\n");
+
+        // Make sure there are at least two lines
+        while(lines.size() < 2) {
+            lines << "";
+        }
+
+        // Update the second line with the chosen color
+        lines[1] = "orange";
+        qDebug() << "Second line updated to: " << lines[1];
+
+        // Clear the file content to prepare for overwriting
+        file.resize(0);
+
+        // Write all lines back to the file
+        QTextStream out(&file);
+        out << lines.join("\n");
+        file.close();
+        qDebug() << "Updated lines written to file.";
+    } else {
+        qDebug() << "Failed to open file for reading and writing: " << file.errorString();
+    }
 }
+
+
+
 
 void MenuWidget::validateButtonClicked() {
     fox->setColor(selectedColor);  // Set the color of the fox
+
+    // Prepare file path
+    QFile file(QCoreApplication::applicationDirPath() + "/color.txt");
+
+    // Open the file with read/write permissions, this will create the file if it doesn't exist
+    if(file.open(QIODevice::ReadWrite)) {
+        qDebug() << "File opened for reading and writing.";
+
+        // Read all lines into a QStringList
+        QStringList lines = QString(file.readAll()).split("\n");
+
+        // Make sure there are at least two lines
+        while(lines.size() < 2) {
+            lines << "";
+        }
+
+        // Update the second line with the chosen color if "original" wasn't clicked, or if the current color isn't orange
+        if(!originalClicked || lines[1].trimmed().toLower() != "orange") {
+            lines[1] = selectedColor.name();
+
+            // Clear the file content to prepare for overwriting
+            file.resize(0);
+
+            // Write all lines back to the file
+            QTextStream out(&file);
+            out << lines.join("\n");
+            file.close();
+        }
+
+        // Reset the flag
+        originalClicked = false;
+    } else {
+        qDebug() << "Failed to open file for reading and writing: " << file.errorString();
+    }
+
     settingsWindow->close();  // Close the settings window
 }
+
 
 
 
