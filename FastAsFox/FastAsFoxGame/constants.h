@@ -24,6 +24,7 @@ const double running_speed = 0.2/5;
 #define FOX_LAND      ":/fox/sprites/fox/landing.png"
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
+#define PROPS_TILES   ":/texture/sprites/texture/TX Village Props.png"
 #define LEVEL_ONE     ":/level/level/level1.json"
 #define LEVEL_TWO     ":/level/level/level2.json"
 // ----------------------------------------------------- //

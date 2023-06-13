@@ -43,7 +43,7 @@ private:
     /**
      * @brief loadedTiles map storing the texture of every tile in the map, as well as its ID
      */
-    std::map<int, QPixmap*> loadedTiles;
+    std::map<int, std::pair<bool, QPixmap*>> loadedTiles;
     /**
      * @brief actuallyLoadedTiles vector storing every Tile object in the map
      */

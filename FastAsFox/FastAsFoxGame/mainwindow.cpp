@@ -23,10 +23,12 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     TileSet * set = new TileSet(GROUND_TILES, true, TILE_SIZE, 1); //Ground TileSet
+    TileSet * propsSet = new TileSet(PROPS_TILES, false, TILE_SIZE, 257);
     MapSection * section = new MapSection(LEVEL_ONE);
 
     std::vector<TileSet*>* tilesets = new std::vector<TileSet*>();
     tilesets->push_back(set);
+    tilesets->push_back(propsSet);
 
     Map * map = new Map(section, tilesets);
     map->load();

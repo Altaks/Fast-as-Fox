@@ -29,7 +29,7 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
     this->sections.push_back(defaultSection);
 
     // inject every tile from all the tilesets to the map used tiles
-    this->loadedTiles = std::map<int, QPixmap*>();
+    this->loadedTiles = std::map<int, std::pair<bool, QPixmap*>>();
     this->tileSets = new std::vector<TileSet*>();
 
     this->tileSets->reserve(availableTileSets->size());
@@ -38,12 +38,12 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
     QPixmap * nullPixmap = new QPixmap(32, 32);
     nullPixmap->fill(Qt::transparent);
 
-    this->loadedTiles.emplace(0, nullPixmap);
+    this->loadedTiles.emplace(0, std::pair(false, nullPixmap));
 
     for(TileSet * tileset : *availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
         for(std::map<int, QPixmap*>::iterator it = tilesFromTileSet->begin(); it != tilesFromTileSet->end(); it++){
-            this->loadedTiles.emplace(*it);
+            this->loadedTiles.emplace(it->first, std::pair<bool, QPixmap*>(tileset->getIsCollideable(), it->second));
         }
     }
 
@@ -111,12 +111,15 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // set @ null if tile not found
+            if(this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0; // set @ null if tile not found
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
-            QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
+            std::pair<bool, QPixmap*> entry = this->loadedTiles.at(tileID);
+            QPixmap * correspondingTexture = entry.second;
+            bool isCollideable = entry.first;
 
-            Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second, true);//Change true to the isCollideable value of the tile's tileset
+            Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
+            correspondingTile->setIsCollideable(isCollideable);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
@@ -126,6 +129,8 @@ void Map::load(){
             this->getScene()->addItem(correspondingTile->getTileItem());
             this->actuallyLoadedTiles->push_back(correspondingTile);
         }
+
+
 
         anchorX += section->getSectionWidth();
     }
