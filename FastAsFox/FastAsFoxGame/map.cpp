@@ -18,6 +18,7 @@
 #include <QPixmap>
 #include <QDateTime>
 #include <QDebug>
+#include <QDesktopServices>
 
 
 std::vector<MapSection *> Map::getSections() const
@@ -294,8 +295,32 @@ void Map::displayAnimation() {
     // This assumes you have a slot function called handleCameraButton
     QObject::connect(cameraButton, &LevelMenuButton::golevelMenu, this, &Map::handleCameraButton);
 
+    // load the twitter icon
+    QPixmap twitterButtonPixmap(":/userInterface/sprites/userInterface/twitter.png");
+
+    // reduce the size of the pixmap if required, for example, by 2
+    QPixmap scaledTwitterPixmap = twitterButtonPixmap.scaled(twitterButtonPixmap.size() / 8);
+
+    // create the button
+    LevelMenuButton *twitterButton = new LevelMenuButton(scaledTwitterPixmap);
+    this->getScene()->addItem(twitterButton);
+
+    // position the button to the right of the camera button
+    QPointF twitterButtonPos = cameraButton->pos();
+    twitterButtonPos.setX(twitterButtonPos.x() + cameraButton->boundingRect().width() + 180); // Move to the right of the camera button by 10 pixels
+    twitterButton->setPos(twitterButtonPos);
+
+    // Connect the twitterButton's signal to the appropriate slot function
+    // This assumes you have a slot function called handleTwitterButton
+    QObject::connect(twitterButton, &LevelMenuButton::golevelMenu, this, &Map::handleTwitterButton);
 
 }
+
+void Map::handleTwitterButton() {
+    // Open Twitter in the default web browser
+    QDesktopServices::openUrl(QUrl("https://twitter.com"));
+}
+
 
 void Map::handleCameraButton() {
     // Grab the screenshot

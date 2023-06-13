@@ -100,6 +100,7 @@ public:
     void setLcdCount(const std::string &value);
     void displayAnimation();
     void handleCameraButton() ;
+    void handleTwitterButton();
 
 
 public slots:
@@ -114,6 +115,7 @@ public slots:
 signals:
     void homeButtonClicked();
     void golevelMenu();
+
 };
 
 

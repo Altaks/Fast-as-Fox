@@ -166,6 +166,7 @@
         <file>sprites/userInterface/sablier.gif</file>
         <file>sprites/userInterface/homeButton.png</file>
         <file>sprites/userInterface/camera.png</file>
+        <file>sprites/userInterface/twitter.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>
