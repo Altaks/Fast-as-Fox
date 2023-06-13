@@ -30,19 +30,27 @@ const double RUNNING_SPEED = 0.06;
 #define HEDGEHOG_WALK_BACKWARD      ":/hedgehog/sprites/hedgehog/hedgehog_walk_sprite_backward.png"
 #define HEDGEHOG_ATTACK_BACKWARD    ":/hedgehog/sprites/hedgehog/hedgehog_attack_sprite_backward.png"
 
+#define SPIKE         ":/spike/sprites/spike/spikes.png"
+
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
 #define LEVEL_ONE     ":/level/level/level1.json"
 #define LEVEL_TWO     ":/level/level/level2.json"
 // ----------------------------------------------------- //
 
-// ----------< LEVEL POSITION    CONSTANTS >------------ //
+// ----------------< LEVEL POSITION CONSTANTS >--------- //
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(2,5);
 const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
 
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,2);
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,8);
 const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1,HEDGEHOG_LEVEL_ONE_POS2};
+
+const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,4);
+const std::pair<int,int> SPIKE_LEVEL_ONE_POS2 = std::pair(60,5);
+
+const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
+
 // ----------------------------------------------------- //
 
 // ----------------< FOX SPRITE SIZE >------------------ //

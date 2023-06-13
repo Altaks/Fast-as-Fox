@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "hedgehog.h"
+#include "spike.h"
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
@@ -37,11 +38,13 @@ private:
     double count;
     QTimer * timer;
     std::vector<Hedgehog *>* hedgehogs;
+    std::vector<Spike *>* spikes;
 
 private slots:
     void updateLCD();
     void changeHedgehogsDirection();
     void playerCollidesHedgehog();
+    void playerCollidesSpike();
     void levelOverByDeath();
 
 public:

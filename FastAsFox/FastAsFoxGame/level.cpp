@@ -13,6 +13,8 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     mwindow=mainwindow;
     count=0.00;
     hedgehogs = new std::vector<Hedgehog*>();
+    spikes = new std::vector<Spike*>();
+
 
     QTimer * playerUpdatePositionClock = new QTimer();
     QTimer * hedgehogUpdatePositionClock = new QTimer();
@@ -22,14 +24,22 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     {
         hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
         connect(hedgehogUpdatePositionClock, &QTimer::timeout, hedgehogs->at(i), &Hedgehog::updatePosition);
-
         connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, player, &Player::updateHealthbar);
     }
+
+    for(int i=0; i<SPIKE_LEVEL_ONE_POS_VECTOR.size(); i++)
+    {
+        spikes->push_back(new Spike(scene,SPIKE_LEVEL_ONE_POS_VECTOR.at(i)));
+        connect(spikes->at(i), &Spike::playerLoseHealth, player, &Player::updateHealthbar);
+    }
+
     connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
+    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesSpike);
+
 
     connect(player, &Player::playerDeath, this, &Level::levelOverByDeath);
 
@@ -138,6 +148,20 @@ void Level::playerCollidesHedgehog()
                         hedgehogs->at(i)->setAttacking(false);
             }
         }
+    }
+}
+
+void Level::playerCollidesSpike()
+{
+    for(int i=0; i<spikes->size(); i++)
+    {
+        if(player->getSpritePosition().first > spikes->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
+            player->getSpritePosition().first < spikes->at(i)->getSpritePosition().first + TILE_SIZE - COLLISION_OFFSET and
+            player->getSpritePosition().second > spikes->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
+            player->getSpritePosition().second < spikes->at(i)->getSpritePosition().second + TILE_SIZE)
+                spikes->at(i)->setAttacking(true);
+        else
+                spikes->at(i)->setAttacking(false);
     }
 }
 
