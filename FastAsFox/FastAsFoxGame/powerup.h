@@ -2,7 +2,7 @@
 #define POWERUP_H
 
 #include "berry.h"
-#include "level.h"
+
 
 class PowerUp : public Berry
 {
@@ -11,7 +11,7 @@ private:
 public:
     PowerUp(QGraphicsScene * theScene, Level * level);
     void onCollide(GameObject* obj);
-    void applyEffect(Player * player, Level * level);
+    void applyEffect(Player * player);
 };
 
 #endif // POWERUP_H

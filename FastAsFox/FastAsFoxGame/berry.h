@@ -3,7 +3,7 @@
 
 #include "gameobject.h"
 #include "constants.h"
-#include "player.h"
+#include "level.h"
 
 #include <QPixmap>
 #include <QGraphicsPixmapItem>

@@ -6,6 +6,8 @@
 #include "tile.h"
 #include "map.h"
 
+class Berry;
+
 class Player : public GameObject
 {
     Q_OBJECT
@@ -46,7 +48,7 @@ private:
 
     bool revivalEnabled=false; // boolean if the revival berrys got eaten
 
-   // Berry * actualBerry; //the berry he got
+    Berry * actualBerry; //the berry he got
 public:
     /**
      * @brief Player Constructor for the player class
@@ -112,7 +114,7 @@ public:
     void playerSlowedDown();
 
     void eatBerry();// function to eat a berry that the player get
-    //Berry* getActualBerry(); // get for the actual berry stocked in the player
+    Berry* getActualBerry(); // get for the actual berry stocked in the player
     void setRevival();
     bool getRevival();
 signals:

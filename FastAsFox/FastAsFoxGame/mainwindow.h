@@ -18,16 +18,6 @@
 #include <QCloseEvent>
 #include "menuwidget.h"
 
-
-/*enum class FruitType {
-    Apple,
-    Grape,
-    Cherry,
-    Lemon,
-    Peach,
-    // Add other fruit types here as needed
-};*/
-
 class MainWindow : public QMainWindow {
 
 public:

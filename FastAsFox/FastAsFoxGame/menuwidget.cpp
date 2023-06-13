@@ -23,10 +23,6 @@ MenuWidget::MenuWidget(QWidget *parent, int aNumberOfLevelsUnlocked, int isResta
     m_selectPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
     QAudioOutput *selectOutput = new QAudioOutput(this);
     m_selectPlayer->setAudioOutput(selectOutput);
-    m_selectedPlayer = new QMediaPlayer(this);
-    m_selectedPlayer->setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
-    QAudioOutput *selectedOutput = new QAudioOutput(this);
-    m_selectedPlayer->setAudioOutput(selectedOutput);
 
 
     m_sagaPlayer = new QMediaPlayer(this);

@@ -1,4 +1,5 @@
 ﻿#include "player.h"
+#include "berry.h"
 #include <cmath>
 
 Fox *Player::getAnimation() const
@@ -315,17 +316,17 @@ void Player::playerSlowedDown(){
 }
 
 void Player::eatBerry(){
-//    if (actualBerry==nullptr){
-//    }
-//    else {
-//        actualBerry->applyEffect(this);
-//    }
+    if (actualBerry==nullptr){
+    }
+    else {
+        actualBerry->applyEffect(this);
+    }
 }
 
-/*
+
 Berry* Player::getActualBerry(){
     return actualBerry;
-}*/
+}
 
 void Player::setRevival(){
     revivalEnabled=!revivalEnabled;

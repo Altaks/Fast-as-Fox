@@ -6,63 +6,59 @@ PowerUp::PowerUp(QGraphicsScene * scene,Level * level)
     powerUpType = PowerUpType(random);
 
     BerriesSprite=new QPixmap(":/fruits/sprites/fruits/fruits.png");
-    if (BerriesSprite->isNull()==true){
-        qDebug("fichier introuvable");
+    int x;
+    switch (powerUpType){
+    case Dash:
+    {
+        x=TILE_SIZE;
     }
-    else {
-        int x;
-        switch (powerUpType){
-        case Dash:
-        {
-            x=TILE_SIZE;
-        }
-        case Double_Jump:
-        {
-            x=14*TILE_SIZE;
-        }
-        case ChronoFreeze:
-        {
-            x=3*TILE_SIZE;
-        }
-        case Speed:
-        {
-            x=18*TILE_SIZE;
-        }
-        case Revive:
-        {
-            x=12*TILE_SIZE;
-        }
-        default:
-            break;
-        }
-        this->berries =new GameObject();
-        scene=theScene;
-        QRect placement(x,0,TILE_SIZE,TILE_SIZE);
-        this->berries->setRectangle(placement);
+    case Double_Jump:
+    {
+        x=14*TILE_SIZE;
+    }
+    case ChronoFreeze:
+    {
+        x=3*TILE_SIZE;
+    }
+    case Speed:
+    {
+        x=18*TILE_SIZE;
+    }
+    case Revive:
+    {
+        x=12*TILE_SIZE;
+    }
+    default:
+        break;
+    }
+    this->berries =new GameObject();
+    scene=theScene;
+    QRect placement(x,0,TILE_SIZE,TILE_SIZE);
+    this->berries->setRectangle(placement);
 
-        int graphicsX;
-        int graphicsY;
+    int graphicsX;
+    int graphicsY;
 
-        for(Tile * tile : *level->getMap()->getActuallyLoadedTiles()){
-            if(tile->getTileId()==260 || tile->getTileId()==261 || tile->getTileId()==262 || tile->getTileId()==263 || tile->getTileId()==264){
-                graphicsX=tile->getX();
-                graphicsY=tile->getY();
-                setPos(graphicsX, graphicsY);
-                scene->addItem(this);
-                *BerriesSprite=BerriesSprite->scaled(32,32);
-                this->setPixmap(*BerriesSprite);
-                this->update();
-            }
+    for(Tile * tile : *level->getMap()->getActuallyLoadedTiles()){
+        if(tile->getTileId()==260 || tile->getTileId()==261 || tile->getTileId()==262 || tile->getTileId()==263 || tile->getTileId()==264){
+            graphicsX=tile->getX();
+            graphicsY=tile->getY();
+            setPos(graphicsX, graphicsY);
+            scene->addItem(this);
+            *BerriesSprite=BerriesSprite->scaled(32,32);
+            this->setPixmap(*BerriesSprite);
+            this->update();
         }
     }
 }
+
 
 
 void PowerUp::onCollide(GameObject* obj){
     int deux =1+1;
 }
 
-void PowerUp::applyEffect(Player * player, Level * level){
+void PowerUp::applyEffect(Player *player){
     switch (powerUpType){
         case Dash:
         {
@@ -90,7 +86,7 @@ void PowerUp::applyEffect(Player * player, Level * level){
         }
         case Revive:
         {
-            player->setRevival();
+            level->getPlayer()->setRevival();
             break;
         }
         default:
