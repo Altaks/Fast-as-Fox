@@ -115,8 +115,11 @@ public:
 
     void eatBerry();// function to eat a berry that the player get
     Berry* getActualBerry(); // get for the actual berry stocked in the player
-    void setRevival();
-    bool getRevival();
+    void setActualBerry(Berry * berries);  //setter for the actualBerry
+
+    void setRevival(); //set the invert of the actual value for the revival
+    bool getRevival(); // getter for the revival disponibility
+
 signals:
     void playerMoved();
 public slots:

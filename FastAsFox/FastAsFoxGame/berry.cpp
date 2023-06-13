@@ -17,9 +17,15 @@ int Berry::generateRandom(){
     return distr(eng);
 }
 
-void Berry::onCollide(GameObject* obj){
+void Berry::onCollide(Player * player){
+    QRect berry(x, y, TILE_SIZE, TILE_SIZE);
+
+    QRect playerRect(player->getAnimation()->x(),player->getAnimation()->y(),player->getAnimation()->pixmap().width(),player->getAnimation()->pixmap().height());
+
+    if (GameObject::collides(berry, playerRect) != std::pair<std::optional<CollisionSide>,std::optional<CollisionSide>>(std::nullopt, std::nullopt)){
+        player->setActualBerry(this);
+    }
 }
 
 void Berry::applyEffect(Player * player){
-
 }

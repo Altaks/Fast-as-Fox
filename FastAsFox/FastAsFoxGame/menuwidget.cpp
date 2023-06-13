@@ -479,8 +479,8 @@ void MenuWidget::saga()
             loop.exec();
 
             // When the gif has finished, hide the QLabel and delete it
-            label->hide();
-            delete label;
+            //label->hide();
+            //delete label;
             delete movie;
 
             // Hide and delete the logoLabel
@@ -492,13 +492,6 @@ void MenuWidget::saga()
         }
     });
 }
-
-
-
-
-
-
-
 
 void MenuWidget::initMenu()
 {
@@ -543,9 +536,6 @@ void MenuWidget::resizeEvent(QResizeEvent *event)
         }
     }
 }
-
-
-
 
 void MenuWidget::launchPlayButtonClickedProcess()
 {

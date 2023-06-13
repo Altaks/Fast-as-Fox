@@ -328,6 +328,13 @@ Berry* Player::getActualBerry(){
     return actualBerry;
 }
 
+void Player::setActualBerry(Berry * berries){
+    if(actualBerry!=nullptr){
+        delete actualBerry;
+    }
+    actualBerry=berries;
+}
+
 void Player::setRevival(){
     revivalEnabled=!revivalEnabled;
 }

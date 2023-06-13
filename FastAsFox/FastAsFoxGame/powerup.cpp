@@ -55,7 +55,6 @@ PowerUp::PowerUp(QGraphicsScene * scene,Level * level)
 
 
 void PowerUp::onCollide(GameObject* obj){
-    int deux =1+1;
 }
 
 void PowerUp::applyEffect(Player *player){

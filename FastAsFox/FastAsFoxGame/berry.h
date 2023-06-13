@@ -14,14 +14,14 @@ class Berry : public GameObject, public QGraphicsPixmapItem
 protected:
     GameObject *  berries;
     PowerUpType powerUpType;
-    int X;
+    int x;
     int y;
     QPixmap * BerriesSprite;
     QGraphicsScene * theScene;
 public:
     Berry();
     int generateRandom();
-    virtual void onCollide(GameObject* obj);
+    virtual void onCollide(Player *player);
     virtual void applyEffect(Player * player)=0;
 };
 
