@@ -212,10 +212,5 @@
         <file>sprites/menu/oldLogo.png</file>
         <file>sprites/menu/startcursor.gif</file>
         <file>sprites/menu/playsound.mp3</file>
-    <qresource prefix="/hedgehog">
-        <file>sprites/hedgehog/hedgehog_attack_sprite.png</file>
-        <file>sprites/hedgehog/hedgehog_walk_sprite.png</file>
-        <file>sprites/hedgehog/hedgehog_attack_sprite_backward.png</file>
-        <file>sprites/hedgehog/hedgehog_walk_sprite_backward.png</file>
     </qresource>
 </RCC>

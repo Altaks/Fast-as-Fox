@@ -81,9 +81,6 @@ private:
 
 private slots:
     void updateLCD();
-    void changeHedgehogsDirection();
-    void playerCollidesHedgehog();
-    void levelOverByDeath();
 
 public:
     /**
