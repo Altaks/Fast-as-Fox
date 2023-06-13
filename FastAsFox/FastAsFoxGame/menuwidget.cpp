@@ -609,26 +609,12 @@ void MenuWidget::settingsButtonClicked()
     palette.setBrush(QPalette::Window, backgroundImage.scaled(settingsWindow->size())); // Scale the image to fit the window size
     settingsWindow->setPalette(palette);
 
-    // Create a QLabel to show the gif
-    QLabel *label = new QLabel(settingsWindow);
-    QMovie *movie = new QMovie(":/menu/sprites/menu/painter.gif");
-
-    // Get original movie size
-    QSize originalSize = movie->scaledSize();
-
-    // Reduce movie size by 2
-    movie->setScaledSize(originalSize / 2);
-
-    label->setMovie(movie);
-    movie->start();
-
     // Create a layout and add the QLabel to it
     QGridLayout *layout = new QGridLayout;
 
     // Adjust horizontal spacing and margins
     layout->setHorizontalSpacing(5);  // Sets the space between items in the layout to 10 pixels
     layout->setContentsMargins(5, 5, 5, 5); // Sets the margins around the layout to 10 pixels
-    layout->addWidget(label, 0, 0, 1, 2, Qt::AlignBottom | Qt::AlignRight); // spans two columns
 
     // Create a new QGraphicsView and QGraphicsScene
     QGraphicsScene *scene = new QGraphicsScene(settingsWindow);
@@ -651,7 +637,7 @@ void MenuWidget::settingsButtonClicked()
     layout->addItem(rightSpacer, 3, 2, 2, 1);
 
     // Move the view to the second column
-    layout->addWidget(view, 3, 1, 2, 2);
+    layout->addWidget(view, 4, 1, 2, 2);
 
     // Create an array of colors for each element
     colors = { QColor("darkred"), QColor("gold"), QColor("darkgreen"), QColor("darkturquoise"), QColor("darkblue"), QColor("darkmagenta"), QColor("deeppink") };
