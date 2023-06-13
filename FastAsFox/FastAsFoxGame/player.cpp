@@ -36,6 +36,7 @@ Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : Ga
     this->animation->setZValue(1);
     this->map = map;
     this->spawnCoords = spawnCoords;
+    this->hp = 3;
 }
 
 Player::~Player()
@@ -406,6 +407,17 @@ void Player::updatePosition()
     this->animation->setPos(xPlayer, yPlayer);
     this->spritePosition = {xPlayer,yPlayer};
     emit playerMoved();
+}
+
+void Player::updateHealthbar()
+{
+    this->hp--;
+    std::cout << hp << std::endl;
+    if(hp==0)
+    {
+        emit playerDeath();
+
+    }
 }
 
     void Player::playerAccelerated()

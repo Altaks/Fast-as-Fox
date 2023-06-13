@@ -10,7 +10,7 @@
 #include <QElapsedTimer>
 
 class Hedgehog : public QObject, public QGraphicsPixmapItem {
-
+Q_OBJECT
 public:
     explicit Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition);
     void updateFrame();
@@ -18,6 +18,10 @@ public:
     QGraphicsScene *getScene() const;
     void changeDirection();
     void setAttacking(bool newAttacking);
+
+    bool getAttacking() const;
+
+    bool getStopAnimation() const;
 
 private:
     QPixmap *walkSpriteSheet;
@@ -31,12 +35,15 @@ private:
     int attackCurrentFrame;
     int speed;
     bool attacking;
+    bool attackAnimation;
     bool goingRight;
     std::pair<int,int> spritePosition;
 
 public slots:
     void updatePosition();
 
+signals:
+    void playerLoseHealth();
 
 };
 

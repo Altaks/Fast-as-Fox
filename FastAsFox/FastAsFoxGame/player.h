@@ -16,6 +16,7 @@ private:
     bool fast;
     bool againstWall;
     bool isJumping;
+    int hp;
     QVector2D velocity;
     Fox* animation;
     Map * map;
@@ -45,7 +46,9 @@ public:
 
 signals:
     void playerMoved();
+    void playerDeath();
 public slots:
     void updatePosition();
+    void updateHealthbar();
 };
 #endif //PLAYER_H

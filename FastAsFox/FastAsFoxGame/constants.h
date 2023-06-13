@@ -36,11 +36,9 @@ const double RUNNING_SPEED = 0.1;
 #define LEVEL_TWO     ":/level/level/level2.json"
 // ----------------------------------------------------- //
 
-// ----------< STARTING POSITION CONSTANTS >------------ //
+// ----------< LEVEL POSITION    CONSTANTS >------------ //
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(2,5);
 const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
-
-const QPointF LEVEL_ONE_START_POS_QPF = QPointF(40,10);
 
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,2);
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,8);

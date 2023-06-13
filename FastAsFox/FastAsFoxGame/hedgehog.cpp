@@ -43,9 +43,9 @@ Hedgehog::Hedgehog(QGraphicsScene *parentScene, std::pair<int,int> spawnPosition
 void Hedgehog::updateFrame()
 {
     int msSinceLastFrame = elapsedTimer->elapsed();
-    if (msSinceLastFrame >= 50) {  // 50 ms corresponds to 20 FPS
+    if (msSinceLastFrame >= 25) {  // 25 ms corresponds to 50 FPS
 
-        if(!attacking)
+        if(!attacking and attackCurrentFrame==0)
         {
             QRect frameRect(walkCurrentFrame * HEDGEHOG_WALK_SPRITE_WIDTH, 0, HEDGEHOG_WALK_SPRITE_WIDTH, HEDGEHOG_WALK_SPRITE_HEIGHT);
 
@@ -54,8 +54,9 @@ void Hedgehog::updateFrame()
             else
                 this->setPixmap(walkSpriteSheetBackward->copy(frameRect));
 
+            attackAnimation = false;
+            //this->updatePosition();
             this->update(); // Request redraw
-
             if (walkCurrentFrame == HEDGEHOG_N_OF_FRAME - 1) {
                 walkCurrentFrame = 0;
             } else {
@@ -70,15 +71,16 @@ void Hedgehog::updateFrame()
                 this->setPixmap(attackSpriteSheet->copy(frameRect));
             else
                 this->setPixmap(attackSpriteSheetBackward->copy(frameRect));
-
+            attackAnimation = true;
+            //this->updatePosition();
             this->update(); // Request redraw
 
             if (attackCurrentFrame == HEDGEHOG_N_OF_FRAME - 1) {
                 attackCurrentFrame = 0;
-                attacking=false;
             } else {
                 attackCurrentFrame++;
             }
+
         }
 
 
@@ -96,7 +98,7 @@ std::pair<int, int> Hedgehog::getSpritePosition() const
 void Hedgehog::updatePosition()
 {
     this->spritePosition.first+=speed;
-    if(!attacking)
+    if(!attackAnimation)
         this->setPos(this->spritePosition.first,this->spritePosition.second);
     else
         this->setPos(this->spritePosition.first,this->spritePosition.second - HEDGEHOG_ATTACK_SPRITE_HEIGHT + HEDGEHOG_WALK_SPRITE_HEIGHT);
@@ -116,5 +118,13 @@ void Hedgehog::changeDirection()
 
 void Hedgehog::setAttacking(bool newAttacking)
 {
+    if(newAttacking == true && attacking == false)
+        emit playerLoseHealth();
+
     attacking = newAttacking;
+}
+
+bool Hedgehog::getAttacking() const
+{
+    return attacking;
 }

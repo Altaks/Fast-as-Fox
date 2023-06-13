@@ -22,12 +22,16 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     {
         hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
         connect(hedgehogUpdatePositionClock, &QTimer::timeout, hedgehogs->at(i), &Hedgehog::updatePosition);
+
+        connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, player, &Player::updateHealthbar);
     }
     connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
 
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
 
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
+
+    connect(player, &Player::playerDeath, this, &Level::levelOverByDeath);
 
     playerUpdatePositionClock->start(10); // 100 tps
     hedgehogUpdatePositionClock->start(20); // 50 tps
@@ -90,21 +94,56 @@ void Level::playerCollidesHedgehog()
     {
         if(player->getAnimation()->getIsRunning())
         {
-            if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH and
-                player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH and
-                player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
-                player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
-                    hedgehogs->at(i)->setAttacking(true);
+            if(hedgehogs->at(i)->getAttacking())
+            {
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
+                    player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
+                    player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
+                        hedgehogs->at(i)->setAttacking(true);
+                else
+                        hedgehogs->at(i)->setAttacking(false);
+            }
+            else
+            {
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
+                    player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
+                    player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
+                        hedgehogs->at(i)->setAttacking(true);
+                else
+                        hedgehogs->at(i)->setAttacking(false);
+            }
         }
         else
         {
-            if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH and
-                player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH and
-                player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
-                player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
-                    hedgehogs->at(i)->setAttacking(true);
+            if(hedgehogs->at(i)->getAttacking())
+            {
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
+                    player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
+                    player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
+                        hedgehogs->at(i)->setAttacking(true);
+                else
+                        hedgehogs->at(i)->setAttacking(false);
+            }
+            else
+            {
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
+                    player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
+                    player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
+                        hedgehogs->at(i)->setAttacking(true);
+                else
+                        hedgehogs->at(i)->setAttacking(false);
+            }
         }
     }
+}
+
+void Level::levelOverByDeath()
+{
+   hedgehogs->at(-1);
 }
 
 void Level::loadMap(){

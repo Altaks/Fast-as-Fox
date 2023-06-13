@@ -42,6 +42,7 @@ private slots:
     void updateLCD();
     void changeHedgehogsDirection();
     void playerCollidesHedgehog();
+    void levelOverByDeath();
 
 public:
     Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
