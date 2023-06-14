@@ -2,21 +2,17 @@
 #include "QtCore/qtimer.h"
 #include <QGridLayout>
 
-
-Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
+Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
-    levelCleared = false;
     startingPosition=AStartingPosition;
+    endingObject=AnEndingObject;
     map=AMap;
     player = new Player(map, AStartingPosition);
     player->setInAir(true);
     map->setItsPlayer(player);
     scene = map->getScene();
     mwindow=mainwindow;
-    pair<int,int>endpose(70,5);
-    endingObject=new BerriesPile(scene,endpose,scene->height());
     count=0.00;
-    lcd = new QLCDNumber(mwindow);
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
     hearts = new std::vector<Heart*>();
@@ -122,9 +118,9 @@ void Level::playerCollidesHedgehog()
                     player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
-                        hedgehogs->at(i)->setAttacking(true);
+                    hedgehogs->at(i)->setAttacking(true);
                 else
-                        hedgehogs->at(i)->setAttacking(false);
+                    hedgehogs->at(i)->setAttacking(false);
             }
             else
             {
@@ -132,9 +128,9 @@ void Level::playerCollidesHedgehog()
                     player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
-                        hedgehogs->at(i)->setAttacking(true);
+                    hedgehogs->at(i)->setAttacking(true);
                 else
-                        hedgehogs->at(i)->setAttacking(false);
+                    hedgehogs->at(i)->setAttacking(false);
             }
         }
         else
@@ -145,9 +141,9 @@ void Level::playerCollidesHedgehog()
                     player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
-                        hedgehogs->at(i)->setAttacking(true);
+                    hedgehogs->at(i)->setAttacking(true);
                 else
-                        hedgehogs->at(i)->setAttacking(false);
+                    hedgehogs->at(i)->setAttacking(false);
             }
             else
             {
@@ -155,9 +151,9 @@ void Level::playerCollidesHedgehog()
                     player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
-                        hedgehogs->at(i)->setAttacking(true);
+                    hedgehogs->at(i)->setAttacking(true);
                 else
-                        hedgehogs->at(i)->setAttacking(false);
+                    hedgehogs->at(i)->setAttacking(false);
             }
         }
     }
@@ -171,9 +167,9 @@ void Level::playerCollidesSpike()
             player->getSpritePosition().first < spikes->at(i)->getSpritePosition().first + TILE_SIZE - COLLISION_OFFSET and
             player->getSpritePosition().second > spikes->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
             player->getSpritePosition().second < spikes->at(i)->getSpritePosition().second + TILE_SIZE)
-                spikes->at(i)->setAttacking(true);
+            spikes->at(i)->setAttacking(true);
         else
-                spikes->at(i)->setAttacking(false);
+            spikes->at(i)->setAttacking(false);
     }
 }
 
@@ -216,7 +212,7 @@ void Level::updateHeartPosition()
 {
     for(Heart * heart : *hearts)
     {
-       heart->setPos(map->getView()->mapToScene(heart->getXPosition()*32, 32*10 ));
+        heart->setPos(map->getView()->mapToScene(heart->getXPosition()*32, 32*10 ));
     }
 }
 
@@ -251,34 +247,13 @@ void Level::showScore()
 void Level::initLCD()
 {
     // Initialize the LCD number
+    lcd = new QLCDNumber(mwindow);
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
     // Set LCD size and location
     lcd->setFixedSize(200, 50);
     lcd->display(count);
-    lcd->setFrameStyle(0);  // This removes the frame
-
-    // Setting the color of the LCD to white
-    QPalette lcdpalette;
-    lcdpalette.setColor(QPalette::WindowText, Qt::white);
-    lcdpalette.setColor(QPalette::Window, Qt::black); // set the background color to black
-    lcd->setAutoFillBackground(true); // this will allow the background color to show
-    lcd->setPalette(lcdpalette);
-
-    // Initialize the GIF
-    QLabel *gifLabel = new QLabel(mwindow);
-    QMovie *movie = new QMovie(":/userInterface/sprites/userInterface/sablier.gif");
-
-    gifLabel->setMovie(movie);
-    movie->start();
-
-    // Place the GIF in the top right corner
-    gifLabel->setAlignment(Qt::AlignTop | Qt::AlignRight);
-
-    // If you need to set a specific size for the GIF label
-    gifLabel->setFixedSize(100, 100);
-
 }
 
 void Level::updateLCD()
@@ -292,11 +267,9 @@ void Level::updateLCD()
 
     // Format the number as a string with leading zeroes
     QString str = QString("%1").arg(roundedCount, 5, 'f', 2, '0');
-    lcdCount = str.toStdString();
 
     // Display the formatted string
     lcd->display(str);
-    map->setLcdCount(lcdCount);
 
 }
 
@@ -319,16 +292,7 @@ void Level::start(){
 }
 
 void Level::finish(){
-    if(endingObject->isAtTheEnd(player->getAnimation())==true && !levelCleared){
-       map->displayAnimation();
-       this->levelCleared = true;
-    }
 
-}
-
-string Level::getLcdCount()
-{
-    return lcdCount;
 }
 
 Map * Level::getMap(){
@@ -338,5 +302,3 @@ Map * Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
-
-
