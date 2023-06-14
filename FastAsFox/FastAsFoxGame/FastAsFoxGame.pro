@@ -16,6 +16,7 @@ SOURCES += \
     berry.cpp \
     gameobject.cpp \
     hedgehog.cpp \
+    imageloader.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     constants.h \
     gameobject.h \
     hedgehog.h \
+    imageloader.h \
     mainwindow.h \
     map.h \
     mapsection.h \

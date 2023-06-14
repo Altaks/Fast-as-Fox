@@ -104,6 +104,8 @@ public:
 
     void setLcdCount(const std::string &value);
     void displayAnimation();
+    void handleCameraButton() ;
+    void handleTwitterButton();
 
     std::set<Tile *> * getToCheckForCollision() const;
 
@@ -119,6 +121,7 @@ public slots:
 signals:
     void homeButtonClicked();
     void golevelMenu();
+
 };
 
 
