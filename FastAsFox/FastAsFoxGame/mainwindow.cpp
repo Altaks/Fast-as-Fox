@@ -135,8 +135,8 @@ void MainWindow::handleMenuFinished()
     gameobjectvitefait = new GameObject();
     level = new Level(LEVEL_ONE_START_POS,gameobjectvitefait,map,this);
 
-    //QPixmap background(":/texture/sprites/texture/bg.jpg");
-    //level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    QPixmap background(":/texture/sprites/texture/bg.jpg");
+    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     level->start();
     //connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
