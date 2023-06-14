@@ -36,6 +36,7 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     playerUpdatePositionClock->start(10); // 100 tps
     hedgehogUpdatePositionClock->start(20); // 50 tps
 
+    coinScore = 0;
     coinPositions = {
         {10*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
         {20*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},

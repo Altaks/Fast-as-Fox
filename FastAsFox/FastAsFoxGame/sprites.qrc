@@ -172,4 +172,7 @@
         <file>sprites/hedgehog/hedgehog_attack_sprite_backward.png</file>
         <file>sprites/hedgehog/hedgehog_walk_sprite_backward.png</file>
     </qresource>
+    <qresource prefix="/coin">
+        <file>sprites/coin/coin.png</file>
+    </qresource>
 </RCC>
