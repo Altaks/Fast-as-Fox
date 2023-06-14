@@ -26,6 +26,10 @@ private:
      * @brief y the vertical position of the tile
      */
     int y;
+    Tile * upTile = nullptr;
+    Tile * bottomTile = nullptr;
+    Tile * leftTile = nullptr;
+    Tile * rightTile = nullptr;
 
 public:
     /**
@@ -57,6 +61,14 @@ public:
      * @return y
      */
     int getY() const;
+    Tile *getUpTile() const;
+    void setUpTile(Tile *newUpTile);
+    Tile *getBottomTile() const;
+    void setBottomTile(Tile *newBottomTile);
+    Tile *getLeftTile() const;
+    void setLeftTile(Tile *newLeftTile);
+    Tile *getRightTile() const;
+    void setRightTile(Tile *newRightTile);
 };
 
 #endif // TILE_H
