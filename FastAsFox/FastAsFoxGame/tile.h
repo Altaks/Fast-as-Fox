@@ -11,6 +11,11 @@ private:
     int tileid;
     int x;
     int y;
+    Tile * upTile = nullptr;
+    Tile * bottomTile = nullptr;
+    Tile * leftTile = nullptr;
+    Tile * rightTile = nullptr;
+
 
 public:
     explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
@@ -18,6 +23,15 @@ public:
     int getTileId() const;
     int getX() const;
     int getY() const;
+    Tile *getUpTile() const;
+    void setUpTile(Tile *newUpTile);
+    Tile *getBottomTile() const;
+    void setBottomTile(Tile *newBottomTile);
+    Tile *getLeftTile() const;
+    void setLeftTile(Tile *newLeftTile);
+    Tile *getRightTile() const;
+    void setRightTile(Tile *newRightTile);
+
 };
 
 #endif // TILE_H

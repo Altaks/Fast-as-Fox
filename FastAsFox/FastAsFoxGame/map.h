@@ -1,6 +1,7 @@
 ﻿#ifndef MAP_H
 #define MAP_H
 
+#include <set>
 #include <vector>
 
 #include <QGraphicsScene>
@@ -24,6 +25,8 @@ private:
     std::vector<TileSet *> * tileSets;
     std::map<int, QPixmap*> loadedTiles;
     std::vector<Tile *> * actuallyLoadedTiles = nullptr;
+    std::set<Tile*> * toCheckForCollision = nullptr;
+
     Player* itsPlayer;
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
@@ -35,6 +38,8 @@ public:
     std::vector<Tile *> *getActuallyLoadedTiles() const;
     void setItsPlayer(Player* player);
     Player* getItsPlayer();
+    std::set<Tile *> * getToCheckForCollision() const;
+
 public slots:
     void updateView();
 };
