@@ -53,6 +53,9 @@ private:
     double count;
     Fox* foxSprite;
     Map *map;
+    TileSet * set;
+    MapSection * section;
+    std::vector<TileSet*>* tilesets;
     int height=25;
     int  weight=30;
     Level * level;
@@ -62,7 +65,7 @@ private:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
-
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

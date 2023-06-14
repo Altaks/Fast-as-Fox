@@ -21,6 +21,7 @@
         <file>sprites/texture/TX FX Torch Flame.png</file>
         <file>sprites/texture/TX Tileset Ground.png</file>
         <file>sprites/texture/TX Village Props.png</file>
+        <file>sprites/texture/bg.jpg</file>
         <file>sprites/texture/heart.png</file>
     </qresource>
     <qresource prefix="/userInterface">
@@ -160,12 +161,66 @@
         <file>sprites/userInterface/UI_Flat_Slot_02_Unavailable.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_01.png</file>
         <file>sprites/userInterface/UI_Flat_Textfield_02.png</file>
+        <file>sprites/userInterface/ribbon.png</file>
+        <file>sprites/userInterface/woodboard.png</file>
+        <file>sprites/userInterface/cadrelcd.png</file>
+        <file>sprites/userInterface/sablier.gif</file>
+        <file>sprites/userInterface/homeButton.png</file>
+        <file>sprites/userInterface/camera.png</file>
+        <file>sprites/userInterface/twitter.png</file>
+        <file>sprites/userInterface/cup.png</file>
+        <file>sprites/userInterface/player.jpg</file>
+        <file>sprites/userInterface/player.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>
     </qresource>
     <qresource prefix="/fruits">
         <file>sprites/fruits/fruits.png</file>
+    </qresource>
+    <qresource prefix="/tasDeBaies">
+        <file>sprites/tasDeBaies.png</file>
+    </qresource>
+    <qresource prefix="/particules">
+        <file>sprites/particules/fireworks.gif</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>sprites/sounds/levelFinished.mp3</file>
+        <file>sprites/sounds/fireworks.mp3</file>
+    </qresource>
+    <qresource prefix="/menu">
+        <file>sprites/menu/1.jpg</file>
+        <file>sprites/menu/2.jpg</file>
+        <file>sprites/menu/3.jpg</file>
+        <file>sprites/menu/4.jpg</file>
+        <file>sprites/menu/5.jpg</file>
+        <file>sprites/menu/6.jpg</file>
+        <file>sprites/menu/7.jpg</file>
+        <file>sprites/menu/8.jpg</file>
+        <file>sprites/menu/9.jpg</file>
+        <file>sprites/menu/10.jpg</file>
+        <file>sprites/menu/apple.png</file>
+        <file>sprites/menu/font.TTF</file>
+        <file>sprites/menu/foxwaiting.gif</file>
+        <file>sprites/menu/framelevel.png</file>
+        <file>sprites/menu/framelevelClosed.png</file>
+        <file>sprites/menu/menubg.png</file>
+        <file>sprites/menu/menuSelected.mp3</file>
+        <file>sprites/menu/menuSelection.mp3</file>
+        <file>sprites/menu/pointeurMouse.png</file>
+        <file>sprites/menu/retro.ttf</file>
+        <file>sprites/menu/saga.mp3</file>
+        <file>sprites/menu/saga.jpg</file>
+        <file>sprites/menu/menu.mp3</file>
+        <file>sprites/menu/bgstart.gif</file>
+        <file>sprites/menu/logo.png</file>
+        <file>sprites/menu/oldLogo.png</file>
+        <file>sprites/menu/startcursor.gif</file>
+        <file>sprites/menu/playsound.mp3</file>
+        <file>sprites/menu/peinture.jpg</file>
+        <file>sprites/menu/minifox1.png</file>
+        <file>sprites/menu/minifox2.png</file>
+        <file>sprites/menu/paint.mp3</file>
     </qresource>
     <qresource prefix="/hedgehog">
         <file>sprites/hedgehog/hedgehog_attack_sprite.png</file>

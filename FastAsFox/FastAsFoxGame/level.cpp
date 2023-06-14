@@ -16,6 +16,7 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
     pair<int,int>endpose(70,5);
     endingObject=new BerriesPile(scene,endpose,scene->height());
     count=0.00;
+    lcd = new QLCDNumber(mwindow);
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
     hearts = new std::vector<Heart*>();
@@ -250,7 +251,6 @@ void Level::showScore()
 void Level::initLCD()
 {
     // Initialize the LCD number
-    lcd = new QLCDNumber(mwindow);
     lcd->setDigitCount(7);  // 2 digits for integer part, 1 dot, 2 digits for fraction part
     lcd->setMode(QLCDNumber::Dec);
     lcd->setSegmentStyle(QLCDNumber::Flat);
