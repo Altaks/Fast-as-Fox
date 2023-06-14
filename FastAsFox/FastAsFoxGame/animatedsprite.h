@@ -8,7 +8,6 @@
 
 #include <QGraphicsPixmapItem>
 #include <QElapsedTimer>
-#include <QGraphicsColorizeEffect>
 
 
 
@@ -64,14 +63,6 @@ public:
      * @return scene
      */
     QGraphicsScene *getScene() const;
-        void updatePixmap();
-
-    QColor originalColor;  // Store the original color
-    QGraphicsColorizeEffect* colorizeEffect;  // Store the colorize effec
-
-    void setColor(QColor color) ;
-
-    void resetColor() ;
 
 private:
     /**
@@ -108,14 +99,13 @@ private:
     /**
      * @brief updatePixmap updates the fox's sprite
      */
+    void updatePixmap();
 
 signals:
     /**
      * @brief endOfMapReached signals that the end of the map has been reached by the player
      */
     void endOfMapReached();
-
-
 
 };
 

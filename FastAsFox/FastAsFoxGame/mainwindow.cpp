@@ -13,28 +13,6 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include <QThread>
-// Worker class
-class Worker : public QObject {
-    Q_OBJECT
-
-public:
-    Worker(MenuWidget* widget) : m_menuWidget(widget) {}
-
-public slots:
-    void doWork() {
-        // Heavy lifting operations here
-    }
-
-    void initMenu() {
-        // Init menu operation here
-    }
-
-private:
-    MenuWidget* m_menuWidget;
-};
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

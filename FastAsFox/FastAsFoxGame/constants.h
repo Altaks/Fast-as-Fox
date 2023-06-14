@@ -71,10 +71,6 @@ enum PowerUpType{
     Revive=5,
 };
 
-// ----------------< MENU WIDGET >------------------ //
-
-const short MAX_COLOR=7;
-
 
 #define COLLISION_OFFSET 2
 const int HEDGEHOG_N_OF_FRAME = 4;

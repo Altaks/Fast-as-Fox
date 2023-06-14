@@ -13,13 +13,6 @@
 #include <QTimeLine>
 #include <QPushButton>
 #include <QGraphicsItemAnimation>
-#include <QCoreApplication>
-#include <QApplication>
-#include <QPixmap>
-#include <QDateTime>
-#include <QDebug>
-#include <QDesktopServices>
-
 
 std::vector<MapSection *> Map::getSections() const
 {
@@ -325,75 +318,8 @@ void Map::displayAnimation() {
     homeButton->setPos(buttonPos);
     QObject::connect(homeButton, &LevelMenuButton::golevelMenu, this, &Map::handleLevelMenuButton);
 
-    // load the camera icon
-    QPixmap cameraButtonPixmap(":/userInterface/sprites/userInterface/camera.png");
-
-    // reduce the size of the pixmap if required, for example, by 2
-    QPixmap scaledCameraPixmap = cameraButtonPixmap.scaled(cameraButtonPixmap.size() / 8);
-
-    // create the button
-    LevelMenuButton *cameraButton = new LevelMenuButton(scaledCameraPixmap);
-    this->getScene()->addItem(cameraButton);
-
-    // position the button at the center left of the woodboard and further left
-    QPointF cameraButtonPos = woodboardItem->pos();
-    cameraButtonPos.setX(cameraButtonPos.x() - (woodboardPixmap.width()/2) - (scaledCameraPixmap.width()/2) - 50); // Subtract an additional 50 pixels
-    cameraButtonPos.setY(cameraButtonPos.y() + (woodboardPixmap.height()/2) - (scaledCameraPixmap.height()/2));
-    cameraButton->setPos(cameraButtonPos);
 
 
-    // Connect the cameraButton's signal to the appropriate slot function
-    // This assumes you have a slot function called handleCameraButton
-    QObject::connect(cameraButton, &LevelMenuButton::golevelMenu, this, &Map::handleCameraButton);
-
-    // load the twitter icon
-    QPixmap twitterButtonPixmap(":/userInterface/sprites/userInterface/twitter.png");
-
-    // reduce the size of the pixmap if required, for example, by 2
-    QPixmap scaledTwitterPixmap = twitterButtonPixmap.scaled(twitterButtonPixmap.size() / 8);
-
-    // create the button
-    LevelMenuButton *twitterButton = new LevelMenuButton(scaledTwitterPixmap);
-    this->getScene()->addItem(twitterButton);
-
-    // position the button to the right of the camera button
-    QPointF twitterButtonPos = cameraButton->pos();
-    twitterButtonPos.setX(twitterButtonPos.x() + cameraButton->boundingRect().width() + 180); // Move to the right of the camera button by 10 pixels
-    twitterButton->setPos(twitterButtonPos);
-
-    // Connect the twitterButton's signal to the appropriate slot function
-    // This assumes you have a slot function called handleTwitterButton
-    QObject::connect(twitterButton, &LevelMenuButton::golevelMenu, this, &Map::handleTwitterButton);
-
-}
-
-void Map::handleTwitterButton() {
-    // Open Twitter in the default web browser
-    QDesktopServices::openUrl(QUrl("https://twitter.com"));
-}
-
-
-void Map::handleCameraButton() {
-    // Grab the screenshot
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QPixmap screenshot = screen->grabWindow(QApplication::activeWindow()->winId());
-
-    // Get the application directory path
-    QString appDir = QCoreApplication::applicationDirPath();
-
-    // Define screenshot filename with timestamp
-    QDateTime current = QDateTime::currentDateTime();
-    QString format = "yyyyMMdd_HHmmss";
-    QString timestamp = current.toString(format);
-    QString filename = "/screenshot_" + timestamp + ".png";
-
-    // Save the screenshot to the application directory
-    bool isSaved = screenshot.save(appDir + filename, "PNG");
-
-    if(isSaved)
-        qDebug() << "Screenshot saved at: " << appDir + filename;
-    else
-        qDebug() << "Failed to save screenshot.";
 }
 
 
