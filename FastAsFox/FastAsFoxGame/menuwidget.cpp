@@ -7,12 +7,140 @@
 #include <QGraphicsView>
 #include <QMovie>
 #include <QApplication>
+#include <QElapsedTimer>
+#include <QThreadPool>
 #include <QTimer>
 #include <iostream>
 #include <QPushButton>
 #include <QAudioOutput>
 #include "animatedsprite.h"
 #include <QFile>
+#include <constants.h>
+#include "imageloader.h"
+
+
+/**
+ * @brief Loads and returns a custom font.
+ *
+ * This function loads a custom font from a resource file and returns a QFont object
+ * with the specified font family and size. The font file should be in TrueType format.
+ *
+ * @return The loaded custom font.
+ */
+QFont MenuWidget::loadCustomFont() {
+    int fontId = QFontDatabase::addApplicationFont(":/menu/sprites/menu/font.TTF");
+    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QFont customFont(family, 50);
+    return customFont;
+}
+
+/**
+ * @brief Sets up the title scene with a custom font.
+ *
+ * This function sets up a QGraphicsScene and QGraphicsTextItem to display the title
+ * "Choose your level!" with a custom font. It applies a drop shadow effect to the title
+ * text using QGraphicsDropShadowEffect. The scene is added to a QGraphicsView for visualization.
+ *
+ * @param customFont The custom font to be used for the title text.
+ */
+void MenuWidget::setupTitleScene(QFont customFont) {
+    scene = new QGraphicsScene(this);
+    titleItem = new QGraphicsTextItem("Choose your level!");
+    titleItem->setFont(customFont);
+    titleItem->setDefaultTextColor(Qt::black);
+
+    effect = new QGraphicsDropShadowEffect();
+    effect->setBlurRadius(0);
+    effect->setColor(Qt::white);
+    effect->setOffset(0);
+    titleItem->setGraphicsEffect(effect);
+
+    scene->addItem(titleItem);
+
+    titleView = new QGraphicsView(scene, this);
+    titleView->setAlignment(Qt::AlignCenter);
+    titleView->setStyleSheet("background-color: transparent;");
+    titleView->setFrameShape(QFrame::NoFrame);
+}
+
+void MenuWidget::handleImageReady(int index, QPixmap pixmap) {
+    // This widget holds an image and its information.
+    QWidget* frame = new QWidget;
+    QVBoxLayout* vbox = new QVBoxLayout(frame);
+
+    QLabel* imageLabel = new QLabel;
+    imageLabel->setPixmap(pixmap);
+
+    int fontId = QFontDatabase::addApplicationFont(":/menu/sprites/menu/retro.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QString styleSheet = QString("background-color: black; color: white; font-family: '%1'; font-size: 20px; border-radius: 15px; padding: 10px;").arg(family);
+
+    QLabel* infoLabel = new QLabel(QString("Level: %1\nNumber of coins collected: %2\nRecord time: %3 seconds")
+                                       .arg(index + 1).arg(rand() % 100).arg(rand() % 60));
+    infoLabel->setStyleSheet(styleSheet);
+    infoLabel->setAlignment(Qt::AlignCenter);
+    infoLabel->hide();
+
+    vbox->addWidget(imageLabel);
+    vbox->addWidget(infoLabel);
+
+    int row = index / maxPerRow; // maxPerRow should be defined or passed to this function
+    int col = index % maxPerRow; // maxPerRow should be defined or passed to this function
+    gridLayout->addWidget(frame, row, col);
+
+    // Replace the placeholders with the actual image and info labels
+    m_imageLabels[index] = imageLabel;
+    m_infoLabels[index] = infoLabel;
+
+    // Create a drop shadow effect
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setColor(Qt::white);
+    effect->setBlurRadius(70);
+    effect->setOffset(0);
+    imageLabel->setGraphicsEffect(effect);
+    effect->setEnabled(false); // Initially disabled
+
+    if (index == m_currentActiveFrame) {
+        // Enable effect for the active frame and show its info
+        dynamic_cast<QGraphicsDropShadowEffect*>(m_imageLabels[m_currentActiveFrame]->graphicsEffect())->setEnabled(true);
+        m_infoLabels[m_currentActiveFrame]->show();
+    }
+}
+
+
+void MenuWidget::setupGifAndLayout() {
+    // Add the gif below the images.
+    movie = new QMovie(":/menu/sprites/menu/foxwaiting.gif");
+    gifLabel = new QLabel;
+    gifLabel->setMovie(movie);
+    movie->start();
+
+    // Add the titleView, imageHolder, and gif to the layout.
+    vLayout = new QVBoxLayout(this);
+    vLayout->addWidget(titleView);
+    hLayout = new QHBoxLayout();
+
+    // Push the imageHolder to the center.
+    hLayout->addStretch();
+    hLayout->addWidget(imageHolder);
+    hLayout->addStretch();
+
+    vLayout->addLayout(hLayout);
+
+    // Create a layout for the gif and push the gif to the center.
+    gifLayout = new QHBoxLayout;
+    gifLayout->addStretch();
+    gifLayout->addWidget(gifLabel);
+    gifLayout->addStretch();
+
+    vLayout->addLayout(gifLayout); // Add the layout for the gif below the imageHolder.
+    vLayout->addStretch();
+
+    this->setLayout(vLayout);
+}
+
+
+
 
 
 MenuWidget::MenuWidget(QWidget * parent, int aNumberOfLevelsUnlocked, int isRestart): QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0), playButtonClickedOnce(false), settingsButtonClickedOnce(false) {
@@ -86,144 +214,6 @@ void MenuWidget::paintEvent(QPaintEvent * event) {
     QPainter painter(this);
     painter.drawPixmap(rect(), m_backgroundImage.scaled(size()));
 }
-
-/**
- * @brief Sets up the layout for displaying images in the menu.
- *
- * This function creates a layout with images and their corresponding information
- * for the menu widget. It sets up a QGraphicsScene to display the title, creates
- * image widgets with overlays and labels for each image, and adds them to a grid layout.
- * The function also adds a gif below the images and positions the widgets within the layout.
- */
-void MenuWidget::setupImagesLayout() {
-    int numImages = 10;
-    int maxPerRow = 5;
-    int verticalSpacing = 150;
-
-    // Load the custom font.
-    int fontId = QFontDatabase::addApplicationFont(":/menu/sprites/menu/font.TTF");
-    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    QFont customFont(family, 50);
-
-    // Set up a QGraphicsScene and QGraphicsTextItem for the title with outline.
-    scene = new QGraphicsScene(this);
-    titleItem = new QGraphicsTextItem("Choose your level!");
-    titleItem -> setFont(customFont);
-    titleItem -> setDefaultTextColor(Qt::black);
-
-    // Create a QGraphicsDropShadowEffect for the outline.
-    effect = new QGraphicsDropShadowEffect();
-    effect -> setBlurRadius(0); // No blur for a clean outline.
-    effect -> setColor(Qt::white); // White outline.
-    effect -> setOffset(0); // No offset for an even outline.
-    titleItem -> setGraphicsEffect(effect);
-
-    scene -> addItem(titleItem);
-
-    titleView = new QGraphicsView(scene, this);
-    titleView -> setAlignment(Qt::AlignCenter);
-    titleView -> setStyleSheet("background-color: transparent;");
-    titleView -> setFrameShape(QFrame::NoFrame);
-
-    // This widget holds the images.
-    imageHolder = new QWidget(this);
-    gridLayout = new QGridLayout(imageHolder);
-    gridLayout -> setVerticalSpacing(verticalSpacing);
-
-    for (int i = 0; i < numImages; ++i) {
-        // This widget holds an image and its information.
-        frame = new QWidget;
-        vbox = new QVBoxLayout(frame);
-
-        imageLabel = new QLabel;
-
-        // Load base image.
-        QPixmap baseImage(":/menu/sprites/menu/" + QString::number(i + 1) + ".jpg");
-
-        if (i >= numberOfLevelsUnlocked) {
-            // Convert all images after the first two to grayscale
-            QImage image = baseImage.toImage();
-            image = image.convertToFormat(QImage::Format_Grayscale8);
-            baseImage = QPixmap::fromImage(image);
-        }
-
-        baseImage = baseImage.scaled(QSize(200, 150), Qt::IgnoreAspectRatio);
-
-        // Load overlay image.
-        QPixmap overlayImage(":/menu/sprites/menu/framelevel.png");
-        overlayImage = overlayImage.scaled(QSize(200, 150), Qt::IgnoreAspectRatio);
-
-        // Paint the overlay image on top of the base image.
-        QPainter painter( & baseImage);
-        painter.drawPixmap(0, 0, overlayImage);
-        painter.end();
-
-        // Use the combined image.
-        imageLabel -> setPixmap(baseImage);
-
-        int fontId = QFontDatabase::addApplicationFont(":/menu/sprites/menu/retro.ttf");
-        QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
-        QString styleSheet = QString("background-color: black; color: white; font-family: '%1'; font-size: 20px; border-radius: 15px; padding: 10px;").arg(family);
-
-        infoLabel = new QLabel(QString("Level: %1\nNumber of coins collected: %2\nRecord time: %3 seconds")
-                                   .arg(i + 1).arg(rand() % 100).arg(rand() % 60));
-        infoLabel -> setStyleSheet(styleSheet);
-        infoLabel -> setAlignment(Qt::AlignCenter);
-        infoLabel -> hide();
-
-        vbox -> addWidget(imageLabel);
-        vbox -> addWidget(infoLabel);
-
-        int row = i / maxPerRow;
-        int col = i % maxPerRow;
-        gridLayout -> addWidget(frame, row, col);
-
-        m_imageLabels.append(imageLabel);
-        m_infoLabels.append(infoLabel);
-
-        // Create a drop shadow effect
-        effect = new QGraphicsDropShadowEffect();
-        effect -> setColor(Qt::white);
-        effect -> setBlurRadius(70);
-        effect -> setOffset(0);
-        imageLabel -> setGraphicsEffect(effect);
-        effect -> setEnabled(false); // Initially disabled
-    }
-
-    // Enable effect for the active frame and show its info
-    dynamic_cast < QGraphicsDropShadowEffect * > (m_imageLabels[m_currentActiveFrame] -> graphicsEffect()) -> setEnabled(true);
-    m_infoLabels[m_currentActiveFrame] -> show();
-
-    // Add a gif below the images.
-    movie = new QMovie(":/menu/sprites/menu/foxwaiting.gif");
-    gifLabel = new QLabel;
-    gifLabel -> setMovie(movie);
-    movie -> start();
-
-    // Add the titleView, imageHolder, and gif to the layout.
-    vLayout = new QVBoxLayout(this);
-    vLayout -> addWidget(titleView);
-    hLayout = new QHBoxLayout();
-
-    // Push the imageHolder to the center.
-    hLayout -> addStretch();
-    hLayout -> addWidget(imageHolder);
-    hLayout -> addStretch();
-
-    vLayout -> addLayout(hLayout);
-
-    // Create a layout for the gif and push the gif to the center.
-    gifLayout = new QHBoxLayout;
-    gifLayout -> addStretch();
-    gifLayout -> addWidget(gifLabel);
-    gifLayout -> addStretch();
-
-    vLayout -> addLayout(gifLayout); // Add the layout for the gif below the imageHolder.
-    vLayout -> addStretch();
-
-    this -> setLayout(vLayout);
-}
-
 
 /**
  * @brief Handles key press events for menu navigation and selection.
@@ -723,29 +713,33 @@ void MenuWidget::settingsButtonClicked() {
         QColor("deeppink")
     };
 
-    // Create a single column grid for "minifox1.png"
+    // Create and scale the QPixmap only once, outside the loop
+    QPixmap foxPixmap(":/menu/sprites/menu/minifox1.png");
+    QSize newSize = foxPixmap.size() / 2;
+    QPixmap scaledPixmap = foxPixmap.scaled(newSize, Qt::KeepAspectRatio);
+
+    // Reserve space for colors vector
+    colors.reserve(MAX_COLOR);
+
     for (int i = 0; i < colors.size(); i++) {
-        ClickableLabel*foxLabel = new ClickableLabel(settingsWindow);
-        QPixmap foxPixmap(":/menu/sprites/menu/minifox1.png");
+        ClickableLabel* foxLabel = new ClickableLabel(settingsWindow);
 
-        QSize newSize = foxPixmap.size() / 2;
-        QPixmap scaledPixmap = foxPixmap.scaled(newSize, Qt::KeepAspectRatio);
-
-        colorize = new QGraphicsColorizeEffect;
+        QGraphicsColorizeEffect* colorize = new QGraphicsColorizeEffect;
         colorize -> setColor(colors.at(i));
         foxLabel -> setGraphicsEffect(colorize);
 
+        // Reuse the scaledPixmap for each label
         foxLabel -> setPixmap(scaledPixmap);
         layout -> addWidget(foxLabel, i + 1, 2, Qt::AlignRight);
 
         // Connect the signal emitted when the label is clicked to the slot in the Fox class
-        connect(foxLabel, & ClickableLabel::clicked, fox, [this, color = colors.at(i)]() {
+        connect(foxLabel, &ClickableLabel::clicked, fox, [this, color = colors.at(i)]() {
             this -> fox -> setColor(color);
             this -> selectedColor = color;
             originalClicked = false;
         });
-
     }
+
 
     // Create the "Original" button
     originalButton = new QPushButton("Original", settingsWindow);
@@ -783,6 +777,51 @@ void MenuWidget::settingsButtonClicked() {
     settingsWindow -> setAttribute(Qt::WA_DeleteOnClose);
 }
 
+
+/**
+ * @brief Sets up the layout for displaying images and loads/processes images in parallel.
+ *
+ * This function sets up the layout for displaying images in a grid and loads/processes the images
+ * in parallel using QThreadPool. It also sets up a GIF animation and its layout. The number of
+ * images, maximum images per row, and vertical spacing can be customized.
+ */
+void MenuWidget::setupImagesLayout()
+{
+    QElapsedTimer timer;
+    timer.start();
+    int numImages = 10;          /**< The total number of images. */
+    int maxPerRow = 5;           /**< The maximum number of images per row. */
+    int verticalSpacing = 150;   /**< The vertical spacing between images. */
+
+    QFont customFont = loadCustomFont(); // Load the custom font
+
+    // Setup QGraphicsScene and QGraphicsTextItem for title
+    setupTitleScene(customFont);
+
+    // Preallocate space for the image labels and info labels
+    m_imageLabels = QVector<QLabel*>(numImages, nullptr);
+    m_infoLabels = QVector<QLabel*>(numImages, nullptr);
+
+    // Widget to hold images
+    imageHolder = new QWidget(this);
+    gridLayout = new QGridLayout(imageHolder);
+    gridLayout->setVerticalSpacing(verticalSpacing);
+
+    // Parallelizing the loading and processing of images
+    QThreadPool* pool = QThreadPool::globalInstance();
+
+    for (int i = 0; i < numImages; ++i) {
+        ImageLoader* loader = new ImageLoader(i, numberOfLevelsUnlocked);
+        connect(loader, &ImageLoader::imageReady, this, &MenuWidget::handleImageReady);
+        pool->start(loader);
+    }
+
+    setupGifAndLayout();
+
+    qint64 elapsedTime = timer.elapsed();
+    qDebug() << "The setupImagesLayout function took" << elapsedTime << "milliseconds";
+}
+
 /**
  * @brief Handles the click event of the original button in the settings window.
  *
@@ -804,20 +843,22 @@ void MenuWidget::originalButtonClicked() {
         // Read all lines into a QStringList
         QStringList lines = QString(file.readAll()).split("\n");
 
-        // Make sure there are at least two lines
-        while (lines.size() < 2) {
-            lines << "";
+        // Update the second line with the chosen color
+        if (lines.size() >= 2) {
+            lines[1] = "orange";
+        } else if (lines.size() == 1) {
+            lines.append("orange");
+        } else {
+            lines << "" << "orange"; // For case when there are no lines in file
         }
 
-        // Update the second line with the chosen color
-        lines[1] = "orange";
         qDebug() << "Second line updated to: " << lines[1];
 
         // Clear the file content to prepare for overwriting
         file.resize(0);
 
         // Write all lines back to the file
-        QTextStream out( & file);
+        QTextStream out(&file);
         out << lines.join("\n");
         file.close();
         qDebug() << "Updated lines written to file.";
@@ -825,6 +866,7 @@ void MenuWidget::originalButtonClicked() {
         qDebug() << "Failed to open file for reading and writing: " << file.errorString();
     }
 }
+
 
 /**
  * @brief Handles the click event of the validate button in the settings window.

@@ -53,17 +53,10 @@ private:
     QMediaPlayer * m_selectPlayer;
     QMediaPlayer * m_selectedPlayer;
     QPixmap m_backgroundImage;
-    QList < QLabel * > m_imageLabels;
     QGridLayout * m_layout;
-    int m_currentActiveFrame;
     QLabel * infoLabel;
-    QList < QLabel * > m_infoLabels;
-    QWidget * imageHolder;
-    QLabel * gifLabel;
-    QGraphicsView * titleView;
     QCursor m_customCursor;
     int m_startGrayscaleImage;
-    int numberOfLevelsUnlocked;
     int selectedLevelIndex;
     bool menuSkipped;
     QLabel * cursorLabel;
@@ -88,18 +81,10 @@ private:
     QMediaPlayer * player;
     QAudioOutput * selectOutput;
     QAudioOutput * audioOutput;
-    QGraphicsScene * scene;
-    QGraphicsDropShadowEffect * effect;
-    QGraphicsTextItem * titleItem;
-    QGridLayout * gridLayout;
     QWidget * frame;
     QVBoxLayout * vbox;
 
     QLabel * imageLabel;
-    QMovie * movie;
-    QVBoxLayout * vLayout;
-    QHBoxLayout * hLayout;
-    QHBoxLayout * gifLayout;
     QPropertyAnimation * anim;
     QGraphicsDropShadowEffect * glow;
     QPropertyAnimation * glowAnim;
@@ -108,12 +93,42 @@ private:
     QWidget * selectedFrame;
     QLabel * logoLabel;
 
+
+
+
+
     QGraphicsView * view;
     QSpacerItem * leftSpacer;
     QSpacerItem * rightSpacer;
     QGraphicsColorizeEffect * colorize;
     QVBoxLayout * buttonsLayout;
     QLabel * label;
+    QFont loadCustomFont();
+    void setupTitleScene(QFont customFont);
+    void setupImageHolder();
+    void handleImageReady(int index, QPixmap pixmap);
+    void setupGifAndLayout();
+    QGraphicsScene* scene;
+    QGraphicsTextItem* titleItem;
+    QGraphicsDropShadowEffect* effect;
+    QGraphicsView* titleView;
+
+    QWidget* imageHolder;
+    QGridLayout* gridLayout;
+
+    QList<QLabel*> m_imageLabels;
+    QList<QLabel*> m_infoLabels;
+    int m_currentActiveFrame;
+
+    QLabel* gifLabel;
+    QMovie* movie;
+
+    QVBoxLayout* vLayout;
+    QHBoxLayout* hLayout;
+    QHBoxLayout* gifLayout;
+
+    const int maxPerRow = 5;
+    int numberOfLevelsUnlocked = 2;
 
 private slots:
     void originalButtonClicked();

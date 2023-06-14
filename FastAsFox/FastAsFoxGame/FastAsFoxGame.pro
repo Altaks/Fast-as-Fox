@@ -14,6 +14,7 @@ SOURCES += \
     animatedsprite.cpp \
     berriespile.cpp \
     gameobject.cpp \
+    imageloader.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     collisionside.h \
     constants.h \
     gameobject.h \
+    imageloader.h \
     mainwindow.h \
     map.h \
     mapsection.h \

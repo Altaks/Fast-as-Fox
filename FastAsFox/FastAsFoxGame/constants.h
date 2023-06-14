@@ -45,6 +45,10 @@ const int WALK_SPRITE_WIDTH = 53;
 const int WALK_SPRITE_HEIGHT = 31;
 const int WALK_SPRITE_N_OF_FRAME = 9;
 
+// ----------------< MENU WIDGET >------------------ //
+
+const short MAX_COLOR=7;
+
 
 #define COLLISION_OFFSET 2
 
