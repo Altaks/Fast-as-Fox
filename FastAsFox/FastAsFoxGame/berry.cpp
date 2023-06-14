@@ -29,3 +29,9 @@ void Berry::onCollide(Player * player){
 
 void Berry::applyEffect(Player * player){
 }
+
+PowerUpType Berry::getPowerUpType(){
+    return powerUpType;
+}
+
+

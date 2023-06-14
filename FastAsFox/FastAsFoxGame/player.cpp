@@ -106,6 +106,9 @@ void Player::updatePosition()
 
     std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionSide;
 
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+
     if(this->isOnAir() && this->playerJump){
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
@@ -125,6 +128,15 @@ void Player::updatePosition()
                 vx = walking_speed;
             }
     } //else qWarning("None condition of movement have been implied in position update");
+    else if ((this->isOnGround() and actualBerry->getPowerUpType()==Speed and this->eatBerry()) or (elapsed_seconds.count()<(double)5)){
+        if(this->animation->getIsRunning()){
+            vx = running_speed*1.45; //running speed with the berry speed boost
+        }
+        else {
+            // walking speed with the berry speed boost
+            vx = walking_speed*1.45;
+        }
+    }
     else
     {
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -188,36 +200,6 @@ void Player::updatePosition()
                 //collisionSide.second.emplace(LEFT);
             }
         }
-
- /*       if(collisionCompute.first.has_value()){
-            // switch sur le côté de la tile qui collide avec l'object
-            switch (collisionCompute.first.value()) {
-                case TOP:
-                    this->animation->setIsRunning(false);
-                    onGround = true;
-                    inAir = false;
-                    yPlayer = this->map->getScene()->height()/32 - tileRect.y()/32 + tileRect.height()/32;
-                    collisionSideOld.emplace(TOP);
-                    break;
-                case BOTTOM:
-                    vx = 0.00;
-                    vy = 0.00;
-                    collisionSideOld.emplace(BOTTOM);
-                    break;
-                case LEFT:
-                case RIGHT:
-                    vx = 0.00;
-                    collisionSideOld.emplace(RIGHT);
-                    break;
-                default:
-                    break;
-            }*/
-            /*std::cout << "Tile of ID : " << tile->getTileId() << " "
-                      << "[x:" << tile->getTileItem()->x() << ",y:" << tile->getTileItem()->y() << "]"
-                      << "[pixX:" << tile->getTileItem()->pixmap().rect().x() << ",pixY:" << tile->getTileItem()->pixmap().rect().y() << ",pixW:" << tile->getTileItem()->pixmap().rect().width() <<",pixH:" << tile->getTileItem()->pixmap().rect().height() << "] "
-                      << "collided with player [x:" << this->animation->pixmap().rect().x() << ",y:" << this->animation->pixmap().rect().y() << ",w:" << this->animation->pixmap().rect().width() << ",h:" << this->animation->pixmap().rect().height() << "][xOffset:"<< this->animation->offset().x() <<"yOffset:"<< this->animation->offset().y() <<"][x:"<< this->animation->x() <<"y:"<< this->animation->y() <<"]" << std::endl;
-*/
-         // else qDebug("Didn't collide with tile");
     }
 
     if(!isStillOnGround(collisionSide))
@@ -315,11 +297,16 @@ void Player::playerSlowedDown(){
     }
 }
 
-void Player::eatBerry(){
+bool Player::eatBerry(){
     if (actualBerry==nullptr){
+        return false;
     }
     else {
         actualBerry->applyEffect(this);
+        return true;
+        if(actualBerry->getPowerUpType()==Speed){
+            start = std::chrono::system_clock::now();
+        }
     }
 }
 

@@ -1,10 +1,13 @@
 ﻿#ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
+#include <chrono>
 #include "animatedsprite.h"
 #include "constants.h"
 #include "tile.h"
 #include "map.h"
+
+using namespace std;
 
 class Berry;
 
@@ -50,6 +53,7 @@ private:
 
     int hp; //HP variable for the player hp
 
+    std::chrono::time_point<std::chrono::system_clock> start, end;
 public:
     /**
      * @brief Player Constructor for the player class
@@ -114,7 +118,7 @@ public:
     void playerJumped();
     void playerSlowedDown();
 
-    void eatBerry();// function to eat a berry that the player get
+    bool eatBerry();// function to eat a berry that the player get
     Berry* getActualBerry(); // get for the actual berry stocked in the player
     void setActualBerry(Berry * berries);  //setter for the actualBerry
 

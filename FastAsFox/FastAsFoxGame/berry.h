@@ -23,6 +23,7 @@ public:
     int generateRandom();
     virtual void onCollide(Player *player);
     virtual void applyEffect(Player * player)=0;
+    PowerUpType getPowerUpType();
 };
 
 #endif // BERRY_H

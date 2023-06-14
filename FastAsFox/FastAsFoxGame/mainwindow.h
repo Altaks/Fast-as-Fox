@@ -17,6 +17,7 @@
 #include "map.h"
 #include <QCloseEvent>
 #include "menuwidget.h"
+#include <QMediaPlayer>
 
 class MainWindow : public QMainWindow {
 
