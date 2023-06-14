@@ -12,7 +12,6 @@ Spike::Spike(QGraphicsScene *parentScene, std::pair<int, int> spawnPosition) : Q
     QRect frameRect(0, 0, TILE_SIZE, TILE_SIZE);
     this->setPixmap(spriteSheet->copy(frameRect));
     this->update();
-
 }
 
 const std::pair<int, int> &Spike::getSpritePosition() const

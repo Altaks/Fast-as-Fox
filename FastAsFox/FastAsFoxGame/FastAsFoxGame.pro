@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     animatedsprite.cpp \
     gameobject.cpp \
+    heart.cpp \
     hedgehog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     collisionside.h \
     constants.h \
     gameobject.h \
+    heart.h \
     hedgehog.h \
     mainwindow.h \
     map.h \

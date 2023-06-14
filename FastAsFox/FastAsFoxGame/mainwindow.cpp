@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     gameobjectvitefait = new GameObject();
     level = new Level(LEVEL_ONE_START_POS,gameobjectvitefait,map,this);
     level->start();
-
 }
 
 

@@ -44,6 +44,9 @@ public:
     void playerSlowedDown();
     const std::pair<int, int> &getSpritePosition() const;
 
+
+    int getHp() const;
+
 signals:
     void playerMoved();
     void playerDeath();

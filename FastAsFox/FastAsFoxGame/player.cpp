@@ -26,6 +26,11 @@ const std::pair<int, int> &Player::getSpritePosition() const
     return spritePosition;
 }
 
+int Player::getHp() const
+{
+    return hp;
+}
+
 Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;

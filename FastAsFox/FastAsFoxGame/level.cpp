@@ -1,5 +1,6 @@
 ﻿#include "level.h"
 #include "QtCore/qtimer.h"
+#include <QGridLayout>
 
 Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
@@ -14,33 +15,40 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     count=0.00;
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
+    hearts = new std::vector<Heart*>();
 
+    hearts->push_back(new Heart(scene,HEART_1));
+    hearts->push_back(new Heart(scene,HEART_2));
+    hearts->push_back(new Heart(scene,HEART_3));
+
+    for(Heart * heart : *hearts){
+        heart->setZValue(2);
+    }
 
     QTimer * playerUpdatePositionClock = new QTimer();
     QTimer * hedgehogUpdatePositionClock = new QTimer();
-
 
     for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
     {
         hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
         connect(hedgehogUpdatePositionClock, &QTimer::timeout, hedgehogs->at(i), &Hedgehog::updatePosition);
         connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, player, &Player::updateHealthbar);
+        connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, this, &Level::changeHeartDisplay);
+
     }
 
     for(int i=0; i<SPIKE_LEVEL_ONE_POS_VECTOR.size(); i++)
     {
         spikes->push_back(new Spike(scene,SPIKE_LEVEL_ONE_POS_VECTOR.at(i)));
         connect(spikes->at(i), &Spike::playerLoseHealth, player, &Player::updateHealthbar);
+        connect(spikes->at(i), &Spike::playerLoseHealth, this, &Level::changeHeartDisplay);
     }
 
+    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::updateHeartPosition);
     connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
-
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
-
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesSpike);
-
-
     connect(player, &Player::playerDeath, this, &Level::levelOverByDeath);
 
     playerUpdatePositionClock->start(10); // 100 tps
@@ -167,7 +175,43 @@ void Level::playerCollidesSpike()
 
 void Level::levelOverByDeath()
 {
-   hedgehogs->at(-1);
+    hedgehogs->at(-1);
+}
+
+void Level::changeHeartDisplay()
+{
+    if(player->getHp() == 3)
+    {
+        hearts->at(2)->updateHeart(true);
+        hearts->at(1)->updateHeart(true);
+        hearts->at(0)->updateHeart(true);
+    }
+    else if(player->getHp() == 2)
+    {
+        hearts->at(2)->updateHeart(false);
+        hearts->at(1)->updateHeart(true);
+        hearts->at(0)->updateHeart(true);
+    }
+    else if(player->getHp() == 1)
+    {
+        hearts->at(2)->updateHeart(false);
+        hearts->at(1)->updateHeart(false);
+        hearts->at(0)->updateHeart(true);
+    }
+    else if(player->getHp() == 0)
+    {
+        hearts->at(2)->updateHeart(false);
+        hearts->at(1)->updateHeart(false);
+        hearts->at(0)->updateHeart(false);
+    }
+}
+
+void Level::updateHeartPosition()
+{
+    for(Heart * heart : *hearts)
+    {
+       heart->setPos(map->getView()->mapToScene(heart->getXPosition()*32, 32*10 ));
+    }
 }
 
 void Level::loadMap(){
@@ -224,6 +268,7 @@ void Level::updateLCD()
 
     // Display the formatted string
     lcd->display(str);
+
 }
 
 void Level::updateLCDPosition()
@@ -232,7 +277,7 @@ void Level::updateLCDPosition()
     lcd->move(mwindow->width() - lcd->width() - margin, margin);
 }
 
-void Level::showUI()
+void Level::showLCD()
 {
     showScore();
 }
@@ -241,7 +286,7 @@ void Level::start(){
     loadMap();
     showMap();
     initLCD();
-    showUI();
+    showLCD();
 }
 
 void Level::finish(){

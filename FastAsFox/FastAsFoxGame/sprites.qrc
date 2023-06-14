@@ -21,6 +21,7 @@
         <file>sprites/texture/TX FX Torch Flame.png</file>
         <file>sprites/texture/TX Tileset Ground.png</file>
         <file>sprites/texture/TX Village Props.png</file>
+        <file>sprites/texture/heart.png</file>
     </qresource>
     <qresource prefix="/userInterface">
         <file>sprites/userInterface/Spritesheet_UI_Flat.png</file>

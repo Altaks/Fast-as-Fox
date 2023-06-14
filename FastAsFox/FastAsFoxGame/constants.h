@@ -33,7 +33,11 @@ const double RUNNING_SPEED = 0.06;
 #define SPIKE         ":/spike/sprites/spike/spikes.png"
 
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
+
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
+
+#define HEART         ":/texture/sprites/texture/heart.png"
+
 #define LEVEL_ONE     ":/level/level/level1.json"
 #define LEVEL_TWO     ":/level/level/level2.json"
 // ----------------------------------------------------- //
@@ -48,8 +52,9 @@ const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_
 
 const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,4);
 const std::pair<int,int> SPIKE_LEVEL_ONE_POS2 = std::pair(60,5);
-
 const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
+
+
 
 // ----------------------------------------------------- //
 
@@ -85,6 +90,12 @@ const int HEDGEHOG_N_OF_FRAME = 4;
 #define AUDIO9       ""
 #define AUDIO10      ""
 // ----------------------------------------------------- //
+
+
+const int HEART_1 = 2;
+const int HEART_2 = 3;
+const int HEART_3 = 4;
+
 
 #define COLLISION_OFFSET 8
 
