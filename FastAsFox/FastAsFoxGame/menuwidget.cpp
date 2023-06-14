@@ -62,7 +62,18 @@ void MenuWidget::setupTitleScene(QFont customFont) {
     titleView->setStyleSheet("background-color: transparent;");
     titleView->setFrameShape(QFrame::NoFrame);
 }
-
+/**
+ * @brief Handles the completion of image loading and prepares the image and its information for display.
+ *
+ * This function is called when an image is ready to be displayed. It creates a widget to hold the image and its
+ * information, sets up labels for the image and information, and adds them to the layout. It applies a drop shadow
+ * effect to the image label and handles the activation of the current active frame by enabling the drop shadow
+ * effect and showing the info label. The function assumes that the layout (gridLayout) and the placeholders for
+ * image and info labels (m_imageLabels, m_infoLabels) have been initialized.
+ *
+ * @param index The index of the image being handled.
+ * @param pixmap The QPixmap object representing the image.
+ */
 void MenuWidget::handleImageReady(int index, QPixmap pixmap) {
     // This widget holds an image and its information.
     QWidget* frame = new QWidget;
@@ -107,7 +118,14 @@ void MenuWidget::handleImageReady(int index, QPixmap pixmap) {
     }
 }
 
-
+/**
+ * @brief Sets up the GIF animation and the layout of widgets.
+ *
+ * This function sets up a GIF animation using QMovie and adds it to the layout below the imageHolder widget.
+ * It arranges the titleView, imageHolder, and gifLabel widgets within the layout using QVBoxLayout and QHBoxLayout.
+ * The imageHolder should be initialized before calling this function. The function assumes that the layout (vLayout)
+ * and the placeholders for additional layouts (hLayout, gifLayout) have been initialized.
+ */
 void MenuWidget::setupGifAndLayout() {
     // Add the gif below the images.
     movie = new QMovie(":/menu/sprites/menu/foxwaiting.gif");
