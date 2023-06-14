@@ -85,7 +85,7 @@ void PowerUp::applyEffect(Player *player){
         }
         case Revive:
         {
-            level->getPlayer()->setRevival();
+            player->addHP();
             break;
         }
         default:

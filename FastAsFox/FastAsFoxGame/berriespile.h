@@ -17,7 +17,7 @@ private:
     QGraphicsScene * scene;
     pair<int,int> endPose;
 public:
-    BerriesPile(QGraphicsScene * theScene, pair<int,int> endPose, int sectionHeight);
+    BerriesPile(QGraphicsScene * theScene, pair<int,int> endPos, int sectionHeight);
 public slots:
     bool isAtTheEnd(Fox* fox);
 };

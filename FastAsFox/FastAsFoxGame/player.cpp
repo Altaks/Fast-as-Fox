@@ -335,11 +335,11 @@ void Player::setActualBerry(Berry * berries){
     actualBerry=berries;
 }
 
-void Player::setRevival(){
-    revivalEnabled=!revivalEnabled;
+void Player::addHP(){
+    hp+=1;
 }
 
-bool Player::getRevival(){
-    return revivalEnabled;
+int Player::getHP(){
+    return hp;
 }
 

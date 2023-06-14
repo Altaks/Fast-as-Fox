@@ -46,9 +46,10 @@ private:
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
 
-    bool revivalEnabled=false; // boolean if the revival berrys got eaten
-
     Berry * actualBerry; //the berry he got
+
+    int hp; //HP variable for the player hp
+
 public:
     /**
      * @brief Player Constructor for the player class
@@ -117,8 +118,8 @@ public:
     Berry* getActualBerry(); // get for the actual berry stocked in the player
     void setActualBerry(Berry * berries);  //setter for the actualBerry
 
-    void setRevival(); //set the invert of the actual value for the revival
-    bool getRevival(); // getter for the revival disponibility
+    void addHP(); //set the invert of the actual value for the revival
+    int getHP(); // getter for the revival disponibility
 
 signals:
     void playerMoved();

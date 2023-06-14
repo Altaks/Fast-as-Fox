@@ -7,8 +7,6 @@
 #include <QMainWindow>
 #include <QLCDNumber>
 
-
-
 using namespace std;
 
 #include "player.h"
