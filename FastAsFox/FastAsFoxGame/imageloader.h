@@ -9,6 +9,7 @@
 #include <QGraphicsView>
 #include <QMovie>
 #include <QApplication>
+#include <QThreadPool>
 #include <QTimer>
 #include <iostream>
 #include <QPushButton>
@@ -16,7 +17,6 @@
 #include <QFile>
 #include <constants.h>
 #include <QElapsedTimer>
-#include <QThreadPool>
 
 /**
  * @class ImageLoader
