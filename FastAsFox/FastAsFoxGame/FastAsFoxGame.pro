@@ -23,7 +23,8 @@ SOURCES += \
     spike.cpp \
     tile.cpp \
     tileset.cpp \
-    level.cpp
+    level.cpp \
+    hedgehog.cpp
 
 HEADERS += \
     animatedsprite.h \
@@ -40,7 +41,8 @@ HEADERS += \
     tile.h \
     tileset.h \
     mainwindow.h \
-    level.h
+    level.h \
+    hedgehog.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

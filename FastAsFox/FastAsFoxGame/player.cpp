@@ -111,17 +111,17 @@ void Player::updatePosition()
 
         double t = time.count();
 
-        vx = V0 * sin(alpha);
-        vy = - gravity * t + V0 * cos(alpha);
+        vx = V0 * sin(ALPHA);
+        vy = - GRAVITY * t + V0 * cos(ALPHA);
     }
 
     else if(this->isOnGround()){
             if(this->animation->getIsRunning()){
-                vx = running_speed;
+                vx = RUNNING_SPEED;
             }
             else {
                 // walking by default
-                vx = walking_speed;
+                vx = WALKING_SPEED;
             }
     } //else qWarning("None condition of movement have been implied in position update");
     else
@@ -132,10 +132,10 @@ void Player::updatePosition()
         double t = time.count();
 
         if(this->animation->getIsRunning())
-            vx = running_speed * sin(alpha);
+            vx = RUNNING_SPEED * sin(ALPHA);
         else
-            vx = walking_speed * sin(alpha);
-        vy = - gravity * t + walking_speed * cos(alpha);
+            vx = WALKING_SPEED * sin(ALPHA);
+        vy = - GRAVITY * t + WALKING_SPEED * cos(ALPHA);
     }
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
@@ -304,6 +304,18 @@ void Player::updatePosition()
         }
     }
 
+    void Player::updateHealthbar()
+    {
+        this->hp--;
+        std::cout << hp << std::endl;
+        if(hp==0)
+        {
+            emit playerDeath();
+
+        }
+    }
+
+
     void Player::updateAnimation()
     {
 
@@ -315,3 +327,9 @@ void Player::updatePosition()
             this->getAnimation()->setIsRunning(false);
         }
     }
+
+    const std::pair<int, int> &Player::getSpritePosition() const
+    {
+        return spritePosition;
+    }
+
