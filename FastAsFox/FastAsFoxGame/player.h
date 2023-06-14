@@ -47,6 +47,8 @@ public:
 
     int getHp() const;
 
+    void setHp(int newHp);
+
 signals:
     void playerMoved();
     void playerDeath();

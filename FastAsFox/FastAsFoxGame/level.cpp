@@ -175,7 +175,9 @@ void Level::playerCollidesSpike()
 
 void Level::levelOverByDeath()
 {
-    hedgehogs->at(-1);
+    player->getAnimation()->setPos(startingPosition.first*32, map->getScene()->height() - startingPosition.second*32);
+    player->setHp(3);
+    changeHeartDisplay();
 }
 
 void Level::changeHeartDisplay()
