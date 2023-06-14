@@ -213,4 +213,7 @@
         <file>sprites/menu/startcursor.gif</file>
         <file>sprites/menu/playsound.mp3</file>
     </qresource>
+    <qresource prefix="/spike">
+        <file>sprites/spike/spikes.png</file>
+    </qresource>
 </RCC>

@@ -20,6 +20,7 @@ SOURCES += \
     mapsection.cpp \
     menuwidget.cpp \
     player.cpp \
+    spike.cpp \
     tile.cpp \
     tileset.cpp \
     level.cpp
@@ -35,6 +36,7 @@ HEADERS += \
     mapsection.h \
     menuwidget.h \
     player.h \
+    spike.h \
     tile.h \
     tileset.h \
     mainwindow.h \

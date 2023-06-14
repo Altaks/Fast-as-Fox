@@ -1,6 +1,8 @@
 ﻿#ifndef LEVEL_H
 #define LEVEL_H
 
+#include "hedgehog.h"
+#include "spike.h"
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
@@ -75,12 +77,15 @@ private:
      * @brief timer the value of the timer
      */
     QTimer * timer;
-    std::string lcdCount;
-
-
+    std::vector<Hedgehog *>* hedgehogs;
+    std::vector<Spike *>* spikes;
 
 private slots:
     void updateLCD();
+    void changeHedgehogsDirection();
+    void playerCollidesHedgehog();
+    void playerCollidesSpike();
+    void levelOverByDeath();
 
 public:
     /**
@@ -125,6 +130,9 @@ public:
     QGraphicsView* getView() const;
 
     bool levelCleared;
+
+    std::string lcdCount;
+
 
 public slots:
     void finish();
