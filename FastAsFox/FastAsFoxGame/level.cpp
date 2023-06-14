@@ -35,12 +35,72 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
 
     playerUpdatePositionClock->start(10); // 100 tps
     hedgehogUpdatePositionClock->start(20); // 50 tps
+
+    coinPositions = {
+        {10*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
+        {20*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
+        {30*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
+        {40*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-10)*TILE_SIZE},
+        {50*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
+        {57*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE},
+        {65*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE}
+    };
+    addCoinsToLevel();
 }
 
 Level::~Level(){
     delete player;
     delete endingObject;
     delete map;
+    // Iterate over the coins and delete them
+    for (Coin* coin : levelCoins) {
+        delete coin;
+    }
+}
+
+void Level::addCoinsToLevel()
+{
+    // Create and add coins to the vector
+    for (std::vector<std::pair<int, int>>::const_iterator it = coinPositions.begin(); it != coinPositions.end(); ++it)
+    {
+        std::pair<int, int> position = *it;
+        Coin* coin = new Coin(scene, position, map->getSections().at(0)->getSectionHeight());
+
+        // Connect the coinCollected() signal from Coin to the handleCoinCollected() slot in Level
+        connect(coin, &Coin::coinCollected, this, &Level::handleCoinCollected);
+
+        levelCoins.push_back(coin);
+
+        coin->setPos(it->first,it->second);
+
+        scene->addItem(coin);
+
+        coin->setPixmap(coin->pixmap().scaled(32,32));
+        coin->setZValue(1);
+        coin->update();
+    }
+}
+
+int Level::getCoinScore() const
+{
+    return coinScore;
+}
+
+void Level::setCoinScore(int newCoinScore)
+{
+    coinScore = newCoinScore;
+}
+
+void Level::increaseCoinScore(int amount)
+{
+    coinLabel->setText("Coins: " + QString::number(amount));
+    scene->update();
+}
+
+void Level::handleCoinCollected()
+{
+    coinScore++;
+    increaseCoinScore(coinScore); // Update the coin score label
 }
 
 Player *Level::getPlayer() const

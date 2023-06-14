@@ -43,6 +43,11 @@ std::vector<Tile *> *Map::getActuallyLoadedTiles() const
     return actuallyLoadedTiles;
 }
 
+std::vector<MapSection *> Map::getSections() const
+{
+    return sections;
+}
+
 void Map::setItsPlayer(Player* player)
 {
     itsPlayer = player;

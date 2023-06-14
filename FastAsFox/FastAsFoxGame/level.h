@@ -1,20 +1,19 @@
 ﻿#ifndef LEVEL_H
 #define LEVEL_H
 
-#include "hedgehog.h"
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
 #include <QMainWindow>
 #include <QLCDNumber>
 
-
-
 using namespace std;
 
 #include "player.h"
 #include "gameobject.h"
 #include "map.h"
+#include "coin.h"
+#include "hedgehog.h"
 
 
 class Level : public QObject
@@ -37,12 +36,17 @@ private:
     double count;
     QTimer * timer;
     std::vector<Hedgehog *>* hedgehogs;
+    std::vector<Coin*> levelCoins;
+    std::vector<std::pair<int, int>> coinPositions;
+    int coinScore;
+    QLabel* coinLabel;
 
 private slots:
     void updateLCD();
     void changeHedgehogsDirection();
     void playerCollidesHedgehog();
     void levelOverByDeath();
+    void handleCoinCollected();
 
 public:
     Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
@@ -56,6 +60,10 @@ public:
     Player *getPlayer() const;
     QGraphicsScene *getScene() const;
     QGraphicsView *getView() const;
+    void setCoinScore(int newCoinScore);
+    int getCoinScore() const;
+    void increaseCoinScore(int amount);
+    void addCoinsToLevel();
 };
 
 

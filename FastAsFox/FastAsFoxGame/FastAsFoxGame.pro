@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     animatedsprite.cpp \
+    coin.cpp \
     gameobject.cpp \
     hedgehog.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    coin.h \
     collisionside.h \
     constants.h \
     gameobject.h \

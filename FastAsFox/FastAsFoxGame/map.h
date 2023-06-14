@@ -34,6 +34,7 @@ public:
     QGraphicsScene * getScene();
     QGraphicsView * getView();
     std::vector<Tile *> *getActuallyLoadedTiles() const;
+    std::vector<MapSection *> getSections() const;
     void setItsPlayer(Player* player);
     Player* getItsPlayer();
     std::set<Tile *> * getToCheckForCollision() const;
