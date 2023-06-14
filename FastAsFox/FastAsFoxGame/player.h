@@ -47,19 +47,13 @@ private:
      * @brief lastJumpTimeStamp stores the time the player jumped for the last time
      */
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
-
     std::pair<int, int> spawnCoords;
-
-
-    bool againstWall;
-    bool isJumping;
 
     Berry * actualBerry; //the berry he got
 
     int hp; //HP variable for the player hp
 
     std::chrono::time_point<std::chrono::system_clock> start, end;
-    std::pair<int,int> spritePosition;
 public:
     /**
      * @brief Player Constructor for the player class
@@ -130,16 +124,17 @@ public:
 
     void addHP(); //set the invert of the actual value for the revival
     int getHP(); // getter for the revival disponibility
-    const std::pair<int, int> &getSpritePosition() const;
 
 signals:
     void playerMoved();
-    void playerDeath();
 public slots:
     /**
      * @brief updatePosition updates the player's potision
      */
     void updatePosition();
-    void updateHealthbar();
+    /**
+     * @brief updateAnimation update the player's animation
+     */
+    void updateAnimation();
 };
 #endif //PLAYER_H

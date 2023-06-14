@@ -2,7 +2,7 @@
 #define MAP_H
 
 #include <vector>
-#include <set>
+
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -51,9 +51,6 @@ private:
      * @brief itsPlayer the player that will venture the map
      */
     Player* itsPlayer;
-    
-    std::set<Tile*> * toCheckForCollision = nullptr;
-
     std::string lcdCount;
     QPushButton *homeButton;
 public:
@@ -105,7 +102,6 @@ public:
     void setLcdCount(const std::string &value);
     void displayAnimation();
 
-    std::set<Tile *> * getToCheckForCollision() const;
 
 public slots:
     /**

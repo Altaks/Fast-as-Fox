@@ -1,7 +1,6 @@
 ﻿#ifndef LEVEL_H
 #define LEVEL_H
 
-#include "hedgehog.h"
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
@@ -77,13 +76,9 @@ private:
     std::string lcdCount;
 
 
-    std::vector<Hedgehog *>* hedgehogs;
 
 private slots:
     void updateLCD();
-    void changeHedgehogsDirection();
-    void playerCollidesHedgehog();
-    void levelOverByDeath();
 
 public:
     /**
