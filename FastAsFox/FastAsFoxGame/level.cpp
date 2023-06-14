@@ -2,16 +2,19 @@
 #include "QtCore/qtimer.h"
 #include <QGridLayout>
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
+
+Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
+    levelCleared = false;
     startingPosition=AStartingPosition;
-    endingObject=AnEndingObject;
     map=AMap;
     player = new Player(map, AStartingPosition);
     player->setInAir(true);
     map->setItsPlayer(player);
     scene = map->getScene();
     mwindow=mainwindow;
+    pair<int,int>endpose(70,5);
+    endingObject=new BerriesPile(scene,endpose,scene->height());
     count=0.00;
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
@@ -254,6 +257,28 @@ void Level::initLCD()
     // Set LCD size and location
     lcd->setFixedSize(200, 50);
     lcd->display(count);
+    lcd->setFrameStyle(0);  // This removes the frame
+
+    // Setting the color of the LCD to white
+    QPalette lcdpalette;
+    lcdpalette.setColor(QPalette::WindowText, Qt::white);
+    lcdpalette.setColor(QPalette::Window, Qt::black); // set the background color to black
+    lcd->setAutoFillBackground(true); // this will allow the background color to show
+    lcd->setPalette(lcdpalette);
+
+    // Initialize the GIF
+    QLabel *gifLabel = new QLabel(mwindow);
+    QMovie *movie = new QMovie(":/userInterface/sprites/userInterface/sablier.gif");
+
+    gifLabel->setMovie(movie);
+    movie->start();
+
+    // Place the GIF in the top right corner
+    gifLabel->setAlignment(Qt::AlignTop | Qt::AlignRight);
+
+    // If you need to set a specific size for the GIF label
+    gifLabel->setFixedSize(100, 100);
+
 }
 
 void Level::updateLCD()
@@ -267,9 +292,11 @@ void Level::updateLCD()
 
     // Format the number as a string with leading zeroes
     QString str = QString("%1").arg(roundedCount, 5, 'f', 2, '0');
+    lcdCount = str.toStdString();
 
     // Display the formatted string
     lcd->display(str);
+    map->setLcdCount(lcdCount);
 
 }
 
@@ -292,7 +319,16 @@ void Level::start(){
 }
 
 void Level::finish(){
+    if(endingObject->isAtTheEnd(player->getAnimation())==true && !levelCleared){
+       map->displayAnimation();
+       this->levelCleared = true;
+    }
 
+}
+
+string Level::getLcdCount()
+{
+    return lcdCount;
 }
 
 Map * Level::getMap(){
@@ -302,3 +338,5 @@ Map * Level::getMap(){
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
 }
+
+

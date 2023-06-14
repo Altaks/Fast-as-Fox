@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,13 +12,21 @@ CONFIG += c++17
 
 SOURCES += \
     animatedsprite.cpp \
+    animationhelper.cpp \
+    berriespile.cpp \
+    clickablelabel.cpp \
     gameobject.cpp \
+    gifitem.cpp \
     heart.cpp \
     hedgehog.cpp \
+    imageloader.cpp \
+    levelmenubutton.cpp \
+    logolabel.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
     mapsection.cpp \
+    menuwidget.cpp \
     player.cpp \
     spike.cpp \
     tile.cpp \
@@ -27,14 +35,22 @@ SOURCES += \
 
 HEADERS += \
     animatedsprite.h \
+    animationhelper.h \
+    berriespile.h \
+    clickablelabel.h \
     collisionside.h \
     constants.h \
     gameobject.h \
+    gifitem.h \
     heart.h \
     hedgehog.h \
+    imageloader.h \
+    levelmenubutton.h \
+    logolabel.h \
     mainwindow.h \
     map.h \
     mapsection.h \
+    menuwidget.h \
     player.h \
     spike.h \
     tile.h \

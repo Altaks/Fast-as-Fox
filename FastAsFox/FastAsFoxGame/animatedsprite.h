@@ -4,6 +4,7 @@
 #include "QtGui/qpixmap.h"
 #include <QElapsedTimer>
 #include "gameobject.h"
+#include "qgraphicseffect.h"
 #include <QGraphicsPixmapItem>
 
 #include <QGraphicsPixmapItem>
@@ -25,6 +26,15 @@ public:
     void setIsRunning(bool newIsRunning);
 
     QGraphicsScene *getScene() const;
+    void updatePixmap();
+
+    QColor originalColor;  // Store the original color
+    QGraphicsColorizeEffect* colorizeEffect;  // Store the colorize effect
+
+    void setColor(QColor color) ;
+
+    void resetColor() ;
+
 
 private:
     QPixmap *walkSpriteSheet;
@@ -37,7 +47,6 @@ private:
     bool isRunning;
     std::pair<int,int> spritePosition;
     std::pair<int,int> spriteVelocity;
-    void updatePixmap();
 
 signals:
     void endOfMapReached();

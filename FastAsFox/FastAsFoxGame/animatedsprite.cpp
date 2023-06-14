@@ -1,9 +1,12 @@
 ﻿#include "animatedsprite.h"
 #include "constants.h"
+#include <QApplication>
+#include "qgraphicseffect.h"
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QDebug>
+#include <QFile>
 
 Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
       walkSpriteSheet(new QPixmap(":/fox/sprites/fox/walk.png")),
@@ -26,6 +29,40 @@ Fox::Fox(QGraphicsScene *parentScene) : QGraphicsPixmapItem(nullptr),
     connect(timer, &QTimer::timeout, this, &Fox::updateFrame);
     timer->start(50);
     elapsedTimer->start();
+
+    colorizeEffect = new QGraphicsColorizeEffect(this);
+    this->setGraphicsEffect(colorizeEffect);
+
+    // Prepare file path
+    QFile file(QCoreApplication::applicationDirPath() + "/color.txt");
+
+    // Open the file with read/write permissions, this will create the file if it doesn't exist
+    if(file.open(QIODevice::ReadWrite)) {
+        qDebug() << "File opened for reading and writing.";
+
+        // Read all lines into a QStringList
+        QStringList lines = QString(file.readAll()).split("\n");
+        file.close();
+
+        // Make sure there are at least two lines
+        while(lines.size() < 2) {
+            lines << "";
+        }
+
+        // Retrieve the color from the second line
+        QString colorName = lines[1].trimmed();
+        if(colorName.isEmpty() || colorName.toLower() == "orange") {
+            resetColor();
+            qDebug() << "Color reset to orange.";
+        } else {
+            QColor color(colorName);
+            setColor(color);
+            qDebug() << "Color set to: " << colorName;
+        }
+    } else {
+        qDebug() << "Failed to open file for reading and writing: " << file.errorString();
+    }
+
 }
 
 void Fox::updateFrame() {
@@ -93,4 +130,15 @@ QGraphicsScene *Fox::getScene() const
 {
     return scene;
 }
+
+void Fox::setColor(QColor color) {
+    colorizeEffect->setColor(color);
+    colorizeEffect->setEnabled(true);  // Enable the filter
+}
+
+void Fox::resetColor() {
+    colorizeEffect->setColor(originalColor);
+    colorizeEffect->setEnabled(false);  // Disable the filter
+}
+
 

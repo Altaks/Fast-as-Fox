@@ -15,23 +15,29 @@
 #include <QKeyEvent>
 #include "level.h"
 #include "map.h"
+#include "menuwidget.h"
+#include <QCoreApplication>
+#include <QProcess>
+#include <QKeyEvent>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
 
-/*enum class FruitType {
-    Apple,
-    Grape,
-    Cherry,
-    Lemon,
-    Peach,
-    // Add other fruit types here as needed
-};*/
+#include <QThread>
+
 
 class MainWindow : public QMainWindow {
 
 public:
     MainWindow(QWidget *parent = nullptr);
     //void displayFruit(FruitType fruitType, int versionId, int x, int y);
-    void keyPressEvent(QKeyEvent * event);
+    void keyPressEvent(QKeyEvent *event);
     void showEndOfMapMessage();
+    void handleLevelSelection(int levelIndex);
+    void writeToFile(bool value);
+    void handleLevelMenu();
+    void handleMenuFinished();
+
 
 private slots:
     void addText();
@@ -50,9 +56,13 @@ private:
     int height=25;
     int  weight=30;
     Level * level;
+    MenuWidget *m_menuWidget;
+    bool isRestarting;
+
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+
 };
 
 #endif // MAINWINDOW_H

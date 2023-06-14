@@ -96,6 +96,8 @@ const int HEART_1 = 2;
 const int HEART_2 = 3;
 const int HEART_3 = 4;
 
+const short MAX_COLOR=7;
+
 
 #define COLLISION_OFFSET 8
 
