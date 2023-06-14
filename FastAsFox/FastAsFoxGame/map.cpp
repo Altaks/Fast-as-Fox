@@ -155,7 +155,7 @@ void Map::load(){
                this->toCheckForCollision->emplace(tile);
            }
        }
-
+qDebug() << "Map loaded";
        return;
 
 }

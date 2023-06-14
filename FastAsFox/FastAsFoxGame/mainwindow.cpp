@@ -20,6 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 
+    int fontId = QFontDatabase::addApplicationFont(":/font/sprites/font/font.TTF");
+    QString fontFamily;
+    if (fontId != -1) {
+        fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    }
+
+
     level = nullptr;
     int nbMode = 4; // Default value
 
@@ -49,11 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
     connect(m_menuWidget, &MenuWidget::finished, this, &MainWindow::handleMenuFinished);
 
-    int fontId = QFontDatabase::addApplicationFont(":/font/sprites/font/font.TTF");
-    QString fontFamily;
-    if (fontId != -1) {
-        fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    }
 
     // Skipping the menu
     //m_menuWidget->skipMenu();
@@ -136,8 +138,8 @@ void MainWindow::handleMenuFinished()
     //level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     level->start();
-    connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
-    QObject::connect(map, &Map::golevelMenu, this, &MainWindow::handleLevelMenu);
+    //connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+    //QObject::connect(map, &Map::golevelMenu, this, &MainWindow::handleLevelMenu);
 
 }
 
