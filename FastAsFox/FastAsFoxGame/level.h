@@ -17,6 +17,7 @@ using namespace std;
 #include "player.h"
 #include "map.h"
 #include "heart.h"
+#include "hublot.h"
 
 
 class Level : public QObject
@@ -36,7 +37,6 @@ private:
     QGraphicsScene * scene;
     QGraphicsView * view;
     QMainWindow * mwindow;
-    QLCDNumber * lcd;
     double count;
     QTimer * timer;
     std::vector<Hedgehog *>* hedgehogs;
@@ -45,6 +45,11 @@ private:
     bool levelCleared;
     QTimer * playerUpdatePositionClock;
     QTimer * hedgehogUpdatePositionClock;
+    Hublot * hublot;
+    QLCDNumber* lcd;
+    QTime* time;
+    QTimer* timerLCD;
+
 
 private slots:
     void updateLCD();
@@ -70,6 +75,7 @@ public:
     QGraphicsScene *getScene() const;
     QGraphicsView *getView() const;
     bool getLevelCleared() const;
+    void updateHublot();
 };
 
 

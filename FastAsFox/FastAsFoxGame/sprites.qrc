@@ -172,6 +172,8 @@
         <file>sprites/userInterface/player.jpg</file>
         <file>sprites/userInterface/player.png</file>
         <file>sprites/userInterface/postit.png</file>
+        <file>sprites/userInterface/hublot.png</file>
+        <file>sprites/userInterface/babyfox.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>sprites/font/font.TTF</file>
