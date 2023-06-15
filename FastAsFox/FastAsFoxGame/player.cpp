@@ -36,12 +36,61 @@ void Player::setHp(int newHp)
     hp = newHp;
 }
 
+PowerUp *Player::getStockedPowerUp() const
+{
+    return stockedPowerUp;
+}
+
+void Player::setStockedPowerUp(PowerUp *newStockedPowerUp)
+{
+    stockedPowerUp = newStockedPowerUp;
+}
+
+double Player::getVelocity() const
+{
+    return velocity;
+}
+
+void Player::setVelocity(double newVelocity)
+{
+    velocity = newVelocity;
+}
+
+float Player::getJumpAngle() const
+{
+    return jumpAngle;
+}
+
+void Player::setJumpAngle(float newJumpAngle)
+{
+    jumpAngle = newJumpAngle;
+}
+
+std::chrono::time_point<std::chrono::system_clock> Player::getLastDashTimeStamp() const
+{
+    return lastDashTimeStamp;
+}
+
+void Player::setLastDashTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastDashTimeStamp)
+{
+    lastDashTimeStamp = newLastDashTimeStamp;
+}
+
+std::chrono::time_point<std::chrono::system_clock> Player::getLastSpeedTimeStamp() const
+{
+    return lastSpeedTimeStamp;
+}
+
+void Player::setLastSpeedTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastSpeedTimeStamp)
+{
+    lastSpeedTimeStamp = newLastSpeedTimeStamp;
+}
+
 Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
     this->onGround = true;
     this->playerJump = false;
-    this->velocity = QVector2D(0, 0);
     this->animation = new Fox(map->getScene());
     this->animation->setZValue(1);
     this->map = map;
@@ -71,27 +120,6 @@ bool Player::isStillOnGround(std::pair<std::optional<CollisionSide>, std::option
         return false;
     }
     return true;
-}
-
-void Player::setVelocity(int x, int y)
-{
-    this->velocity.setX(x);
-    this->velocity.setY(y);
-}
-
-void Player::setVelocity(const QVector2D &vec)
-{
-    this->velocity = vec;
-}
-
-void Player::addVelocity(int x, int y)
-{
-    this->velocity += QVector2D(x, y);
-}
-
-void Player::addVelocity(const QVector2D &vec)
-{
-    this->velocity += vec;
 }
 
 std::vector<Tile *> filterNearbyTiles(std::vector<Tile *>* tiles, int proximity, double predictedX, double predictedY){
@@ -159,6 +187,21 @@ void Player::updatePosition()
 
         vy = - GRAVITY*2 * t;
     }
+
+    // apply power ups modifiers if needed
+
+    std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+
+    std::chrono::duration<double> dashElapsedDuration(now - this->lastDashTimeStamp);
+    if(dashElapsedDuration.count() < DASH_DURATION) {
+        vx *= ( DASH_BOOST_PERCENTAGE / 100 ) * ( DASH_DURATION - dashElapsedDuration.count() / DASH_DURATION ) + 1;
+    }
+
+    std::chrono::duration<double> speedElapsedDuration(now - this->lastSpeedTimeStamp);
+    if(speedElapsedDuration.count() < SPEED_DURATION) {
+        vx *= ( SPEED_BOOST_PERCENTAGE / 100 ) + 1;
+    }
+
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
     double predictedX = xPlayer + vx;
@@ -387,30 +430,30 @@ void Player::updateHealthbar()
     }
 }
 
-    void Player::playerAccelerated()
-    {
-        if(!animation->getIsRunning()){
-            qInfo() << "Player accelerated\n";
-            this->getAnimation()->setIsRunning(true);
-        }
+void Player::playerAccelerated()
+{
+    if(!animation->getIsRunning()){
+        qInfo() << "Player accelerated\n";
+        this->getAnimation()->setIsRunning(true);
     }
+}
 
-    void Player::playerJumped(){
-        if(!playerJump){
-            if(!inAir)
-            {
-                qInfo() << "Player jumped \n";
-                this->setInAir(true);
-                playerJump = true;
-                isJumping = true;
-                onGround = false;
-            }
+void Player::playerJumped(){
+    if(!playerJump){
+        if(!inAir)
+        {
+            qInfo() << "Player jumped \n";
+            this->setInAir(true);
+            playerJump = true;
+            isJumping = true;
+            onGround = false;
         }
     }
+}
 
-    void Player::playerSlowedDown(){
-        if(animation->getIsRunning()){
-            qInfo() << "Player slowed down\n";
-            this->getAnimation()->setIsRunning(false);
-        }
+void Player::playerSlowedDown(){
+    if(animation->getIsRunning()){
+        qInfo() << "Player slowed down\n";
+        this->getAnimation()->setIsRunning(false);
     }
+}

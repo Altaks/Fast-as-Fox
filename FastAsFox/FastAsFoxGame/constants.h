@@ -69,9 +69,17 @@ const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_
 const std::pair<int,int> END_BERRIES_LEVEL1 = std::pair(71,7);
 
 const std::vector<std::pair<int,int>> END_BERRIES = {END_BERRIES_LEVEL1};
-
-
 // ----------------------------------------------------- //
+
+
+// ----------------< POWER UPS CONSTANTS >------------------ //
+const double DASH_BOOST_PERCENTAGE = 120;
+const double DASH_DURATION = 2;
+
+const double SPEED_BOOST_PERCENTAGE = 100;
+const double SPEED_DURATION = 5;
+// ----------------------------------------------------- //
+
 
 // ----------------< FOX SPRITE SIZE >------------------ //
 const int FOX_RUN_SPRITE_WIDTH = 72;

@@ -1,4 +1,4 @@
-<RCC>
+﻿<RCC>
     <qresource prefix="/fox">
         <file>sprites/fox/crouch.png</file>
         <file>sprites/fox/dead.png</file>
@@ -233,5 +233,12 @@
     </qresource>
     <qresource prefix="/spike">
         <file>sprites/spike/spikes.png</file>
+    </qresource>
+    <qresource prefix="/powerups">
+        <file>sprites/powerups/citron.png</file>
+        <file>sprites/powerups/cerise.png</file>
+        <file>sprites/powerups/apple.png</file>
+        <file>sprites/powerups/raisin.png</file>
+        <file>sprites/powerups/peche.png</file>
     </qresource>
 </RCC>

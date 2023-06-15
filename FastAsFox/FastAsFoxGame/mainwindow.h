@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -58,7 +58,6 @@ public:
     void createGitlabIssue(const QPoint &pos, const QString &text);
 
     void setLevelN(int newLevelN);
-
 private slots:
     void addText();
     void updateLCD();

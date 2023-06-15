@@ -14,6 +14,7 @@ SOURCES += \
     animatedsprite.cpp \
     animationhelper.cpp \
     berriespile.cpp \
+    berry.cpp \
     clickablelabel.cpp \
     gameobject.cpp \
     gifitem.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     mapsection.cpp \
     menuwidget.cpp \
     player.cpp \
+    powerup.cpp \
     spike.cpp \
     tile.cpp \
     tileset.cpp \
@@ -37,6 +39,7 @@ HEADERS += \
     animatedsprite.h \
     animationhelper.h \
     berriespile.h \
+    berry.h \
     clickablelabel.h \
     collisionside.h \
     constants.h \
@@ -52,6 +55,8 @@ HEADERS += \
     mapsection.h \
     menuwidget.h \
     player.h \
+    powerup.h \
+    poweruptype.h \
     spike.h \
     tile.h \
     tileset.h \

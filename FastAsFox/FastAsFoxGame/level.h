@@ -10,14 +10,13 @@
 #include <QMainWindow>
 #include <QLCDNumber>
 
-
-
 using namespace std;
 
 #include "player.h"
 #include "map.h"
 #include "heart.h"
 
+class Berry;
 
 class Level : public QObject
 {
@@ -47,7 +46,7 @@ private:
     QLCDNumber* lcd;
     QTime* time;
     QTimer* timerLCD;
-
+    std::vector<Berry *> * berries;
 
 private slots:
     void updateLCD();
@@ -58,6 +57,7 @@ private slots:
     void changeHeartDisplay();
     void updateHeartPosition();
     void finish();
+    void playerCollidesBerries();
 
 public slots:
     void updateLCDPosition();
@@ -74,6 +74,10 @@ public:
     QGraphicsView *getView() const;
     bool getLevelCleared() const;
     void updateHublot();
+    QTimer *getTimerLCD() const;
+    void setTimerLCD(QTimer *newTimerLCD);
+    double getCount() const;
+    void setCount(double newCount);
 };
 
 

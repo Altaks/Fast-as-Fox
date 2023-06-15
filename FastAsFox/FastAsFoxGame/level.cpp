@@ -1,6 +1,9 @@
 ﻿#include "level.h"
 #include "QtCore/qtimer.h"
+
 #include <QGridLayout>
+
+#include "powerup.h"
 
 Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
@@ -55,6 +58,7 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesSpike);
+    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesBerries);
     connect(player, &Player::playerDeath, this, &Level::levelOverByDeath);
 
     playerUpdatePositionClock->start(10); // 100 tps
@@ -64,8 +68,8 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     QPixmap background(":/texture/sprites/texture/bg.jpg");
     scene->setBackgroundBrush(background.scaled(mapViewSize, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
 
-
-
+    this->berries = new std::vector<Berry *>();
+    this->berries->push_back(new PowerUp(this->scene, PowerUpType::HEALTH_TYPE,               std::pair<int, int>(12, 6)));
 }
 
 Level::~Level(){
@@ -229,6 +233,18 @@ void Level::updateHeartPosition()
     }
 }
 
+void Level::playerCollidesBerries(){
+    for(Berry * berry : *this->berries){
+        // check for collision, and if it collides, use the onCollide function
+        QRect berryRect = QRect(berry->x(), berry->y(), berry->pixmap().width(), berry->pixmap().height());
+        QRect playerRect = QRect(this->player->getAnimation()->x(),this->player->getAnimation()->y(),this->player->getAnimation()->pixmap().width(), this->player->getAnimation()->pixmap().height());
+
+        if(berryRect.intersects(playerRect)){
+            berry->onCollide(this->player);
+        }
+    }
+}
+
 void Level::loadMap(){
     map->load();
 }
@@ -267,6 +283,16 @@ void Level::initLCD()
     lcd->setFixedSize(200, 50);
     lcd->display(count);
     lcd->show();
+}
+
+double Level::getCount() const
+{
+    return count;
+}
+
+void Level::setCount(double newCount)
+{
+    count = newCount;
 }
 
 bool Level::getLevelCleared() const
