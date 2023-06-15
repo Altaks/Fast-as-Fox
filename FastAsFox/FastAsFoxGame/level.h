@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "hedgehog.h"
+#include "spike.h"
 #include <QPair>
 #include <QElapsedTimer>
 #include <QLabel>
@@ -15,6 +16,7 @@ using namespace std;
 #include "player.h"
 #include "gameobject.h"
 #include "map.h"
+#include "heart.h"
 
 
 class Level : public QObject
@@ -37,12 +39,17 @@ private:
     double count;
     QTimer * timer;
     std::vector<Hedgehog *>* hedgehogs;
+    std::vector<Spike *>* spikes;
+    std::vector<Heart *>* hearts;
 
 private slots:
     void updateLCD();
     void changeHedgehogsDirection();
     void playerCollidesHedgehog();
+    void playerCollidesSpike();
     void levelOverByDeath();
+    void changeHeartDisplay();
+    void updateHeartPosition();
 
 public:
     Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
@@ -50,7 +57,7 @@ public:
     void start();
     void finish();
     Map * getMap();
-    void showUI();
+    void showLCD();
     void updateLCDPosition();
     void setPlayer(Player * Aplayer);
     Player *getPlayer() const;

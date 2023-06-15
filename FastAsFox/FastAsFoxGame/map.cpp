@@ -1,12 +1,16 @@
 ﻿#include "map.h"
+#include "animationhelper.h"
+#include "gifitem.h"
+#include "levelmenubutton.h"
 #include "player.h"
 #include "tile.h"
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
     // add the first/default section of the map
-    this->actuallyLoadedTiles = new std::vector<Tile*>();
+
     this->toCheckForCollision = new std::set<Tile*>();
+    this->actuallyLoadedTiles = new std::vector<Tile*>();
 
     this->sections = std::vector<MapSection*>();
     this->sections.push_back(defaultSection);
@@ -74,7 +78,6 @@ QGraphicsView * Map::getView(){
 }
 
 void Map::load(){
-
     std::map<std::pair<int, int>, Tile*> coordinatesToTile;
 
     // inject map at coordinates
@@ -94,9 +97,9 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0; // set @ null if tile not found
+            if(tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // set @ null if tile not found
 
-            qDebug() << "Id de la tile : " << std::to_string(tileID) << "\n";
+            qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
             QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
 
             Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
@@ -109,64 +112,65 @@ void Map::load(){
             this->getScene()->addItem(correspondingTile->getTileItem());
             this->actuallyLoadedTiles->push_back(correspondingTile);
             coordinatesToTile.emplace(std::pair<int, int>(correspondingTile->getX(), correspondingTile->getY()), correspondingTile);
+
         }
 
         anchorX += section->getSectionWidth();
     }
 
-    // apply pointers for each tile
     for(Tile * tile : *this->actuallyLoadedTiles){
-        if(tile->getTileId() == 0) continue;
-        int tileX = tile->getX();
-        int tileY = tile->getY();
+           if(tile->getTileId() == 0) continue;
+           int tileX = tile->getX();
+           int tileY = tile->getY();
 
-        std::pair<int, int> upPair       = std::pair<int, int>(tileX, tileY+1);
-        std::pair<int, int> bottomPair   = std::pair<int, int>(tileX, tileY-1);
-        std::pair<int, int> leftPair     = std::pair<int, int>(tileX-1, tileY);
-        std::pair<int, int> rightPair    = std::pair<int, int>(tileX+1, tileY);
+           std::pair<int, int> upPair       = std::pair<int, int>(tileX, tileY+1);
+           std::pair<int, int> bottomPair   = std::pair<int, int>(tileX, tileY-1);
+           std::pair<int, int> leftPair     = std::pair<int, int>(tileX-1, tileY);
+           std::pair<int, int> rightPair    = std::pair<int, int>(tileX+1, tileY);
 
-        if(coordinatesToTile.find(upPair) != coordinatesToTile.end()){
-            tile->setUpTile(coordinatesToTile.at(upPair));
-        }
-        if(coordinatesToTile.find(bottomPair) != coordinatesToTile.end()){
-            tile->setBottomTile(coordinatesToTile.at(bottomPair));
-        }
-        if(coordinatesToTile.find(leftPair) != coordinatesToTile.end()){
-            tile->setLeftTile(coordinatesToTile.at(leftPair));
-        }
-        if(coordinatesToTile.find(rightPair) != coordinatesToTile.end()){
-            tile->setRightTile(coordinatesToTile.at(rightPair));
-        }
-    }
+           if(coordinatesToTile.find(upPair) != coordinatesToTile.end()){
+               tile->setUpTile(coordinatesToTile.at(upPair));
+           }
+           if(coordinatesToTile.find(bottomPair) != coordinatesToTile.end()){
+               tile->setBottomTile(coordinatesToTile.at(bottomPair));
+           }
+           if(coordinatesToTile.find(leftPair) != coordinatesToTile.end()){
+               tile->setLeftTile(coordinatesToTile.at(leftPair));
+           }
+           if(coordinatesToTile.find(rightPair) != coordinatesToTile.end()){
+               tile->setRightTile(coordinatesToTile.at(rightPair));
+           }
+       }
 
-    // collect all near-air tiles
-    for(Tile * tile : *this->actuallyLoadedTiles){
+       // collect all near-air tiles
+       for(Tile * tile : *this->actuallyLoadedTiles){
 
-        if(tile->getBottomTile() != nullptr && tile->getBottomTile()->getTileId() == 0){
-            this->toCheckForCollision->emplace(tile);
-        } else if(tile->getUpTile() != nullptr && tile->getUpTile()->getTileId() == 0){
-            this->toCheckForCollision->emplace(tile);
-        } else if(tile->getLeftTile() != nullptr && tile->getLeftTile()->getTileId() == 0){
-            this->toCheckForCollision->emplace(tile);
-        } else if(tile->getRightTile() != nullptr && tile->getRightTile()->getTileId() == 0){
-            this->toCheckForCollision->emplace(tile);
-        }
-    }
+           if(tile->getBottomTile() != nullptr && tile->getBottomTile()->getTileId() == 0){
+               this->toCheckForCollision->emplace(tile);
+           } else if(tile->getUpTile() != nullptr && tile->getUpTile()->getTileId() == 0){
+               this->toCheckForCollision->emplace(tile);
+           } else if(tile->getLeftTile() != nullptr && tile->getLeftTile()->getTileId() == 0){
+               this->toCheckForCollision->emplace(tile);
+           } else if(tile->getRightTile() != nullptr && tile->getRightTile()->getTileId() == 0){
+               this->toCheckForCollision->emplace(tile);
+           }
+       }
+qDebug() << "Map loaded";
+       return;
 
-    /*
-    QPixmap * coll = new QPixmap(32, 32);
-    coll->fill(Qt::green);
-    for(Tile * tile : *this->toCheckForCollision) tile->getTileItem()->setPixmap(*coll);
-    */
-    return;
-}
-
-Player* Map::getItsPlayer(){
-    return itsPlayer;
 }
 
 std::set<Tile *> *Map::getToCheckForCollision() const {
-    return this->toCheckForCollision;
+       return this->toCheckForCollision;
+}
+
+void Map::setLcdCount(const std::string &value) {
+       lcdCount = value;
+}
+
+
+Player* Map::getItsPlayer(){
+    return itsPlayer;
 }
 
 void Map::updateView()
@@ -184,3 +188,196 @@ void Map::updateView()
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1 - lerpFactor)
                       + center * lerpFactor);
 }
+
+void Map::handleLevelMenuButton()
+{
+    emit golevelMenu();
+}
+
+void Map::displayAnimation() {
+
+
+    GifItem* fireworks = new GifItem(":/particules/sprites/particules/fireworks.gif");
+    fireworks->setPos(mapView->mapToScene(mapView->viewport()->width() / 2, mapView->viewport()->height() / 2));
+    this->getScene()->addItem(fireworks);
+
+    QPixmap originalPixmap(":/userInterface/sprites/userInterface/ribbon.png");
+    QPixmap ribbonPixmap = originalPixmap.scaled(originalPixmap.width() * 4, originalPixmap.height() * 4);
+
+    QGraphicsPixmapItem *ribbon = new QGraphicsPixmapItem(ribbonPixmap);
+    this->getScene()->addItem(ribbon);
+
+    int x = (mapView->viewport()->width() - ribbonPixmap.width()) / 2;
+    int y = 200;
+    QPointF ribbonPos = mapView->mapToScene(x, y);
+    ribbon->setPos(ribbonPos);
+
+    QPixmap woodboardPixmap(":/userInterface/sprites/userInterface/woodboard.png");
+
+    QGraphicsPixmapItem *woodboardItem = new QGraphicsPixmapItem(woodboardPixmap);
+
+    woodboardItem->setVisible(false);
+
+    QGraphicsTextItem *textItem = new QGraphicsTextItem(QString::fromStdString(lcdCount));
+
+    QFont font;
+    font.setPointSize(20);
+    textItem->setFont(font);
+
+    woodboardPixmap = woodboardPixmap.scaled(textItem->boundingRect().width() + 20, textItem->boundingRect().height() + 20);
+    woodboardItem->setPixmap(woodboardPixmap);
+
+    int textX = (mapView->viewport()->width() - textItem->boundingRect().width()) / 2;
+    int textY = 60 + ribbonPixmap.height();
+
+    QPointF textPos = mapView->mapToScene(textX, textY);
+    textItem->setPos(textPos);
+    textItem->setVisible(false);
+
+    woodboardItem->setPos(textItem->pos().x() - 10, textItem->pos().y() - 10);
+
+    this->getScene()->addItem(woodboardItem);
+
+    this->getScene()->addItem(textItem);
+
+    QTimeLine *timeLine = new QTimeLine(2000);
+    timeLine->setFrameRange(0, 100);
+
+    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+    animation->setTimeLine(timeLine);
+
+    for (int i = 0; i <= 100; ++i) {
+           animation->setScaleAt(i / 100.0, i / 100.0, i / 100.0);
+    }
+    timeLine->start();
+
+    AnimationHelper *woodboardHelper = new AnimationHelper(woodboardItem);
+
+    QPropertyAnimation *woodboardAnimation = new QPropertyAnimation(woodboardHelper, "pos");
+    woodboardAnimation->setDuration(1000);
+    woodboardAnimation->setStartValue(QPointF(textItem->pos().x() - 20, -woodboardPixmap.height() + 200));
+    woodboardAnimation->setEndValue(QPointF(textItem->pos().x() - 20, textItem->pos().y() - 10));
+    woodboardAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    // Create a AnimationHelper for the textItem
+    AnimationHelper *textItemHelper = new AnimationHelper(textItem);
+
+    // Create a QPropertyAnimation for the textItem sliding effect
+    QPropertyAnimation *textItemAnimation = new QPropertyAnimation(textItemHelper, "pos");
+    textItemAnimation->setDuration(1000);
+    textItemAnimation->setStartValue(QPointF(textItem->pos().x() - 10, -textItem->boundingRect().height() + 200));
+    textItemAnimation->setEndValue(QPointF(textItem->pos().x() - 10, textItem->pos().y()));
+    textItemAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    QObject::connect(timeLine, &QTimeLine::finished, [=]() {
+
+        woodboardItem->setVisible(true);
+        textItem->setVisible(true);
+        woodboardAnimation->start();
+        textItemAnimation->start();
+    });
+
+    QObject::connect(woodboardAnimation, &QPropertyAnimation::finished, woodboardAnimation, &QPropertyAnimation::deleteLater);
+    QObject::connect(textItemAnimation, &QPropertyAnimation::finished, textItemAnimation, &QPropertyAnimation::deleteLater);
+
+    this->getScene()->addItem(woodboardItem);
+
+    QMediaPlayer *mediaPlayer = new QMediaPlayer;
+    mediaPlayer->setSource(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    mediaPlayer->setAudioOutput(audioOutput);
+    mediaPlayer->play();
+
+    QMediaPlayer *mediaPlayer2 = new QMediaPlayer;
+    mediaPlayer2->setSource(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    QAudioOutput *audioOutput2 = new QAudioOutput;
+    mediaPlayer2->setAudioOutput(audioOutput2);
+    mediaPlayer2->play();
+
+    // load the icon
+    QPixmap homeButtonPixmap(":/userInterface/sprites/userInterface/homeButton.png");
+
+    // reduce the size of the pixmap by 2
+    QPixmap scaledPixmap = homeButtonPixmap.scaled(homeButtonPixmap.size() / 2);
+
+    // create the button
+    LevelMenuButton *homeButton = new LevelMenuButton(scaledPixmap);
+    this->getScene()->addItem(homeButton);
+
+    // position the button at the bottom of the woodboard
+    QPointF buttonPos = woodboardItem->pos();
+    buttonPos.setY(buttonPos.y() + woodboardPixmap.height()+30);
+    homeButton->setPos(buttonPos);
+    QObject::connect(homeButton, &LevelMenuButton::golevelMenu, this, &Map::handleLevelMenuButton);
+
+    // load the camera icon
+    QPixmap cameraButtonPixmap(":/userInterface/sprites/userInterface/camera.png");
+
+    // reduce the size of the pixmap if required, for example, by 2
+    QPixmap scaledCameraPixmap = cameraButtonPixmap.scaled(cameraButtonPixmap.size() / 8);
+
+    // create the button
+    LevelMenuButton *cameraButton = new LevelMenuButton(scaledCameraPixmap);
+    this->getScene()->addItem(cameraButton);
+
+    // position the button at the center left of the woodboard and further left
+    QPointF cameraButtonPos = woodboardItem->pos();
+    cameraButtonPos.setX(cameraButtonPos.x() - (woodboardPixmap.width()/2) - (scaledCameraPixmap.width()/2) - 50); // Subtract an additional 50 pixels
+    cameraButtonPos.setY(cameraButtonPos.y() + (woodboardPixmap.height()/2) - (scaledCameraPixmap.height()/2));
+    cameraButton->setPos(cameraButtonPos);
+
+
+    // Connect the cameraButton's signal to the appropriate slot function
+    // This assumes you have a slot function called handleCameraButton
+    QObject::connect(cameraButton, &LevelMenuButton::golevelMenu, this, &Map::handleCameraButton);
+
+    // load the twitter icon
+    QPixmap twitterButtonPixmap(":/userInterface/sprites/userInterface/twitter.png");
+
+    // reduce the size of the pixmap if required, for example, by 2
+    QPixmap scaledTwitterPixmap = twitterButtonPixmap.scaled(twitterButtonPixmap.size() / 8);
+
+    // create the button
+    LevelMenuButton *twitterButton = new LevelMenuButton(scaledTwitterPixmap);
+    this->getScene()->addItem(twitterButton);
+
+    // position the button to the right of the camera button
+    QPointF twitterButtonPos = cameraButton->pos();
+    twitterButtonPos.setX(twitterButtonPos.x() + cameraButton->boundingRect().width() + 180); // Move to the right of the camera button by 10 pixels
+    twitterButton->setPos(twitterButtonPos);
+
+    // Connect the twitterButton's signal to the appropriate slot function
+    // This assumes you have a slot function called handleTwitterButton
+    QObject::connect(twitterButton, &LevelMenuButton::golevelMenu, this, &Map::handleTwitterButton);
+
+}
+
+void Map::handleTwitterButton() {
+    // Open Twitter in the default web browser
+    QDesktopServices::openUrl(QUrl("https://twitter.com"));
+}
+
+
+void Map::handleCameraButton() {
+    // Grab the screenshot
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QPixmap screenshot = screen->grabWindow(QApplication::activeWindow()->winId());
+
+    // Get the application directory path
+    QString appDir = QCoreApplication::applicationDirPath();
+
+    // Define screenshot filename with timestamp
+    QDateTime current = QDateTime::currentDateTime();
+    QString format = "yyyyMMdd_HHmmss";
+    QString timestamp = current.toString(format);
+    QString filename = "/screenshot_" + timestamp + ".png";
+
+    // Save the screenshot to the application directory
+    bool isSaved = screenshot.save(appDir + filename, "PNG");
+
+    if(isSaved)
+           qDebug() << "Screenshot saved at: " << appDir + filename;
+    else
+           qDebug() << "Failed to save screenshot.";
+}
+

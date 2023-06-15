@@ -26,6 +26,16 @@ const std::pair<int, int> &Player::getSpritePosition() const
     return spritePosition;
 }
 
+int Player::getHp() const
+{
+    return hp;
+}
+
+void Player::setHp(int newHp)
+{
+    hp = newHp;
+}
+
 Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
@@ -98,7 +108,7 @@ std::vector<Tile *> filterNearbyTiles(std::vector<Tile *>* tiles, int proximity,
 
 void Player::updatePosition()
 {
-    // Query the filtered tiles from the Map of the level
+    // Query the tiles from the Map of the level
     std::set<Tile *>* tiles = map->getToCheckForCollision();
 
     // Get the "game real" coordinates
@@ -156,6 +166,8 @@ void Player::updatePosition()
 
     //std::cout << "Player is supposed to go at " << predictedX << ", " << predictedY << std::endl;
     this->setRectangle(this->animation->pixmap().rect());
+
+    // Filter the tiles to obtain only the nearby tiles to avoid unnecessary collision checks
 
     QRect collidedTopTileRect;
     QRect collidedBottomTileRect;
@@ -306,6 +318,10 @@ void Player::updatePosition()
     yPlayer = this->map->getScene()->height() - yPlayer;
 
 
+    if(yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())
+    {
+        emit playerDeath();
+    }
 
     if((xPlayer + this->animation->pixmap().width() >= this->map->getScene()->width()) || (yPlayer + this->animation->pixmap().height() >= this->map->getScene()->height())){
            double gameX = this->spawnCoords.first * 32;
@@ -319,6 +335,9 @@ void Player::updatePosition()
            emit playerMoved();
            return;
     }
+
+
+
     if(this->animation->getIsRunning())
     {
         this->animation->setPos(xPlayer, yPlayer - FOX_RUN_SPRITE_HEIGHT + TILE_SIZE -1);

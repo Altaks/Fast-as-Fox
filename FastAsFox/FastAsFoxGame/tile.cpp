@@ -55,6 +55,7 @@ void Tile::setRightTile(Tile *newRightTile)
     rightTile = newRightTile;
 }
 
+
 Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameObject{parent}
 {
     this->texture = texture;

@@ -55,7 +55,7 @@ void Hedgehog::updateFrame()
                 this->setPixmap(walkSpriteSheetBackward->copy(frameRect));
 
             attackAnimation = false;
-            //this->updatePosition();
+
             this->update(); // Request redraw
             if (walkCurrentFrame == HEDGEHOG_N_OF_FRAME - 1) {
                 walkCurrentFrame = 0;
@@ -72,7 +72,7 @@ void Hedgehog::updateFrame()
             else
                 this->setPixmap(attackSpriteSheetBackward->copy(frameRect));
             attackAnimation = true;
-            //this->updatePosition();
+
             this->update(); // Request redraw
 
             if (attackCurrentFrame == HEDGEHOG_N_OF_FRAME - 1) {

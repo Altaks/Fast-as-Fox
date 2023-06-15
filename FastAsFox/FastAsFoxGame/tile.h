@@ -16,6 +16,7 @@ private:
     Tile * leftTile = nullptr;
     Tile * rightTile = nullptr;
 
+
 public:
     explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
     QGraphicsPixmapItem * getTileItem();
@@ -30,6 +31,7 @@ public:
     void setLeftTile(Tile *newLeftTile);
     Tile *getRightTile() const;
     void setRightTile(Tile *newRightTile);
+
 };
 
 #endif // TILE_H

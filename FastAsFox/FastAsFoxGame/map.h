@@ -1,8 +1,9 @@
 ﻿#ifndef MAP_H
 #define MAP_H
 
-#include <vector>
 #include <set>
+#include <vector>
+
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -10,6 +11,25 @@
 #include "tileset.h"
 #include "mapsection.h"
 #include "tile.h"
+#include <random>
+#include <QMediaPlayer>
+#include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+#include <iostream>
+#include <QGraphicsProxyWidget>
+#include <QAudioOutput>
+#include <QStyle>
+#include <QTimeLine>
+#include <QPushButton>
+#include <QGraphicsItemAnimation>
+#include <QCoreApplication>
+#include <QApplication>
+#include <QPixmap>
+#include <QDateTime>
+#include <QDebug>
+#include <QDesktopServices>
+
 
 class Player; //Forward declaration of player, to avoid creating an circular inclusion, as map.h is already included in player.h
 
@@ -25,6 +45,9 @@ private:
     std::map<int, QPixmap*> loadedTiles;
     std::vector<Tile *> * actuallyLoadedTiles = nullptr;
     std::set<Tile*> * toCheckForCollision = nullptr;
+    std::string lcdCount;
+    QPushButton *homeButton;
+
     Player* itsPlayer;
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
@@ -37,9 +60,22 @@ public:
     void setItsPlayer(Player* player);
     Player* getItsPlayer();
     std::set<Tile *> * getToCheckForCollision() const;
+    std::vector<MapSection *> getSections() const;
+    void setLcdCount(const std::string &value);
+    void displayAnimation();
+    void handleCameraButton() ;
+    void handleTwitterButton();
+
 
 public slots:
     void updateView();
+    void handleLevelMenuButton();
+
+signals:
+    void homeButtonClicked();
+    void golevelMenu();
+
 };
+
 
 #endif // MAP_H
