@@ -141,4 +141,9 @@ void Fox::resetColor() {
     colorizeEffect->setEnabled(false);  // Disable the filter
 }
 
+QTimer *Fox::getTimer() const
+{
+    return timer;
+}
+
 

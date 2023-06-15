@@ -140,8 +140,8 @@ void MainWindow::handleMenuFinished()
     level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     level->start();
-    //connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
-    //QObject::connect(map, &Map::golevelMenu, this, &MainWindow::handleLevelMenu);
+    connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
+    QObject::connect(map, &Map::golevelMenu, this, &MainWindow::handleLevelMenu);
 
 }
 

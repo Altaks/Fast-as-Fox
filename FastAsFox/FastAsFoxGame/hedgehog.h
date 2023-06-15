@@ -23,6 +23,8 @@ public:
 
     bool getStopAnimation() const;
 
+    QTimer *getTimer() const;
+
 private:
     QPixmap *walkSpriteSheet;
     QPixmap *attackSpriteSheet;

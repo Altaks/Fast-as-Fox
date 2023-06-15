@@ -36,6 +36,8 @@ public:
     void resetColor() ;
 
 
+    QTimer *getTimer() const;
+
 private:
     QPixmap *walkSpriteSheet;
     QPixmap *runSpriteSheet;

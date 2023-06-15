@@ -128,3 +128,8 @@ bool Hedgehog::getAttacking() const
 {
     return attacking;
 }
+
+QTimer *Hedgehog::getTimer() const
+{
+    return timer;
+}

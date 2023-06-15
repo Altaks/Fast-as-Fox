@@ -48,23 +48,29 @@ const std::vector<std::string> LEVELS = {LEVEL_ONE, LEVEL_TWO};
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(2,7);
 const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
 
+const std::vector<std::pair<int,int>> LEVEL_START_POS = {LEVEL_ONE_START_POS,
+                                                         LEVEL_TWO_START_POS};
+
+// ----------------< HEDGEHOG POSITION CONSTANTS >------ //
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,4);
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,10);
 const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1,HEDGEHOG_LEVEL_ONE_POS2};
 
-const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,4);
-const std::pair<int,int> SPIKE_LEVEL_ONE_POS2 = std::pair(60,3);
+const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS = {HEDGEHOG_LEVEL_ONE_POS_VECTOR};
+
+// ----------------< SPIKE POSITION CONSTANTS >--------- //
+const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,6);
+const std::pair<int,int> SPIKE_LEVEL_ONE_POS2 = std::pair(60,5);
 const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
 
+const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_POS_VECTOR};
+
+// ----------------< END BERRIES POSITION CONSTANTS >-- //
+const std::pair<int,int> END_BERRIES_LEVEL1 = std::pair(71,7);
+
+const std::vector<std::pair<int,int>> END_BERRIES = {END_BERRIES_LEVEL1};
 
 
-
-const std::vector<std::pair<int,int>> LEVEL_START_POS = {LEVEL_ONE_START_POS,
-                                                         LEVEL_TWO_START_POS};
-
-const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS = {HEDGEHOG_LEVEL_ONE_POS_VECTOR,HEDGEHOG_LEVEL_ONE_POS_VECTOR};
-
-const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_POS_VECTOR,SPIKE_LEVEL_ONE_POS_VECTOR};
 // ----------------------------------------------------- //
 
 // ----------------< FOX SPRITE SIZE >------------------ //

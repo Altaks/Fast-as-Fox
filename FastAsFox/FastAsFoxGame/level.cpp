@@ -8,11 +8,12 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     map=AMap;
     level = leveln;
     player = new Player(map, AStartingPosition);
+    endingObject = new BerriesPile(map->getScene(),END_BERRIES.at(level),map->getScene()->height());
     player->setInAir(true);
-    level = leveln;
     map->setItsPlayer(player);
     scene = map->getScene();
     mwindow=mainwindow;
+    levelCleared = false;
     count=0.00;
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
@@ -30,8 +31,8 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
         heart->setZValue(2);
     }
 
-    QTimer * playerUpdatePositionClock = new QTimer();
-    QTimer * hedgehogUpdatePositionClock = new QTimer();
+    playerUpdatePositionClock = new QTimer();
+    hedgehogUpdatePositionClock = new QTimer();
 
     for(int i=0; i<HEDGEHOG_POS.at(level).size(); i++)
     {
@@ -217,7 +218,7 @@ void Level::updateHeartPosition()
 {
     for(Heart * heart : *hearts)
     {
-        heart->setPos(map->getView()->mapToScene(heart->getXPosition()*32, 32*10 ));
+        heart->setPos(map->getView()->mapToScene(heart->getXPosition()*TILE_SIZE, TILE_SIZE));
     }
 }
 
@@ -258,13 +259,20 @@ void Level::initLCD()
     // Set LCD size and location
     lcd->setFixedSize(200, 50);
     lcd->display(count);
+    lcd->show();
+}
+
+bool Level::getLevelCleared() const
+{
+    return levelCleared;
 }
 
 void Level::updateLCD()
 {
 
     // Increment counter by 0.01 (which corresponds to hundredths of a second)
-    count += 0.01;
+    if(!levelCleared)
+        count += 0.01;
 
     // Round the number to two decimal places
     double roundedCount = std::round(count * 100.0) / 100.0;
@@ -297,7 +305,15 @@ void Level::start(){
 }
 
 void Level::finish(){
-
+    if(endingObject->isAtTheEnd(player->getAnimation())==true && !levelCleared){
+            map->displayAnimation();
+            this->levelCleared = true;
+            playerUpdatePositionClock->stop();
+            hedgehogUpdatePositionClock->stop();
+            for(Hedgehog * hedgehog : *hedgehogs)
+                hedgehog->getTimer()->stop();
+            player->getAnimation()->getTimer()->stop();
+        }
 }
 
 Map * Level::getMap(){

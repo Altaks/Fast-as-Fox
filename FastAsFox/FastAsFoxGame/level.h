@@ -1,6 +1,7 @@
 ﻿#ifndef LEVEL_H
 #define LEVEL_H
 
+#include "berriespile.h"
 #include "hedgehog.h"
 #include "spike.h"
 #include <QPair>
@@ -14,7 +15,6 @@
 using namespace std;
 
 #include "player.h"
-#include "gameobject.h"
 #include "map.h"
 #include "heart.h"
 
@@ -25,7 +25,7 @@ class Level : public QObject
 private:
     QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    GameObject * endingObject;
+    BerriesPile * endingObject;
     Player * player;
     Map * map;
     int level;
@@ -42,6 +42,9 @@ private:
     std::vector<Hedgehog *>* hedgehogs;
     std::vector<Spike *>* spikes;
     std::vector<Heart *>* hearts;
+    bool levelCleared;
+    QTimer * playerUpdatePositionClock;
+    QTimer * hedgehogUpdatePositionClock;
 
 private slots:
     void updateLCD();
@@ -51,19 +54,22 @@ private slots:
     void levelOverByDeath();
     void changeHeartDisplay();
     void updateHeartPosition();
+    void finish();
+
+public slots:
+    void updateLCDPosition();
 
 public:
     Level(int leveln, pair<int,int> startingPosition,  Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
-    void finish();
     Map * getMap();
     void showLCD();
-    void updateLCDPosition();
     void setPlayer(Player * Aplayer);
     Player *getPlayer() const;
     QGraphicsScene *getScene() const;
     QGraphicsView *getView() const;
+    bool getLevelCleared() const;
 };
 
 
