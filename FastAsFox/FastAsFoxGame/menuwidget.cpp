@@ -23,6 +23,8 @@
 #include "imageloader.h"
 #include <QInputDialog>
 #include <QTableView>
+#include <QScreen>
+
 
 
 /**
@@ -170,6 +172,19 @@ void MenuWidget::setupGifAndLayout() {
 MenuWidget::MenuWidget(QWidget * parent, int aNumberOfLevelsUnlocked, int isRestart): QWidget(parent), m_layout(new QGridLayout), m_currentActiveFrame(0), playButtonClickedOnce(false), settingsButtonClickedOnce(false) {
     numberOfLevelsUnlocked = aNumberOfLevelsUnlocked;
 
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->geometry();
+    int height = screenGeometry.height();
+    int width = screenGeometry.width();
+
+    this->setFixedSize(width, height);  // Set the size of the widget to match the screen size
+
+    // Set minimum and maximum sizes to prevent resizing
+    //this->setMinimumSize(width, height);
+    this->setMaximumSize(width, height);
+
+    this -> setFocusPolicy(Qt::StrongFocus);
+
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
     m_selectPlayer -> setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
@@ -199,6 +214,7 @@ MenuWidget::MenuWidget(QWidget * parent, int aNumberOfLevelsUnlocked, int isRest
     } else {
         saga();
     }
+
 
 }
 
@@ -866,6 +882,16 @@ void MenuWidget::settingsButtonClicked() {
  */
 void MenuWidget::setupImagesLayout()
 {
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->geometry();
+    int height = screenGeometry.height();
+    int width = screenGeometry.width();
+    this->setFixedSize(width, height);  // Set the size of the widget to match the screen size
+    // Set minimum and maximum sizes to prevent resizing
+    this->setMinimumSize(width, height);
+    this->setMaximumSize(width, height);
+    this -> setFocusPolicy(Qt::StrongFocus);
+
     QElapsedTimer timer;
     timer.start();
     int numImages = 10;          /**< The total number of images. */
@@ -1003,7 +1029,18 @@ void MenuWidget::validateButtonClicked() {
  */
 void MenuWidget::initMenu() {
     setupImagesLayout();
+
     this -> setLayout(m_layout);
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->geometry();
+    int height = screenGeometry.height();
+    int width = screenGeometry.width();
+    this->setFixedSize(width, height);  // Set the size of the widget to match the screen size
+    // Set minimum and maximum sizes to prevent resizing
+    this->setMinimumSize(width, height);
+    this->setMaximumSize(width, height);
+    this -> setFocusPolicy(Qt::StrongFocus);
 
     setBackgroundImage(":/menu/sprites/menu/menubg.png");
 }
