@@ -2,12 +2,14 @@
 #include "QtCore/qtimer.h"
 #include <QGridLayout>
 
-Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
+Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
     map=AMap;
+    level = leveln;
     player = new Player(map, AStartingPosition);
     player->setInAir(true);
+    level = leveln;
     map->setItsPlayer(player);
     scene = map->getScene();
     mwindow=mainwindow;
@@ -31,18 +33,18 @@ Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindo
     QTimer * playerUpdatePositionClock = new QTimer();
     QTimer * hedgehogUpdatePositionClock = new QTimer();
 
-    for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
+    for(int i=0; i<HEDGEHOG_POS.at(level).size(); i++)
     {
-        hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_LEVEL_ONE_POS_VECTOR.at(i)));
+        hedgehogs->push_back(new Hedgehog(scene,HEDGEHOG_POS.at(level).at(i)));
         connect(hedgehogUpdatePositionClock, &QTimer::timeout, hedgehogs->at(i), &Hedgehog::updatePosition);
         connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, player, &Player::updateHealthbar);
         connect(hedgehogs->at(i), &Hedgehog::playerLoseHealth, this, &Level::changeHeartDisplay);
 
     }
 
-    for(int i=0; i<SPIKE_LEVEL_ONE_POS_VECTOR.size(); i++)
+    for(int i=0; i<SPIKE_POS.at(level).size(); i++)
     {
-        spikes->push_back(new Spike(scene,SPIKE_LEVEL_ONE_POS_VECTOR.at(i)));
+        spikes->push_back(new Spike(scene,SPIKE_POS.at(level).at(i)));
         connect(spikes->at(i), &Spike::playerLoseHealth, player, &Player::updateHealthbar);
         connect(spikes->at(i), &Spike::playerLoseHealth, this, &Level::changeHeartDisplay);
     }

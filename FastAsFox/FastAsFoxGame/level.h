@@ -28,6 +28,7 @@ private:
     GameObject * endingObject;
     Player * player;
     Map * map;
+    int level;
     void loadMap();
     void showMap();
     void showScore();
@@ -52,7 +53,7 @@ private slots:
     void updateHeartPosition();
 
 public:
-    Level(pair<int,int> startingPosition,  Map * AMap, QMainWindow * mainwindow);
+    Level(int leveln, pair<int,int> startingPosition,  Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
     void finish();

@@ -1,6 +1,7 @@
 ﻿#ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <string>
 #include <vector>
 #include "qpoint.h"
 #include <utility>
@@ -38,8 +39,9 @@ const double RUNNING_SPEED = 0.06;
 
 #define HEART         ":/texture/sprites/texture/heart.png"
 
-#define LEVEL_ONE     ":/level/level/level1.json"
-#define LEVEL_TWO     ":/level/level/level2.json"
+const std::string LEVEL_ONE = ":/level/level/level1.json";
+const std::string LEVEL_TWO = ":/level/level/level2.json";
+const std::vector<std::string> LEVELS = {LEVEL_ONE, LEVEL_TWO};
 // ----------------------------------------------------- //
 
 // ----------------< LEVEL POSITION CONSTANTS >--------- //
@@ -57,9 +59,12 @@ const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_
 
 
 
-const std::vector<std::vector<std::pair<int,int>>> LEVEL_START_POS;
-const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS;
-const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS;
+const std::vector<std::pair<int,int>> LEVEL_START_POS = {LEVEL_ONE_START_POS,
+                                                         LEVEL_TWO_START_POS};
+
+const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS = {HEDGEHOG_LEVEL_ONE_POS_VECTOR,HEDGEHOG_LEVEL_ONE_POS_VECTOR};
+
+const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_POS_VECTOR,SPIKE_LEVEL_ONE_POS_VECTOR};
 // ----------------------------------------------------- //
 
 // ----------------< FOX SPRITE SIZE >------------------ //

@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_menuWidget);
     //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
     connect(m_menuWidget, &MenuWidget::finished, this, &MainWindow::handleMenuFinished);
+    connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::setLevelN);
 
 
     // Skipping the menu
@@ -110,7 +111,10 @@ void MainWindow::printText(const QString &text, int x, int y, int z, const QColo
     mScene->addItem(textItem);
 }
 
-
+void MainWindow::setLevelN(int newLevelN)
+{
+    levelN = newLevelN;
+}
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
         QMainWindow::resizeEvent(event);
@@ -123,14 +127,14 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 void MainWindow::handleMenuFinished()
 {
     set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
-    section = new MapSection(LEVEL_ONE);
+    section = new MapSection(LEVELS.at(levelN));
 
     tilesets = new std::vector<TileSet*>();
     tilesets->push_back(set);
 
     map = new Map(section, tilesets);
     map->load();
-    level = new Level(LEVEL_ONE_START_POS,map,this);
+    level = new Level(levelN,LEVEL_START_POS.at(levelN),map,this);
 
     QPixmap background(":/texture/sprites/texture/bg.jpg");
     level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

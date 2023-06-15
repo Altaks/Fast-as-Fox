@@ -41,6 +41,8 @@ public:
     QString getScreenshotPath();
 
 
+    void setLevelN(int newLevelN);
+
 private slots:
     void addText();
     void printText(const QString &text, int x, int y, int z, const QColor &color);
@@ -60,6 +62,7 @@ private:
     std::vector<TileSet*>* tilesets;
     int height=25;
     int  weight=30;
+    int levelN;
     Level * level;
     MenuWidget *m_menuWidget;
     bool isRestarting;
