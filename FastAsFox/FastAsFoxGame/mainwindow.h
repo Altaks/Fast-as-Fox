@@ -37,6 +37,8 @@ public:
     void writeToFile(bool value);
     void handleLevelMenu();
     void handleMenuFinished();
+    void drawOnImage(QPixmap &image, const QPoint &pos, const QString &text);
+    QString getScreenshotPath();
 
 
 private slots:
@@ -61,11 +63,14 @@ private:
     Level * level;
     MenuWidget *m_menuWidget;
     bool isRestarting;
+    QPoint m_lastClickedPos;
 
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

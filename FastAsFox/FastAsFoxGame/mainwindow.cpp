@@ -7,13 +7,14 @@
 #include "map.h"
 #include <QCoreApplication>
 #include <QProcess>
-
+#include <QLineEdit>
 #include <QKeyEvent>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
-
+#include <QInputDialog>
 #include <QThread>
+#include <QDir>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Skipping the menu
     //m_menuWidget->skipMenu();
 
-    bool isRestarting = false;
+    this->installEventFilter(this);
 }
 
 void MainWindow::writeToFile(bool value) {
@@ -162,4 +163,105 @@ void MainWindow::handleLevelMenu()
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_lastClickedPos = event->pos();
 
+        QPixmap screenshot = this->grab();
+
+        bool ok;
+        QString rawText = QInputDialog::getText(this, tr("Input Dialog"), tr("Enter text:"), QLineEdit::Normal, "", &ok);
+        if (ok && !rawText.isEmpty()) {
+            const int maxCharPerLine = 30;  // Adjust this value according to your needs
+            QString wrappedText;
+            while (!rawText.isEmpty()) {
+                QString line = rawText.left(maxCharPerLine);
+                rawText.remove(0, line.length());
+                wrappedText.append(line + "\n");
+            }
+
+            drawOnImage(screenshot, m_lastClickedPos, wrappedText);
+
+            QString screenshotPath = getScreenshotPath();
+            screenshot.save(screenshotPath);
+        }
+    }
+}
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == this && event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
+        // check if the clicked widget is a button
+        QWidget *clickedWidget = this->childAt(mouseEvent->pos());
+        if (clickedWidget && qobject_cast<QPushButton*>(clickedWidget)) {
+            // if it's a button, ignore the click
+            return false;
+        }
+
+        // perform usual tasks
+        if (mouseEvent->button() == Qt::LeftButton) {
+            m_lastClickedPos = mouseEvent->pos();
+
+            QPixmap screenshot = this->grab();
+
+            bool ok;
+            QString rawText = QInputDialog::getText(this, tr("Input Dialog"), tr("Enter text:"), QLineEdit::Normal, "", &ok);
+            if (ok && !rawText.isEmpty()) {
+                const int maxCharPerLine = 30;  // Adjust this value according to your needs
+                QString wrappedText;
+                while (!rawText.isEmpty()) {
+                    QString line = rawText.left(maxCharPerLine);
+                    rawText.remove(0, line.length());
+                    wrappedText.append(line + "\n");
+                }
+
+                drawOnImage(screenshot, m_lastClickedPos, wrappedText);
+
+                QString screenshotPath = getScreenshotPath();
+                screenshot.save(screenshotPath);
+            }
+
+            return true;
+        }
+    }
+
+    // pass the event on to the parent class
+    return QMainWindow::eventFilter(obj, event);
+}
+void MainWindow::drawOnImage(QPixmap &image, const QPoint &pos, const QString &text)
+{
+    QFont font;
+    font.setPointSize(12);  // adjust size according to your need
+    QFontMetrics fm(font);
+    QRect textRect = fm.boundingRect(QRect(pos, image.size()), Qt::TextWordWrap, text);
+    textRect += QMargins(10, 10, 10, 10); // add some padding around text
+
+    QPainter painter(&image);
+    painter.setBrush(Qt::white); // fill color
+    painter.setPen(Qt::black); // border color
+    painter.drawRect(textRect);
+
+    painter.setFont(font);
+    painter.setPen(Qt::black); // text color
+    painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap, text); // draw text centered in the rectangle
+
+    painter.end();
+}
+
+QString MainWindow::getScreenshotPath()
+{
+    QString screenshotDir = QCoreApplication::applicationDirPath() + "/todo";
+    QDir dir(screenshotDir);
+
+    // create the directory if it doesn't exist
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    // format the current date/time as a string
+    QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss");
+
+    return screenshotDir + QString("/screenshot-%1.png").arg(timestamp);
+}
