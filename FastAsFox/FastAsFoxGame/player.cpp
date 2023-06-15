@@ -1,4 +1,6 @@
 ﻿#include "player.h"
+#include "berry.h"
+
 
 Fox *Player::getAnimation() const
 {
@@ -112,6 +114,9 @@ void Player::updatePosition()
 
     std::pair<std::optional<CollisionSide>, std::optional<CollisionSide>> collisionSide;
 
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+
     if(this->isOnAir() && this->isJumping){
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
         std::chrono::duration<double> time = currentTimeStamp - this->lastJumpTimeStamp;
@@ -135,6 +140,15 @@ void Player::updatePosition()
                 vx = WALKING_SPEED;
             }
     } //else qWarning("None condition of movement have been implied in position update");
+    else if ((this->isOnGround() and actualBerry->getPowerUpType()==Speed and this->eatBerry()) or (elapsed_seconds.count()<(double)5)){
+            if(this->animation->getIsRunning()){
+                vx = RUNNING_SPEED*1.45; //running speed with the berry speed boost
+            }
+            else {
+                // walking speed with the berry speed boost
+                vx = WALKING_SPEED*1.45;
+            }
+    }
     else
     {
         std::chrono::time_point<std::chrono::system_clock> currentTimeStamp = std::chrono::system_clock::now();
@@ -368,5 +382,37 @@ void Player::updateHealthbar()
         if(animation->getIsRunning()){
             qInfo() << "Player slowed down\n";
             this->getAnimation()->setIsRunning(false);
+        }
+    }
+
+    Berry* Player::getActualBerry(){
+        return actualBerry;
+    }
+
+    void Player::setActualBerry(Berry * berries){
+        if(actualBerry!=nullptr){
+            delete actualBerry;
+        }
+        actualBerry=berries;
+    }
+
+    void Player::addHP(){
+        hp+=1;
+    }
+
+    int Player::getHP(){
+        return hp;
+    }
+
+    bool Player::eatBerry(){
+        if (actualBerry==nullptr){
+            return false;
+        }
+        else {
+            actualBerry->applyEffect(this);
+            return true;
+            if(actualBerry->getPowerUpType()==Speed){
+                start = std::chrono::system_clock::now();
+            }
         }
     }

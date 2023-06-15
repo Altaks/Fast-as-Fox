@@ -1,6 +1,18 @@
 ﻿#include "map.h"
 #include "player.h"
 #include "tile.h"
+#include <random>
+#include <QMediaPlayer>
+#include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+#include <iostream>
+#include <QGraphicsProxyWidget>
+#include <QAudioOutput>
+#include <QStyle>
+#include <QTimeLine>
+#include <QPushButton>
+#include <QGraphicsItemAnimation>
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
@@ -38,14 +50,14 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
 
 }
 
-std::vector<Tile *> *Map::getActuallyLoadedTiles() const
-{
-    return actuallyLoadedTiles;
-}
-
 std::vector<MapSection *> Map::getSections() const
 {
     return sections;
+}
+
+std::vector<Tile *> *Map::getActuallyLoadedTiles() const
+{
+    return actuallyLoadedTiles;
 }
 
 void Map::setItsPlayer(Player* player)
@@ -188,4 +200,123 @@ void Map::updateView()
     float lerpFactor = 0.1f;
     mapView->centerOn(mapView->mapToScene(mapView->viewport()->rect().center()) * (1 - lerpFactor)
                       + center * lerpFactor);
+}
+
+void Map::displayAnimation() {
+    GifItem* fireworks = new GifItem(":/particules/sprites/particules/fireworks.gif");
+    fireworks->setPos(mapView->mapToScene(mapView->viewport()->width() / 2, mapView->viewport()->height() / 2));
+    this->getScene()->addItem(fireworks);
+
+    QPixmap originalPixmap(":/userInterface/sprites/userInterface/ribbon.png");
+    QPixmap ribbonPixmap = originalPixmap.scaled(originalPixmap.width() * 4, originalPixmap.height() * 4);
+
+    QGraphicsPixmapItem *ribbon = new QGraphicsPixmapItem(ribbonPixmap);
+    this->getScene()->addItem(ribbon);
+
+    int x = (mapView->viewport()->width() - ribbonPixmap.width()) / 2;
+    int y = 200;
+    QPointF ribbonPos = mapView->mapToScene(x, y);
+    ribbon->setPos(ribbonPos);
+
+    QPixmap woodboardPixmap(":/userInterface/sprites/userInterface/woodboard.png");
+
+    QGraphicsPixmapItem *woodboardItem = new QGraphicsPixmapItem(woodboardPixmap);
+
+    woodboardItem->setVisible(false);
+
+    QGraphicsTextItem *textItem = new QGraphicsTextItem(QString::fromStdString(lcdCount));
+
+    QFont font;
+    font.setPointSize(20);
+    textItem->setFont(font);
+
+    woodboardPixmap = woodboardPixmap.scaled(textItem->boundingRect().width() + 20, textItem->boundingRect().height() + 20);
+    woodboardItem->setPixmap(woodboardPixmap);
+
+    int textX = (mapView->viewport()->width() - textItem->boundingRect().width()) / 2;
+    int textY = 60 + ribbonPixmap.height();
+
+    QPointF textPos = mapView->mapToScene(textX, textY);
+    textItem->setPos(textPos);
+    textItem->setVisible(false);
+
+    woodboardItem->setPos(textItem->pos().x() - 10, textItem->pos().y() - 10);
+
+    this->getScene()->addItem(woodboardItem);
+
+    this->getScene()->addItem(textItem);
+
+    QTimeLine *timeLine = new QTimeLine(2000);
+    timeLine->setFrameRange(0, 100);
+
+    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+    animation->setTimeLine(timeLine);
+
+    for (int i = 0; i <= 100; ++i) {
+        animation->setScaleAt(i / 100.0, i / 100.0, i / 100.0);
+    }
+    timeLine->start();
+
+    AnimationHelper *woodboardHelper = new AnimationHelper(woodboardItem);
+
+    QPropertyAnimation *woodboardAnimation = new QPropertyAnimation(woodboardHelper, "pos");
+    woodboardAnimation->setDuration(1000);
+    woodboardAnimation->setStartValue(QPointF(textItem->pos().x() - 20, -woodboardPixmap.height() + 200));
+    woodboardAnimation->setEndValue(QPointF(textItem->pos().x() - 20, textItem->pos().y() - 10));
+    woodboardAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    // Create a AnimationHelper for the textItem
+    AnimationHelper *textItemHelper = new AnimationHelper(textItem);
+
+    // Create a QPropertyAnimation for the textItem sliding effect
+    QPropertyAnimation *textItemAnimation = new QPropertyAnimation(textItemHelper, "pos");
+    textItemAnimation->setDuration(1000);
+    textItemAnimation->setStartValue(QPointF(textItem->pos().x() - 10, -textItem->boundingRect().height() + 200));
+    textItemAnimation->setEndValue(QPointF(textItem->pos().x() - 10, textItem->pos().y()));
+    textItemAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    QObject::connect(timeLine, &QTimeLine::finished, [=]() {
+
+        woodboardItem->setVisible(true);
+        textItem->setVisible(true);
+        woodboardAnimation->start();
+        textItemAnimation->start();
+    });
+
+    QObject::connect(woodboardAnimation, &QPropertyAnimation::finished, woodboardAnimation, &QPropertyAnimation::deleteLater);
+    QObject::connect(textItemAnimation, &QPropertyAnimation::finished, textItemAnimation, &QPropertyAnimation::deleteLater);
+
+    this->getScene()->addItem(woodboardItem);
+
+    QMediaPlayer *mediaPlayer = new QMediaPlayer;
+    mediaPlayer->setSource(QUrl("qrc:/sounds/sprites/sounds/levelFinished.mp3"));
+    QAudioOutput *audioOutput = new QAudioOutput;
+    mediaPlayer->setAudioOutput(audioOutput);
+    mediaPlayer->play();
+
+    QMediaPlayer *mediaPlayer2 = new QMediaPlayer;
+    mediaPlayer2->setSource(QUrl("qrc:/sounds/sprites/sounds/fireworks.mp3"));
+    QAudioOutput *audioOutput2 = new QAudioOutput;
+    mediaPlayer2->setAudioOutput(audioOutput2);
+    mediaPlayer2->play();
+
+    // load the icon
+    QPixmap homeButtonPixmap(":/userInterface/sprites/userInterface/homeButton.png");
+
+    // reduce the size of the pixmap by 2
+    QPixmap scaledPixmap = homeButtonPixmap.scaled(homeButtonPixmap.size() / 2);
+
+    // create the button
+    LevelMenuButton *homeButton = new LevelMenuButton(scaledPixmap);
+    this->getScene()->addItem(homeButton);
+
+    // position the button at the bottom of the woodboard
+    QPointF buttonPos = woodboardItem->pos();
+    buttonPos.setY(buttonPos.y() + woodboardPixmap.height()+30);
+    homeButton->setPos(buttonPos);
+    //QObject::connect(homeButton, &LevelMenuButton::golevelMenu, this, &Map::handleLevelMenuButton);
+}
+
+void Map::setLcdCount(const std::string &value) {
+    lcdCount = value;
 }

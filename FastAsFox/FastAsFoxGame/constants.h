@@ -66,6 +66,23 @@ const int HEDGEHOG_ATTACK_SPRITE_HEIGHT = 28;
 const int HEDGEHOG_N_OF_FRAME = 4;
 // ----------------------------------------------------- //
 
+// ----------------< PowerUpType's Enum >--------------- //
+enum PowerUpType{
+    Dash=1,
+    Double_Jump=2,
+    ChronoFreeze=3,
+    Speed=4,
+    Revive=5,
+};
+// ----------------------------------------------------- //
+
+
+
+
+
+
+
+
 // ----------------< AUDIO FILES PATHS >---------------- //
 #define AUDIO1       ""
 #define AUDIO2       ""

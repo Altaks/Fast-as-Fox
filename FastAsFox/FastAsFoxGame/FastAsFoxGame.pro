@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,7 +22,10 @@ SOURCES += \
     player.cpp \
     tile.cpp \
     tileset.cpp \
-    level.cpp
+    level.cpp \
+    berriespile.cpp  \
+    berry.cpp \
+    powerup.cpp
 
 HEADERS += \
     animatedsprite.h \
@@ -38,7 +41,10 @@ HEADERS += \
     tile.h \
     tileset.h \
     mainwindow.h \
-    level.h
+    level.h \
+    berriespile.h \
+    berry.h \
+    powerup.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

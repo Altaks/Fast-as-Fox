@@ -175,4 +175,14 @@
     <qresource prefix="/coin">
         <file>sprites/coin/coin.png</file>
     </qresource>
+    <qresource prefix="/tasDeBaies">
+        <file>sprites/tasDeBaies.png</file>
+    </qresource>
+    <qresource prefix="/powerUp">
+        <file>sprites/powerUp/apple.png</file>
+        <file>sprites/powerUp/cerise.png</file>
+        <file>sprites/powerUp/citron.png</file>
+        <file>sprites/powerUp/peche.png</file>
+        <file>sprites/powerUp/raisin.png</file>
+    </qresource>
 </RCC>

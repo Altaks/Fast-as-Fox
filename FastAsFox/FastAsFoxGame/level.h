@@ -14,7 +14,9 @@ using namespace std;
 #include "map.h"
 #include "coin.h"
 #include "hedgehog.h"
+#include "berriespile.h"
 
+class PowerUp;
 
 class Level : public QObject
 {
@@ -22,24 +24,25 @@ class Level : public QObject
 private:
     QElapsedTimer timescore;
     pair<int,int> startingPosition;
-    GameObject * endingObject;
-    Player * player;
-    Map * map;
+    BerriesPile * endingObject= nullptr;
+    Player * player= nullptr;
+    Map * map= nullptr;
     void loadMap();
     void showMap();
     void showScore();
     void initLCD();
-    QGraphicsScene * scene;
-    QGraphicsView * view;
-    QMainWindow * mwindow;
-    QLCDNumber * lcd;
+    QGraphicsScene * scene= nullptr;
+    QGraphicsView * view= nullptr;
+    QMainWindow * mwindow= nullptr;
+    QLCDNumber * lcd= nullptr;
     double count;
-    QTimer * timer;
-    std::vector<Hedgehog *>* hedgehogs;
+    string lcdCount;
+    QTimer * timer= nullptr;
+    std::vector<Hedgehog *>* hedgehogs= nullptr;
     std::vector<Coin*> levelCoins;
     std::vector<std::pair<int, int>> coinPositions;
     int coinScore;
-    QLabel* coinLabel;
+    QLabel* coinLabel= nullptr;
 
 private slots:
     void updateLCD();
@@ -49,10 +52,9 @@ private slots:
     void handleCoinCollected();
 
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
+    Level(pair<int,int> startingPosition, Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
-    void finish();
     Map * getMap();
     void showUI();
     void updateLCDPosition();
@@ -60,10 +62,18 @@ public:
     Player *getPlayer() const;
     QGraphicsScene *getScene() const;
     QGraphicsView *getView() const;
+
+    QLCDNumber* getLCD();
+    bool levelCleared;
+
     void setCoinScore(int newCoinScore);
     int getCoinScore() const;
     void increaseCoinScore(int amount);
     void addCoinsToLevel();
+
+public slots:
+    void finish();
+    std::string getLcdCount();
 };
 
 

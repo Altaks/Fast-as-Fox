@@ -1,11 +1,16 @@
-﻿
-#ifndef PLAYER_H
+﻿#ifndef PLAYER_H
 #define PLAYER_H
 #include <QVector2D>
+#include <chrono>
 #include "animatedsprite.h"
 #include "constants.h"
 #include "tile.h"
 #include "map.h"
+
+using namespace std;
+
+class Berry;
+
 class Player : public GameObject
 {
     Q_OBJECT
@@ -18,11 +23,16 @@ private:
     bool isJumping;
     int hp;
     QVector2D velocity;
-    Fox* animation;
-    Map * map;
+    Fox* animation= nullptr;
+    Map * map= nullptr;
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp;
     std::pair<int, int> spawnCoords;
     std::pair<int,int> spritePosition;
+
+    Berry * actualBerry= nullptr;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+
+
 public:
     Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent = nullptr);
     ~Player();
@@ -43,6 +53,14 @@ public:
     void playerJumped();
     void playerSlowedDown();
     const std::pair<int, int> &getSpritePosition() const;
+
+
+    bool eatBerry();// function to eat a berry that the player get
+    void setActualBerry(Berry * berries);
+    Berry * getActualBerry();
+
+    void addHP();
+    int getHP();
 
 signals:
     void playerMoved();

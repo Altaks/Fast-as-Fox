@@ -1,10 +1,10 @@
 ﻿#include "level.h"
+#include "powerup.h"
 #include "QtCore/qtimer.h"
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
+Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
-    endingObject=AnEndingObject;
     map=AMap;
     player = new Player(map, AStartingPosition);
     player->setInAir(true);
@@ -17,6 +17,8 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     QTimer * playerUpdatePositionClock = new QTimer();
     QTimer * hedgehogUpdatePositionClock = new QTimer();
 
+    pair<int,int>endpose(70,5);
+    endingObject=new BerriesPile(scene,endpose,map->getSections().at(0)->getSectionHeight());
 
     for(int i=0; i<HEDGEHOG_LEVEL_ONE_POS_VECTOR.size(); i++)
     {
@@ -47,6 +49,8 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
         {65*TILE_SIZE, (map->getSections().at(0)->getSectionHeight()-5)*TILE_SIZE}
     };
     addCoinsToLevel();
+
+    PowerUp(scene,this);
 }
 
 Level::~Level(){
@@ -282,7 +286,10 @@ void Level::start(){
 }
 
 void Level::finish(){
-
+    if(endingObject->isAtTheEnd(player->getAnimation())==true && !levelCleared){
+        map->displayAnimation();
+        this->levelCleared = true;
+    }
 }
 
 Map * Level::getMap(){
@@ -291,4 +298,13 @@ Map * Level::getMap(){
 
 void Level::setPlayer(Player* Aplayer){
     player=Aplayer;
+}
+
+std::string Level::getLcdCount()
+{
+    return lcdCount;
+}
+
+QLCDNumber* Level::getLCD(){
+    return lcd;
 }

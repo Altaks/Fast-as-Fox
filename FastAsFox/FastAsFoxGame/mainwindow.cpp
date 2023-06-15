@@ -26,8 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     map->load();
 
     GameObject * gameobjectvitefait;
-    gameobjectvitefait = new GameObject();
-    level = new Level(LEVEL_ONE_START_POS,gameobjectvitefait,map,this);
+    level = new Level(LEVEL_ONE_START_POS,map,this);
     level->start();
 
 }
@@ -46,6 +45,9 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
         case Qt::Key::Key_Q:
         case Qt::Key::Key_Left:
             this->level->getPlayer()->playerSlowedDown();
+        break;
+        case Qt::Key::Key_E:
+            this->level->getPlayer()->eatBerry();
         break;
     default:
         break;
