@@ -2,10 +2,9 @@
 #include "QtCore/qtimer.h"
 #include <QGridLayout>
 
-Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map * AMap, QMainWindow* mainwindow) : QObject()
+Level::Level(pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
     startingPosition=AStartingPosition;
-    endingObject=AnEndingObject;
     map=AMap;
     player = new Player(map, AStartingPosition);
     player->setInAir(true);
@@ -16,6 +15,10 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
     hearts = new std::vector<Heart*>();
+
+    timer = new QTimer();
+    connect(timer, &QTimer::timeout, this, &Level::updateLCD);
+    connect(timer, &QTimer::timeout, this, &Level::updateLCDPosition);
 
     hearts->push_back(new Heart(scene,HEART_1));
     hearts->push_back(new Heart(scene,HEART_2));
@@ -44,8 +47,8 @@ Level::Level(pair<int,int> AStartingPosition, GameObject * AnEndingObject, Map *
         connect(spikes->at(i), &Spike::playerLoseHealth, this, &Level::changeHeartDisplay);
     }
 
-    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::updateHeartPosition);
     connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
+    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::updateHeartPosition);
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesSpike);
@@ -114,8 +117,8 @@ void Level::playerCollidesHedgehog()
         {
             if(hedgehogs->at(i)->getAttacking())
             {
-                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET and
-                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET_ENTIITY and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET_ENTIITY and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
                     hedgehogs->at(i)->setAttacking(true);
@@ -124,8 +127,8 @@ void Level::playerCollidesHedgehog()
             }
             else
             {
-                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET and
-                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_RUN_SPRITE_WIDTH + COLLISION_OFFSET_ENTIITY and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET_ENTIITY and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_RUN_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
                     hedgehogs->at(i)->setAttacking(true);
@@ -137,8 +140,8 @@ void Level::playerCollidesHedgehog()
         {
             if(hedgehogs->at(i)->getAttacking())
             {
-                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
-                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET and
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET_ENTIITY and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_ATTACK_SPRITE_WIDTH - COLLISION_OFFSET_ENTIITY and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_ATTACK_SPRITE_HEIGHT)
                     hedgehogs->at(i)->setAttacking(true);
@@ -147,8 +150,8 @@ void Level::playerCollidesHedgehog()
             }
             else
             {
-                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
-                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET and
+                if(player->getSpritePosition().first > hedgehogs->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET_ENTIITY and
+                    player->getSpritePosition().first < hedgehogs->at(i)->getSpritePosition().first + HEDGEHOG_WALK_SPRITE_WIDTH - COLLISION_OFFSET_ENTIITY and
                     player->getSpritePosition().second > hedgehogs->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
                     player->getSpritePosition().second < hedgehogs->at(i)->getSpritePosition().second + HEDGEHOG_WALK_SPRITE_HEIGHT)
                     hedgehogs->at(i)->setAttacking(true);
@@ -163,8 +166,8 @@ void Level::playerCollidesSpike()
 {
     for(int i=0; i<spikes->size(); i++)
     {
-        if(player->getSpritePosition().first > spikes->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET and
-            player->getSpritePosition().first < spikes->at(i)->getSpritePosition().first + TILE_SIZE - COLLISION_OFFSET and
+        if(player->getSpritePosition().first > spikes->at(i)->getSpritePosition().first - FOX_WALK_SPRITE_WIDTH + COLLISION_OFFSET_ENTIITY and
+            player->getSpritePosition().first < spikes->at(i)->getSpritePosition().first + TILE_SIZE - COLLISION_OFFSET_ENTIITY and
             player->getSpritePosition().second > spikes->at(i)->getSpritePosition().second - FOX_WALK_SPRITE_HEIGHT and
             player->getSpritePosition().second < spikes->at(i)->getSpritePosition().second + TILE_SIZE)
             spikes->at(i)->setAttacking(true);
@@ -235,10 +238,9 @@ void Level::showMap(){
 void Level::showScore()
 {
     // Initialize the timer
-    timer = new QTimer();
 
     // Connect timer's timeout() signal to the slot that will update the LCD
-    connect(timer, &QTimer::timeout, this, &Level::updateLCD);
+
 
     // Start the timer to fire every 10 ms (this will result in hundredths of a second)
     timer->start(10);
@@ -288,7 +290,8 @@ void Level::start(){
     loadMap();
     showMap();
     initLCD();
-    showLCD();
+    updateLCDPosition();
+    timer->start(10);
 }
 
 void Level::finish(){

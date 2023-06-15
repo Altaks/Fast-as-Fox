@@ -16,6 +16,8 @@ private:
     bool fast;
     bool againstWall;
     bool isJumping;
+    bool touchedCeiling;
+    bool isFalling;
     int hp;
     QVector2D velocity;
     Fox* animation;

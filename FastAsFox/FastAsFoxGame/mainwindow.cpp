@@ -119,8 +119,6 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 }
 
 
-
-
 void MainWindow::handleMenuFinished()
 {
     set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
@@ -131,9 +129,7 @@ void MainWindow::handleMenuFinished()
 
     map = new Map(section, tilesets);
     map->load();
-    GameObject * gameobjectvitefait;
-    gameobjectvitefait = new GameObject();
-    level = new Level(LEVEL_ONE_START_POS,gameobjectvitefait,map,this);
+    level = new Level(LEVEL_ONE_START_POS,map,this);
 
     QPixmap background(":/texture/sprites/texture/bg.jpg");
     level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

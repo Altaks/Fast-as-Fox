@@ -157,7 +157,7 @@ void Player::updatePosition()
         else
             vx = WALKING_SPEED * cos(ALPHA);
 
-        vy = - GRAVITY*2 * t + WALKING_SPEED * sin(ALPHA);
+        vy = - GRAVITY*2 * t;
     }
 
     // Check for collision, if they appear, cancel the movement in the specified direction.
@@ -236,6 +236,24 @@ void Player::updatePosition()
                     }
     }
 
+
+
+    if(collisionSide.second.has_value())
+    {
+        if(collisionSide.second.value()==LEFT)
+        {
+            againstWall=true;
+            if(!collisionSide.first.has_value())
+                if(inAir==false)
+                {
+                    setInAir(true);
+                    onGround=false;
+                }
+        }
+    }
+    else
+        againstWall=false;
+
     if(collisionSide.first.has_value())
     {
 
@@ -270,6 +288,17 @@ void Player::updatePosition()
                 inAir=true;
                 isJumping=true;
             }
+            touchedCeiling=false;
+        }
+        else if (collisionSide.first.value()==BOTTOM)
+        {
+            if(!onGround)
+            {
+                touchedCeiling=true;
+                isFalling=true;
+                againstWall=false;
+                this->animation->setIsRunning(false);
+            }
         }
 
     }
@@ -280,30 +309,26 @@ void Player::updatePosition()
         this->onGround=false;
     }
 
-    if(collisionSide.second.has_value())
-    {
-        if(collisionSide.second.value()==LEFT)
-        {
-            againstWall=true;
-            if(!collisionSide.first.has_value())
-                if(inAir==false)
-                {
-                    setInAir(true);
-                    onGround=false;
-                }
-        }
-    }
-    else
-        againstWall=false;
 
     if(onGround)
+    {
         yPlayer = this->map->getScene()->height()/32 - collidedTopTileRect.y()/32 + collidedTopTileRect.height()/32;
+        isFalling=false;
+    }
 
     if(againstWall)
         vx=0;
 
     if(playerJump)
         playerJump=false;
+
+    if(touchedCeiling)
+    {
+        isJumping=false;
+        touchedCeiling=false;
+        setInAir(true);
+        vy = -8/32;
+    }
 
 
 

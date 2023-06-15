@@ -52,7 +52,7 @@ private slots:
     void updateHeartPosition();
 
 public:
-    Level(pair<int,int> startingPosition, GameObject * endingObject, Map * AMap, QMainWindow * mainwindow);
+    Level(pair<int,int> startingPosition,  Map * AMap, QMainWindow * mainwindow);
     ~Level();
     void start();
     void finish();

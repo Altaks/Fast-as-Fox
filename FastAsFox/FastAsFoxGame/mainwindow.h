@@ -38,6 +38,8 @@ public:
     void handleLevelMenu();
     void handleMenuFinished();
 
+    void resizeEvent(QResizeEvent *event) ;
+    void closeEvent(QCloseEvent *event) ;
 
 private slots:
     void addText();
@@ -63,9 +65,6 @@ private:
     bool isRestarting;
 
 
-protected:
-    void resizeEvent(QResizeEvent *event) override;
-    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

@@ -43,11 +43,11 @@ const double RUNNING_SPEED = 0.06;
 // ----------------------------------------------------- //
 
 // ----------------< LEVEL POSITION CONSTANTS >--------- //
-const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(2,5);
+const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(2,7);
 const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
 
-const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,2);
-const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,8);
+const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,4);
+const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,10);
 const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1,HEDGEHOG_LEVEL_ONE_POS2};
 
 const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,4);
@@ -56,6 +56,10 @@ const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_
 
 
 
+
+const std::vector<std::vector<std::pair<int,int>>> LEVEL_START_POS;
+const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS;
+const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS;
 // ----------------------------------------------------- //
 
 // ----------------< FOX SPRITE SIZE >------------------ //
@@ -100,5 +104,6 @@ const short MAX_COLOR=7;
 
 
 #define COLLISION_OFFSET 8
+#define COLLISION_OFFSET_ENTIITY 8
 
 #endif // CONSTANTS_H
