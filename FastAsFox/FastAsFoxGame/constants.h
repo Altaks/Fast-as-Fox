@@ -73,11 +73,15 @@ const std::vector<std::pair<int,int>> END_BERRIES = {END_BERRIES_LEVEL1};
 
 
 // ----------------< POWER UPS CONSTANTS >------------------ //
-const double DASH_BOOST_PERCENTAGE = 120;
+const double DASH_BOOST_PERCENTAGE = 170;
 const double DASH_DURATION = 2;
 
 const double SPEED_BOOST_PERCENTAGE = 100;
 const double SPEED_DURATION = 5;
+
+const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUP_POSITIONS = {
+    {12, 6}, {12, 8}
+};
 // ----------------------------------------------------- //
 
 

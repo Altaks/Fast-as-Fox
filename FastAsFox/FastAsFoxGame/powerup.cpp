@@ -49,6 +49,7 @@ void PowerUp::applyEffect(Level * level, Player * player){
         case HEALTH_TYPE: {
             if(player->getHp() < 3) {
                 player->setHp(player->getHp() + 1);
+                emit level->updateHeartsDisplay();
             }
             qWarning() << "Consumed speed type health boost up" << "\n";
             break;

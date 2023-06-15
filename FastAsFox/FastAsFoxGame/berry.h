@@ -19,7 +19,7 @@ public:
     Berry(QGraphicsScene * scene);
     virtual void onCollide(Player * fox);
     virtual void applyEffect(Level * level, Player * fox);
-    static Berry * generateRandom();
+    static Berry * generateRandom(QGraphicsScene * scene, std::pair<int, int> spawnpoint);
     static QPixmap * queryPixmap(PowerUpType type);
 
     QPixmap *getTexture() const;

@@ -78,6 +78,8 @@ public:
     void setTimerLCD(QTimer *newTimerLCD);
     double getCount() const;
     void setCount(double newCount);
+signals:
+    void updateHeartsDisplay();
 };
 
 

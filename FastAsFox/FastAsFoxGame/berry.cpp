@@ -1,5 +1,7 @@
 ﻿#include "berry.h"
 #include "level.h"
+#include <random>
+#include "powerup.h"
 
 QPixmap *Berry::getTexture() const
 {
@@ -26,8 +28,13 @@ Berry::Berry(QGraphicsScene * scene)
     this->scene = scene;
 }
 
-Berry * Berry::generateRandom(){
-    return nullptr;
+Berry * Berry::generateRandom(QGraphicsScene * scene, std::pair<int, int> spawnpoint){
+    std::random_device rd;
+    std::default_random_engine eng(rd());
+    std::uniform_int_distribution<int> distribution(0, 4);
+
+    PowerUpType type = (PowerUpType)distribution(eng);
+    return new PowerUp(scene, type, spawnpoint);
 }
 
 void Berry::onCollide(Player * fox){

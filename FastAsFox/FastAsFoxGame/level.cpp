@@ -68,8 +68,12 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     QPixmap background(":/texture/sprites/texture/bg.jpg");
     scene->setBackgroundBrush(background.scaled(mapViewSize, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
 
+    connect(this, &Level::updateHeartsDisplay, this, &Level::changeHeartDisplay);
+
     this->berries = new std::vector<Berry *>();
-    this->berries->push_back(new PowerUp(this->scene, PowerUpType::HEALTH_TYPE,               std::pair<int, int>(12, 6)));
+    for(std::pair<int, int> coordinates : LEVEL_ONE_POWERUP_POSITIONS){
+        this->berries->push_back(Berry::generateRandom(scene, coordinates));
+    }
 }
 
 Level::~Level(){
