@@ -17,7 +17,6 @@ using namespace std;
 #include "player.h"
 #include "map.h"
 #include "heart.h"
-#include "hublot.h"
 
 
 class Level : public QObject
@@ -45,7 +44,6 @@ private:
     bool levelCleared;
     QTimer * playerUpdatePositionClock;
     QTimer * hedgehogUpdatePositionClock;
-    Hublot * hublot;
     QLCDNumber* lcd;
     QTime* time;
     QTimer* timerLCD;

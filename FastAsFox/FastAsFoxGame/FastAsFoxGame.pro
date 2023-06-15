@@ -19,7 +19,6 @@ SOURCES += \
     gifitem.cpp \
     heart.cpp \
     hedgehog.cpp \
-    hublot.cpp \
     imageloader.cpp \
     levelmenubutton.cpp \
     logolabel.cpp \
@@ -45,7 +44,6 @@ HEADERS += \
     gifitem.h \
     heart.h \
     hedgehog.h \
-    hublot.h \
     imageloader.h \
     levelmenubutton.h \
     logolabel.h \

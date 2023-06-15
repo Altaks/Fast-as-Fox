@@ -1,7 +1,6 @@
 ﻿#include "level.h"
 #include "QtCore/qtimer.h"
 #include <QGridLayout>
-#include "hublot.h"
 
 Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindow* mainwindow) : QObject()
 {
@@ -19,7 +18,6 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     hedgehogs = new std::vector<Hedgehog*>();
     spikes = new std::vector<Spike*>();
     hearts = new std::vector<Heart*>();
-    hublot = new Hublot(scene);
 
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &Level::updateLCD);
@@ -54,7 +52,6 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
 
     connect(hedgehogUpdatePositionClock, &QTimer::timeout, this, &Level::changeHedgehogsDirection);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::updateHeartPosition);
-    connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::updateHublot);
     connect(playerUpdatePositionClock, &QTimer::timeout, player, &Player::updatePosition);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesHedgehog);
     connect(playerUpdatePositionClock, &QTimer::timeout, this, &Level::playerCollidesSpike);
@@ -231,14 +228,6 @@ void Level::updateHeartPosition()
         heart->setPos(map->getView()->mapToScene(heart->getXPosition()*TILE_SIZE, TILE_SIZE));
     }
 }
-void Level::updateHublot()
-{
-    QPointF topLeftInView = map->getView()->mapToScene(0, 0);
-    hublot->setPos(topLeftInView);
-    hublot->setZValue(1.0);
-
-}
-
 
 void Level::loadMap(){
     map->load();
