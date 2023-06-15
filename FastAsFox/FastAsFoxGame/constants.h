@@ -53,12 +53,18 @@ const std::vector<std::string> LEVELS = {LEVEL_ONE,
 // ----------------------------------------------------- //
 
 
-// ----------------< POWER UPS CONSTANTS >------------------ //
-const static std::string DASH =          ":/powerups/sprites/powerups/apple.png" ;
-const static std::string DOUBLE_JUMP =   ":/powerups/sprites/powerups/cerise.png";
-const static std::string CHRONO_FREEZE = ":/powerups/sprites/powerups/raisin.png";
-const static std::string HEALTH =        ":/powerups/sprites/powerups/peche.png" ;
-const static std::string SPEED =         ":/powerups/sprites/powerups/citron.png";
+// ----------------< POWER UPS/DOWN CONSTANTS >------------------ //
+const static std::string DASH =             ":/powerups/sprites/powerups/apple.png" ;
+const static std::string DOUBLE_JUMP =      ":/powerups/sprites/powerups/cerise.png";
+const static std::string CHRONO_FREEZE =    ":/powerups/sprites/powerups/raisin.png";
+const static std::string HEALTH =           ":/powerups/sprites/powerups/peche.png" ;
+const static std::string SPEED =            ":/powerups/sprites/powerups/citron.png";
+
+const static std::string SLOW  =            ":/powerdowns/sprites/powerdowns/banana.png";
+const static std::string TOO_FAST  =        ":/powerdowns/sprites/powerdowns/stawberry.png";
+const static std::string BUMP  =            ":/powerdowns/sprites/powerdowns/watermelon.png";
+const static std::string INVIS  =           ":/powerdowns/sprites/powerdowns/avocado.png";
+const static std::string EXPLOOOSION  =     ":/powerdowns/sprites/powerdowns/pepper.png";
 
 const double DASH_BOOST_PERCENTAGE = 170;
 const double DASH_DURATION = 2;
@@ -66,9 +72,16 @@ const double DASH_DURATION = 2;
 const double SPEED_BOOST_PERCENTAGE = 100;
 const double SPEED_DURATION = 5;
 
-const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUP_POSITIONS = {
+const double SLOW_DEBUFF_PERCENTAGE = 50; // -20% of speed
+const double SLOW_DURATION = 5;
+
+const double TOOFAST_DEBUFF_PERCENTAGE = 200;
+const double TOOFAST_DEBUFF_DURATION = 2;
+
+const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUPDOWNS_POSITIONS = {
     {12, 6}, {12, 8}
 };
+
 // ----------------------------------------------------- //
 
 // ----------------< LEVEL POSITION CONSTANTS >--------- //

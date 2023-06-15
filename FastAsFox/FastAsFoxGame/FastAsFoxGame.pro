@@ -29,6 +29,7 @@ SOURCES += \
     mapsection.cpp \
     menuwidget.cpp \
     player.cpp \
+    powerdown.cpp \
     powerup.cpp \
     spike.cpp \
     tile.cpp \
@@ -55,6 +56,8 @@ HEADERS += \
     mapsection.h \
     menuwidget.h \
     player.h \
+    powerdown.h \
+    powerdowntype.h \
     powerup.h \
     poweruptype.h \
     spike.h \

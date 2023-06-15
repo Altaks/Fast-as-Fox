@@ -241,4 +241,11 @@
         <file>sprites/powerups/raisin.png</file>
         <file>sprites/powerups/peche.png</file>
     </qresource>
+    <qresource prefix="/powerdowns">
+        <file>sprites/powerdowns/avocado.png</file>
+        <file>sprites/powerdowns/banana.png</file>
+        <file>sprites/powerdowns/pepper.png</file>
+        <file>sprites/powerdowns/stawberry.png</file>
+        <file>sprites/powerdowns/watermelon.png</file>
+    </qresource>
 </RCC>

@@ -4,7 +4,7 @@ PowerUp::PowerUp(QGraphicsScene * scene, PowerUpType type, std::pair<int, int> s
     this->type = type;
 
     // Apply the texture
-    this->texture = Berry::queryPixmap(type);
+    this->texture = Berry::queryPixmapPowerUp(type);
     QPixmap map = this->texture->scaled(32, 32);
     this->texture = new QPixmap(map);
     this->setPixmap(*this->texture);
@@ -51,7 +51,7 @@ void PowerUp::applyEffect(Level * level, Player * player){
                 player->setHp(player->getHp() + 1);
                 emit level->updateHeartsDisplay();
             }
-            qWarning() <<  "Consumed speed type health boost up" << "\n";
+            qWarning() << "Consumed speed type health boost up" << "\n";
             break;
         }
         case DOUBLE_JUMP_TYPE: {

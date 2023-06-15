@@ -27,8 +27,15 @@ private:
     Fox* animation;
     Map * map;
     std::chrono::time_point<std::chrono::system_clock> lastJumpTimeStamp; // Not used for powerups
-    std::chrono::time_point<std::chrono::system_clock> lastDashTimeStamp; // 5 sec
-    std::chrono::time_point<std::chrono::system_clock> lastSpeedTimeStamp; // 5 sec
+
+    // Power ups timestamps
+    std::chrono::time_point<std::chrono::system_clock> lastDashTimeStamp;
+    std::chrono::time_point<std::chrono::system_clock> lastSpeedTimeStamp;
+
+    // Power down timestamps
+    std::chrono::time_point<std::chrono::system_clock> lastSlowTimeStamp;
+    std::chrono::time_point<std::chrono::system_clock> lastTooFastTimeStamp;
+
     std::pair<int, int> spawnCoords;
     std::pair<int,int> spritePosition;
     PowerUp * stockedPowerUp = nullptr;
@@ -66,6 +73,10 @@ public:
     void setLastDashTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastDashTimeStamp);
     std::chrono::time_point<std::chrono::system_clock> getLastSpeedTimeStamp() const;
     void setLastSpeedTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastSpeedTimeStamp);
+
+    void setLastSlowTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastSlowTimeStamp);
+    void setLastTooFastTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastTooFastTimeStamp);
+
 
 signals:
     void playerMoved();
