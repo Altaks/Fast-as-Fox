@@ -22,7 +22,23 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
-
+#include <QTimer>
+#include <QMessageBox>
+#include "level.h"
+#include "mapsection.h"
+#include "constants.h"
+#include "map.h"
+#include <QCoreApplication>
+#include <QProcess>
+#include <QLineEdit>
+#include <QKeyEvent>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <QInputDialog>
+#include <QThread>
+#include <QDir>
+#include <QNetworkAccessManager>
 #include <QThread>
 
 
@@ -39,13 +55,12 @@ public:
     void handleMenuFinished();
     void drawOnImage(QPixmap &image, const QPoint &pos, const QString &text);
     QString getScreenshotPath();
-
+    void createGitlabIssue(const QPoint &pos, const QString &text);
 
     void setLevelN(int newLevelN);
 
 private slots:
     void addText();
-    void printText(const QString &text, int x, int y, int z, const QColor &color);
     void updateLCD();
 
 private:

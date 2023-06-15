@@ -17,6 +17,7 @@ using namespace std;
 #include "gameobject.h"
 #include "map.h"
 #include "heart.h"
+#include "hublot.h"
 
 
 class Level : public QObject
@@ -36,12 +37,16 @@ private:
     QGraphicsScene * scene;
     QGraphicsView * view;
     QMainWindow * mwindow;
-    QLCDNumber * lcd;
     double count;
     QTimer * timer;
     std::vector<Hedgehog *>* hedgehogs;
     std::vector<Spike *>* spikes;
     std::vector<Heart *>* hearts;
+    Hublot * hublot;
+    QLCDNumber* lcd;
+    QTime* time;
+    QTimer* timerLCD;
+
 
 private slots:
     void updateLCD();
@@ -64,6 +69,7 @@ public:
     Player *getPlayer() const;
     QGraphicsScene *getScene() const;
     QGraphicsView *getView() const;
+    void updateHublot();
 };
 
 

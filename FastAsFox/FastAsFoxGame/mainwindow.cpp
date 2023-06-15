@@ -1,21 +1,8 @@
 ﻿#include "mainwindow.h"
-#include <QTimer>
-#include <QMessageBox>
-#include "level.h"
-#include "mapsection.h"
-#include "constants.h"
-#include "map.h"
-#include <QCoreApplication>
-#include <QProcess>
-#include <QLineEdit>
-#include <QKeyEvent>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QInputDialog>
-#include <QThread>
-#include <QDir>
-
+#include <QJsonObject>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -64,7 +51,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->installEventFilter(this);
 }
-
+/**
+ * @brief Writes a value to a file.
+ *
+ * The function writes a boolean value to a file named "restart.txt" in the application's directory.
+ * If the file is successfully opened, the value is written as a string ("1" for true, "0" for false).
+ * If the file cannot be opened, an error message is printed to the debug output.
+ *
+ * @param value The boolean value to be written to the file.
+ */
 void MainWindow::writeToFile(bool value) {
     QFile file(QCoreApplication::applicationDirPath() + "restart.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -100,17 +95,6 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
 
 }
 
-
-void MainWindow::printText(const QString &text, int x, int y, int z, const QColor &color) {
-    QFont font(mFontFamily);
-    font.setPointSize(z);
-    QGraphicsTextItem *textItem = new QGraphicsTextItem(text);
-    textItem->setFont(font);
-    textItem->setPos(x, y);
-    textItem->setDefaultTextColor(color);
-    mScene->addItem(textItem);
-}
-
 void MainWindow::setLevelN(int newLevelN)
 {
     levelN = newLevelN;
@@ -123,7 +107,14 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
         }
 }
 
-
+/**
+ * @brief Handles the finished event of the menu.
+ *
+ * The function is called when the menu has finished, indicating that the game should start.
+ * It initializes the TileSet and MapSection objects, creates a vector of TileSet pointers,
+ * and loads the map. It also creates a Level object with the specified level number and starting position,
+ * sets the background image of the level's scene, and starts the level.
+ */
 void MainWindow::handleMenuFinished()
 {
     set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
@@ -137,7 +128,8 @@ void MainWindow::handleMenuFinished()
     level = new Level(levelN,LEVEL_START_POS.at(levelN),map,this);
 
     QPixmap background(":/texture/sprites/texture/bg.jpg");
-    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+
 
     level->start();
     //connect(level->getPlayer(),SIGNAL(playerMoved()),level,SLOT(finish()));
@@ -145,6 +137,15 @@ void MainWindow::handleMenuFinished()
 
 }
 
+/**
+ * @brief Handles the close event for the main window.
+ *
+ * The function is called when the main window is about to be closed.
+ * If the application is not restarting, it writes to a file. It then passes
+ * the close event to the parent class to perform the default close behavior.
+ *
+ * @param event A pointer to the QCloseEvent object that contains details about the event.
+ */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (!isRestarting)
@@ -155,6 +156,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QWidget::closeEvent(event);
 }
 
+/**
+ * @brief Handles the level menu action.
+ *
+ * The function is called when the level menu action is triggered.
+ * It sets the flag isRestarting to true, writes to a file, quits the application,
+ * and restarts the application with the same arguments.
+ */
 void MainWindow::handleLevelMenu()
 {
     isRestarting = true;
@@ -163,6 +171,16 @@ void MainWindow::handleLevelMenu()
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
+/**
+ * @brief Handles the mouse press event for the main window.
+ *
+ * The function is called when a mouse button is pressed on the main window.
+ * If the left mouse button is pressed, it captures a screenshot of the window,
+ * prompts the user for text input, wraps the text, draws it on the screenshot,
+ * and saves the screenshot to a file.
+ *
+ * @param event A pointer to the QMouseEvent object that contains details about the event.
+ */
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -180,7 +198,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
                 rawText.remove(0, line.length());
                 wrappedText.append(line + "\n");
             }
-
             drawOnImage(screenshot, m_lastClickedPos, wrappedText);
 
             QString screenshotPath = getScreenshotPath();
@@ -188,6 +205,20 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         }
     }
 }
+/**
+ * @brief Filters events for the main window.
+ *
+ * The function filters events for the main window and handles the MouseButtonPress event.
+ * If the clicked widget is a button, the function ignores the click. Otherwise, it performs
+ * the usual tasks, including capturing a screenshot, prompting the user for text input,
+ * drawing the text on the screenshot, and saving the screenshot. Finally, it passes the event
+ * to the parent class.
+ *
+ * @param obj   The object that triggered the event.
+ * @param event The event to be filtered.
+ *
+ * @return @c true if the event was handled, @c false otherwise.
+ */
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == this && event->type() == QEvent::MouseButtonPress) {
@@ -230,6 +261,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     // pass the event on to the parent class
     return QMainWindow::eventFilter(obj, event);
 }
+/**
+ * @brief Draws a rectangle with text on the specified image at the given position.
+ *
+ * The function draws a rectangle with the specified text on the provided image,
+ * centered at the given position. It also creates a new issue in GitLab with the
+ * current position and text.
+ *
+ * @param image The image to draw on, passed as a QPixmap reference.
+ * @param pos   The position to draw the rectangle and text, specified as a QPoint.
+ * @param text  The text to be displayed inside the rectangle.
+ */
 void MainWindow::drawOnImage(QPixmap &image, const QPoint &pos, const QString &text)
 {
     QFont font;
@@ -247,9 +289,19 @@ void MainWindow::drawOnImage(QPixmap &image, const QPoint &pos, const QString &t
     painter.setPen(Qt::black); // text color
     painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap, text); // draw text centered in the rectangle
 
+    // Create a new issue in GitLab with the current position and text
+    createGitlabIssue(pos, text);
+
     painter.end();
 }
-
+/**
+ * @brief Retrieves the path for saving a screenshot.
+ *
+ * The function generates a directory path and filename for saving a screenshot.
+ * The directory path is created if it doesn't exist.
+ *
+ * @return The path for saving the screenshot, formatted as a QString.
+ */
 QString MainWindow::getScreenshotPath()
 {
     QString screenshotDir = QCoreApplication::applicationDirPath() + "/todo";
@@ -264,4 +316,43 @@ QString MainWindow::getScreenshotPath()
     QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss");
 
     return screenshotDir + QString("/screenshot-%1.png").arg(timestamp);
+}
+/**
+ * @brief Creates a GitLab issue with the specified position and text.
+ *
+ * @param pos  The position of the issue.
+ * @param text The text content of the issue.
+ */
+void MainWindow::createGitlabIssue(const QPoint &pos, const QString &text)
+{
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    QString token = "glpat-Yw-5FffG8xsEz7xRCQLh";
+    QString issueTitle = text;  // The title is now the same as the text
+    QString issueDescription = QString("Coord %1 %2 : %3").arg(pos.x()).arg(pos.y()).arg(text);
+    int projectId = 4894;
+    int assigneeId = 745;
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(QString("https://forge.iut-larochelle.fr/api/v4/projects/%1/issues").arg(projectId)));
+    request.setRawHeader("PRIVATE-TOKEN", token.toUtf8());
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("title", issueTitle);  // Use the text as the issue title
+    json.insert("description", issueDescription);
+    json.insert("assignee_ids", QJsonArray::fromVariantList({assigneeId}));
+    json.insert("labels", "To Do");  // Add the To Do label
+
+    QNetworkReply* reply = manager->post(request, QJsonDocument(json).toJson());
+
+    // Error handling
+    connect(reply, &QNetworkReply::finished, [reply]() {
+        if(reply->error()) {
+            qDebug() << reply->errorString();
+            qDebug() << reply->readAll();  // This will print the response body
+        } else {
+            qDebug() << "Issue created successfully.";
+        }
+        reply->deleteLater();
+    });
 }
