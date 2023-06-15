@@ -55,7 +55,7 @@ public:
     void handleMenuFinished();
     void drawOnImage(QPixmap &image, const QPoint &pos, const QString &text);
     QString getScreenshotPath();
-    void createGitlabIssue(const QPoint &pos, const QString &text);
+    void createGitlabIssue(const QPoint &pos, const QString &text, const QString &imagePath);
 
     void setLevelN(int newLevelN);
 

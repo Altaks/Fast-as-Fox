@@ -3,6 +3,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QHttpPart>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -202,6 +203,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
             QString screenshotPath = getScreenshotPath();
             screenshot.save(screenshotPath);
+
+            createGitlabIssue(m_lastClickedPos, wrappedText, screenshotPath);
         }
     }
 }
@@ -252,6 +255,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
                 QString screenshotPath = getScreenshotPath();
                 screenshot.save(screenshotPath);
+
+                createGitlabIssue(m_lastClickedPos, wrappedText, screenshotPath);
             }
 
             return true;
@@ -289,9 +294,6 @@ void MainWindow::drawOnImage(QPixmap &image, const QPoint &pos, const QString &t
     painter.setPen(Qt::black); // text color
     painter.drawText(textRect, Qt::AlignCenter | Qt::TextWordWrap, text); // draw text centered in the rectangle
 
-    // Create a new issue in GitLab with the current position and text
-    createGitlabIssue(pos, text);
-
     painter.end();
 }
 /**
@@ -315,6 +317,7 @@ QString MainWindow::getScreenshotPath()
     // format the current date/time as a string
     QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss");
 
+    // Create a new issue in GitLab with the current position and text;
     return screenshotDir + QString("/screenshot-%1.png").arg(timestamp);
 }
 /**
@@ -323,36 +326,70 @@ QString MainWindow::getScreenshotPath()
  * @param pos  The position of the issue.
  * @param text The text content of the issue.
  */
-void MainWindow::createGitlabIssue(const QPoint &pos, const QString &text)
+void MainWindow::createGitlabIssue(const QPoint &pos, const QString &text, const QString &imagePath)
 {
+    // Create network manager
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    // Set project id and token
     QString token = "glpat-Yw-5FffG8xsEz7xRCQLh";
-    QString issueTitle = text;  // The title is now the same as the text
-    QString issueDescription = QString("Coord %1 %2 : %3").arg(pos.x()).arg(pos.y()).arg(text);
     int projectId = 4894;
-    int assigneeId = 745;
 
-    QNetworkRequest request;
-    request.setUrl(QUrl(QString("https://forge.iut-larochelle.fr/api/v4/projects/%1/issues").arg(projectId)));
-    request.setRawHeader("PRIVATE-TOKEN", token.toUtf8());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    // First, upload the image
+    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
-    QJsonObject json;
-    json.insert("title", issueTitle);  // Use the text as the issue title
-    json.insert("description", issueDescription);
-    json.insert("assignee_ids", QJsonArray::fromVariantList({assigneeId}));
-    json.insert("labels", "To Do");  // Add the To Do label
+    QHttpPart imagePart;
+    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\""+ QFileInfo(imagePath).fileName() + "\""));
+    QFile *file = new QFile(imagePath);
+    file->open(QIODevice::ReadOnly);
+    imagePart.setBodyDevice(file);
+    file->setParent(multiPart); // we cannot delete the file now, so delete it with the multiPart
+    multiPart->append(imagePart);
 
-    QNetworkReply* reply = manager->post(request, QJsonDocument(json).toJson());
+    QNetworkRequest uploadRequest(QUrl(QString("https://forge.iut-larochelle.fr/api/v4/projects/%1/uploads").arg(projectId)));
+    uploadRequest.setRawHeader("PRIVATE-TOKEN", token.toUtf8());
 
-    // Error handling
-    connect(reply, &QNetworkReply::finished, [reply]() {
-        if(reply->error()) {
-            qDebug() << reply->errorString();
-            qDebug() << reply->readAll();  // This will print the response body
+    QNetworkReply* uploadReply = manager->post(uploadRequest, multiPart);
+    multiPart->setParent(uploadReply); // delete the multiPart with the reply
+
+    connect(uploadReply, &QNetworkReply::finished, [uploadReply, manager, token, pos, text, projectId]() {
+        if(uploadReply->error()) {
+            qDebug() << uploadReply->errorString();
+            qDebug() << uploadReply->readAll();  // This will print the response body
         } else {
-            qDebug() << "Issue created successfully.";
+            qDebug() << "Image uploaded successfully.";
+
+            QJsonObject obj = QJsonDocument::fromJson(uploadReply->readAll()).object();
+            QString uploadedImageUrl = obj["url"].toString();
+
+            // Now, create the issue
+            QString issueTitle = text;  // The title is now the same as the text
+            QString issueDescription = QString("Coord %1 %2 : %3\n\n![Image](%4)").arg(pos.x()).arg(pos.y()).arg(text).arg(uploadedImageUrl);
+            int assigneeId = 745;
+
+            QNetworkRequest request(QUrl(QString("https://forge.iut-larochelle.fr/api/v4/projects/%1/issues").arg(projectId)));
+            request.setRawHeader("PRIVATE-TOKEN", token.toUtf8());
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            QJsonObject json;
+            json.insert("title", issueTitle);  // Use the text as the issue title
+            json.insert("description", issueDescription);
+            json.insert("assignee_ids", QJsonArray::fromVariantList({assigneeId}));
+            json.insert("labels", "To Do");  // Add the To Do label
+
+            QNetworkReply* reply = manager->post(request, QJsonDocument(json).toJson());
+
+            // Error handling for creating issue
+            connect(reply, &QNetworkReply::finished, [reply]() {
+                if(reply->error()) {
+                    qDebug() << reply->errorString();
+                    qDebug() << reply->readAll();  // This will print the response body
+                } else {
+                    qDebug() << "Issue created successfully.";
+                }
+                reply->deleteLater();
+            });
         }
-        reply->deleteLater();
+        uploadReply->deleteLater();
     });
 }
