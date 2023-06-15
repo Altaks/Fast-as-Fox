@@ -3,6 +3,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include "powerup.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -85,6 +86,10 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
     case Qt::Key::Key_Right:
         this->level->getPlayer()->playerAccelerated();
         break;
+    case Qt::Key::Key_E:
+            if(this->level->getPlayer()->getStockedPowerUp() != nullptr){
+                this->level->getPlayer()->getStockedPowerUp()->applyEffect(this->level, this->level->getPlayer());
+            }
     case Qt::Key::Key_Q:
     case Qt::Key::Key_Left:
         this->level->getPlayer()->playerSlowedDown();

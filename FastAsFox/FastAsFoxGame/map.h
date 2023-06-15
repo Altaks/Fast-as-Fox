@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 
+class Level;
 
 class Player; //Forward declaration of player, to avoid creating an circular inclusion, as map.h is already included in player.h
 
@@ -61,7 +62,7 @@ public:
     std::set<Tile *> * getToCheckForCollision() const;
     std::vector<MapSection *> getSections() const;
     void setLcdCount(const std::string &value);
-    void displayAnimation();
+    void displayAnimation(Level * level);
 
 
 public slots:

@@ -1,9 +1,11 @@
 ﻿#include "map.h"
 #include "animationhelper.h"
 #include "gifitem.h"
+#include "level.h"
 #include "levelmenubutton.h"
 #include "player.h"
 #include "tile.h"
+#include "string.h"
 
 Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets)
 {
@@ -194,7 +196,7 @@ void Map::handleLevelMenuButton()
     emit golevelMenu();
 }
 
-void Map::displayAnimation() {
+void Map::displayAnimation(Level * level) {
 
 
     GifItem* fireworks = new GifItem(":/particules/sprites/particules/fireworks.gif");
@@ -218,7 +220,9 @@ void Map::displayAnimation() {
 
     woodboardItem->setVisible(false);
 
-    QGraphicsTextItem *textItem = new QGraphicsTextItem(QString::fromStdString(lcdCount));
+    double roundedCount = std::round(level->getCount() * 100.0) / 100.0;
+    QString str = QString("%1").arg(roundedCount, 5, 'f', 2, '0');
+    QGraphicsTextItem *textItem = new QGraphicsTextItem(str);
 
     QFont font;
     font.setPointSize(20);
@@ -233,6 +237,8 @@ void Map::displayAnimation() {
     QPointF textPos = mapView->mapToScene(textX, textY);
     textItem->setPos(textPos);
     textItem->setVisible(false);
+
+
 
     woodboardItem->setPos(textItem->pos().x() - 10, textItem->pos().y() - 10);
 

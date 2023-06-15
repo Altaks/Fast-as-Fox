@@ -49,6 +49,26 @@ const std::vector<std::string> LEVELS = {LEVEL_ONE,
                                          LEVEL_THREE,
                                          LEVEL_FOUR,
                                          LEVEL_FIVE};
+
+// ----------------------------------------------------- //
+
+
+// ----------------< POWER UPS CONSTANTS >------------------ //
+const static std::string DASH =          ":/powerups/sprites/powerups/apple.png" ;
+const static std::string DOUBLE_JUMP =   ":/powerups/sprites/powerups/cerise.png";
+const static std::string CHRONO_FREEZE = ":/powerups/sprites/powerups/raisin.png";
+const static std::string HEALTH =        ":/powerups/sprites/powerups/peche.png" ;
+const static std::string SPEED =         ":/powerups/sprites/powerups/citron.png";
+
+const double DASH_BOOST_PERCENTAGE = 170;
+const double DASH_DURATION = 2;
+
+const double SPEED_BOOST_PERCENTAGE = 100;
+const double SPEED_DURATION = 5;
+
+const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUP_POSITIONS = {
+    {12, 6}, {12, 8}
+};
 // ----------------------------------------------------- //
 
 // ----------------< LEVEL POSITION CONSTANTS >--------- //
