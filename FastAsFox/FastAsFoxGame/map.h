@@ -47,7 +47,6 @@ private:
     std::set<Tile*> * toCheckForCollision = nullptr;
     std::string lcdCount;
     QPushButton *homeButton;
-
     Player* itsPlayer;
 public:
     Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileSet*> > * availableTileSets);
@@ -63,8 +62,6 @@ public:
     std::vector<MapSection *> getSections() const;
     void setLcdCount(const std::string &value);
     void displayAnimation();
-    void handleCameraButton() ;
-    void handleTwitterButton();
 
 
 public slots:
