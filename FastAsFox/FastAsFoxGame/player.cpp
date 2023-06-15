@@ -86,6 +86,16 @@ void Player::setLastSpeedTimeStamp(std::chrono::time_point<std::chrono::system_c
     lastSpeedTimeStamp = newLastSpeedTimeStamp;
 }
 
+void Player::setLastSlowTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastSlowTimeStamp)
+{
+    lastSlowTimeStamp = newLastSlowTimeStamp;
+}
+
+void Player::setLastTooFastTimeStamp(std::chrono::time_point<std::chrono::system_clock> newLastTooFastTimeStamp)
+{
+    lastTooFastTimeStamp = newLastTooFastTimeStamp;
+}
+
 Player::Player(Map * map, std::pair<int, int> spawnCoords, QObject *parent) : GameObject{parent}
 {
     this->inAir = false;
@@ -200,6 +210,16 @@ void Player::updatePosition()
     std::chrono::duration<double> speedElapsedDuration(now - this->lastSpeedTimeStamp);
     if(speedElapsedDuration.count() < SPEED_DURATION) {
         vx *= ( SPEED_BOOST_PERCENTAGE / 100 ) + 1;
+    }
+
+    std::chrono::duration<double> slowElapsedDuration(now - this->lastSlowTimeStamp);
+    if(slowElapsedDuration.count() < SLOW_DURATION) {
+        vx *= 1 - ( SLOW_DEBUFF_PERCENTAGE / 100 );
+    }
+
+    std::chrono::duration<double> tooFastElapsedDuration(now - this->lastTooFastTimeStamp);
+    if(tooFastElapsedDuration.count() < TOOFAST_DEBUFF_DURATION) {
+        vx *= ( TOOFAST_DEBUFF_PERCENTAGE / 100 ) + 1;
     }
 
 

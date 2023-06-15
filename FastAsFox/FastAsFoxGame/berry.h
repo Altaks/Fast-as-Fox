@@ -7,6 +7,7 @@
 #include "player.h"
 #include "animatedsprite.h"
 #include "poweruptype.h"
+#include "powerdowntype.h"
 #include "level.h"
 
 class Berry : public QGraphicsPixmapItem
@@ -20,7 +21,8 @@ public:
     virtual void onCollide(Player * fox);
     virtual void applyEffect(Level * level, Player * fox);
     static Berry * generateRandom(QGraphicsScene * scene, std::pair<int, int> spawnpoint);
-    static QPixmap * queryPixmap(PowerUpType type);
+    static QPixmap * queryPixmapPowerUp(PowerUpType type);
+    static QPixmap * queryPixmapPowerDown(PowerDownType type);
 
     QPixmap *getTexture() const;
     QGraphicsScene *getScene() const;

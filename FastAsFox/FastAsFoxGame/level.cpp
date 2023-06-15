@@ -71,7 +71,7 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
     connect(this, &Level::updateHeartsDisplay, this, &Level::changeHeartDisplay);
 
     this->berries = new std::vector<Berry *>();
-    for(std::pair<int, int> coordinates : LEVEL_ONE_POWERUP_POSITIONS){
+    for(std::pair<int, int> coordinates : LEVEL_ONE_POWERUPDOWNS_POSITIONS){
         this->berries->push_back(Berry::generateRandom(scene, coordinates));
     }
 }
