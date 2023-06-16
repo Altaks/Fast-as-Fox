@@ -11,7 +11,6 @@ private:
     int tileid;
     int x;
     int y;
-    bool isCollideable;
     Tile * upTile = nullptr;
     Tile * bottomTile = nullptr;
     Tile * leftTile = nullptr;
@@ -32,16 +31,6 @@ public:
     void setLeftTile(Tile *newLeftTile);
     Tile *getRightTile() const;
     void setRightTile(Tile *newRightTile);
-    /**
-     * @brief getIsCollideable getter for isCollideable
-     * @return isCollideable
-     */
-    bool getIsCollideable();
-    /**
-     * @brief setIsCollideable setter for isCollideable
-     */
-    void setIsCollideable(bool isCollideable);
-
 
 };
 

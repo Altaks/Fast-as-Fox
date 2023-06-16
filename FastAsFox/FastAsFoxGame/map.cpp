@@ -18,7 +18,7 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
     this->sections.push_back(defaultSection);
 
     // inject every tile from all the tilesets to the map used tiles
-    this->loadedTiles = std::map<int, std::pair<bool, QPixmap*>>();
+    this->loadedTiles = std::map<int, QPixmap*>();
     this->tileSets = new std::vector<TileSet*>();
 
     this->tileSets->reserve(availableTileSets->size());
@@ -27,12 +27,12 @@ Map::Map(MapSection * defaultSection, std::vector<TileSet*, std::allocator<TileS
     QPixmap * nullPixmap = new QPixmap(32, 32);
     nullPixmap->fill(Qt::transparent);
 
-    this->loadedTiles.emplace(0, std::pair(false, nullPixmap));
+    this->loadedTiles.emplace(0, nullPixmap);
 
     for(TileSet * tileset : *availableTileSets){
         std::map<int, QPixmap*>* tilesFromTileSet = tileset->load();
         for(std::map<int, QPixmap*>::iterator it = tilesFromTileSet->begin(); it != tilesFromTileSet->end(); it++){
-            this->loadedTiles.emplace(it->first, std::pair(tileset->getIsCollideable(), it->second));
+            this->loadedTiles.emplace(*it);
         }
     }
 
@@ -99,15 +99,12 @@ void Map::load(){
 
             // apply the texture to the tile
             int tileID = tileCoord->second;
-            if(this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0; // set @ null if tile not found
+            if(tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // set @ null if tile not found
 
             qDebug(("Id de la tile : " + std::to_string(tileID)).c_str());
-            std::pair<bool, QPixmap*> entry = this->loadedTiles.at(tileID);
-            QPixmap* correspondingTexture = entry.second;
-            bool isCollideable = entry.first;
+            QPixmap * correspondingTexture = this->loadedTiles.at(tileID);
 
             Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
-            correspondingTile->setIsCollideable(isCollideable);
 
             // place the tile in the scene
             QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();

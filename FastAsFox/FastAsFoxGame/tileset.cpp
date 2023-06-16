@@ -2,14 +2,11 @@
 
 #include <QFile>
 
-TileSet::TileSet(std::string filepath, bool collideable, int sideSize, int startingIndex){
+TileSet::TileSet(std::string filepath, int sideSize, int startingIndex){
     this->startingIndex = startingIndex;
     this->filepath = filepath;
     this->sideSize = sideSize;
-    this->isCollideable = collideable;
-    this->tiles = nullptr;
 }
-
 
 TileSet::TileSet(){
 
@@ -28,12 +25,6 @@ std::map<int, QPixmap*>* TileSet::load(){
     }
     return this->tiles;
 }
-
-bool TileSet::getIsCollideable()
-{
-    return isCollideable;
-}
-
 
 std::map<int, QPixmap *>* TileSet::split()
 {

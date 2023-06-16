@@ -43,7 +43,7 @@ private:
     QGraphicsView * mapView = nullptr;
     std::vector<MapSection *> sections;
     std::vector<TileSet *> * tileSets;
-    std::map<int, std::pair<bool, QPixmap*>> loadedTiles;
+    std::map<int, QPixmap*> loadedTiles;
     std::vector<Tile *> * actuallyLoadedTiles = nullptr;
     std::set<Tile*> * toCheckForCollision = nullptr;
     std::string lcdCount;

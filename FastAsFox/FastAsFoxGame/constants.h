@@ -35,7 +35,6 @@ const double RUNNING_SPEED = 0.06;
 #define FRUITS        ":/fruits/sprites/fruits/fruits.png"
 
 #define GROUND_TILES  ":/texture/sprites/texture/TX Tileset Ground.png"
-#define PROPS_TILES   ":/texture/sprites/texture/TX Village Props.png"
 
 #define HEART         ":/texture/sprites/texture/heart.png"
 
