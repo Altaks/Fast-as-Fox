@@ -13,6 +13,7 @@ public:
     PowerDown(QGraphicsScene * scene, PowerDownType type, std::pair<int, int> spawnpoint);
     void onCollide(Player * player);
     void applyEffect(Level * level, Player * player);
+    void addToScene();
 };
 
 #endif // POWERDOWN_H

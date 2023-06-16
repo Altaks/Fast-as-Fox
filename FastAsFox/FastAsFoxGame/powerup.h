@@ -12,6 +12,7 @@ public:
     PowerUp(QGraphicsScene * scene, PowerUpType type, std::pair<int, int> spawnpoint);
     void onCollide(Player * player);
     void applyEffect(Level * level, Player * player);
+    void addToScene();
 };
 
 #endif // POWERUP_H

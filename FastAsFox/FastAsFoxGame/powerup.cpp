@@ -65,3 +65,9 @@ void PowerUp::applyEffect(Level * level, Player * player){
     player->setStockedPowerUp(nullptr);
     qWarning() << "Player consumed the powerup and dont have it anymore" << "\n";
 }
+
+void PowerUp::addToScene()
+{
+    this->scene->addItem(this);
+    this->hasBeenUsed = false;
+}

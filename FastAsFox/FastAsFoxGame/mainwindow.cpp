@@ -90,6 +90,7 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
             if(this->level->getPlayer()->getStockedPowerUp() != nullptr){
                 this->level->getPlayer()->getStockedPowerUp()->applyEffect(this->level, this->level->getPlayer());
             }
+        break;
     case Qt::Key::Key_Q:
     case Qt::Key::Key_Left:
         this->level->getPlayer()->playerSlowedDown();
