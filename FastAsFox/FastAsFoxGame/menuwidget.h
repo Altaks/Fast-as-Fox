@@ -108,9 +108,6 @@ private:
     QLabel * logoLabel;
 
 
-
-
-
     QGraphicsView * view;
     QSpacerItem * leftSpacer;
     QSpacerItem * rightSpacer;
