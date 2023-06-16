@@ -241,7 +241,7 @@ void Player::updatePosition()
     QRect collidedLeftTileRect;
 
     for(Tile * tile : *tiles){
-        if(tile->getTileId() == 0) continue;
+        if(tile->getTileId() == 0 || !tile->getIsCollideable()) continue;
         QRect playerRect = QRect(predictedX * 32, this->map->getScene()->height() - (predictedY * 32), this->animation->pixmap().width(), this->animation->pixmap().height());
         QRect tileRect = QRect(tile->getTileItem()->x(), tile->getTileItem()->y(), tile->getTileItem()->pixmap().width(), tile->getTileItem()->pixmap().height());
 

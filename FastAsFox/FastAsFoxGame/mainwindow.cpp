@@ -122,11 +122,15 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
  */
 void MainWindow::handleMenuFinished()
 {
-    set = new TileSet(GROUND_TILES, TILE_SIZE, 1);
+    TileSet * set = new TileSet(GROUND_TILES, true, TILE_SIZE, 1);
+    TileSet * propsSet = new TileSet(PROPS_TILES, false, TILE_SIZE, 257);
+
     section = new MapSection(LEVELS.at(levelN));
 
     tilesets = new std::vector<TileSet*>();
     tilesets->push_back(set);
+    tilesets->push_back(propsSet);
+
 
     map = new Map(section, tilesets);
     map->load();
