@@ -79,51 +79,63 @@ QGraphicsView * Map::getView(){
     return this->mapView;
 }
 
-void Map::load(){
+void Map::load()
+{
     std::map<std::pair<int, int>, Tile*> coordinatesToTile;
 
-    // inject map at coordinates
+    // Initialize a map to store tile coordinates to corresponding tiles
+    // Inject map at coordinates
     int anchorX = 0;
-    for(uint sectionId = 0; sectionId < this->sections.size(); sectionId++){
+
+    // Iterate through each map section
+    for (uint sectionId = 0; sectionId < this->sections.size(); sectionId++)
+    {
         MapSection* section = this->sections.at(sectionId);
 
-        // for each tile entry: x ,  y  : tileid
-        for(std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin(); tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++){
+        // Iterate through each tile entry in the section
+        // For each tile entry: x , y : tileid
+        for (std::map<std::pair<int, int>, int>::iterator tileCoord = section->getCoordinatesToTileId()->begin();
+             tileCoord != section->getCoordinatesToTileId()->end(); tileCoord++)
+        {
 
+            // Calculate the graphics coordinates for the tile
+            // Adapt the coordinates to displayable coordinates
             int graphicsX = anchorX + tileCoord->first.first;
             int graphicsY = section->getSectionHeight() - tileCoord->first.second;
 
-            // adapt the coordinates to displayable coordinates
-            graphicsX *= 32;
-            graphicsY *= 32;
+            // Convert the graphics coordinates to displayable coordinates
+            graphicsX *= TILE_SIZE; // TILE_SIZE = 32 pixels
+            graphicsY *= TILE_SIZE;
 
-            // apply the texture to the tile
+            // Get the texture and collision information for the tile
             int tileID = tileCoord->second;
-            if(tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // set @ null if tile not found
+            if (tileID >= this->loadedTiles.size() || tileID < 0) tileID = 0; // Set to null if tile not found
 
-            if(this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0;
+            if (this->loadedTiles.find(tileID) == this->loadedTiles.end()) tileID = 0;
             std::pair<bool, QPixmap*> entry = this->loadedTiles.at(tileID);
-            QPixmap * correspondingTexture = entry.second;
+            QPixmap* correspondingTexture = entry.second;
             bool isCollideable = entry.first;
 
-
-            Tile * correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
+            // Create a new Tile object with the corresponding texture and coordinates
+            Tile* correspondingTile = new Tile(correspondingTexture, tileID, anchorX - tileCoord->first.first, tileCoord->first.second);
             correspondingTile->setIsCollideable(isCollideable);
 
-
-            // place the tile in the scene
-            QGraphicsPixmapItem * tileItem = correspondingTile->getTileItem();
+            // Set the position of the tile in the scene
+            QGraphicsPixmapItem* tileItem = correspondingTile->getTileItem();
             tileItem->setPos(graphicsX, graphicsY);
 
-            // add the item to the scene
+            // Add the tile item to the scene
             this->getScene()->addItem(correspondingTile->getTileItem());
-            this->actuallyLoadedTiles->push_back(correspondingTile);
-            coordinatesToTile.emplace(std::pair<int, int>(correspondingTile->getX(), correspondingTile->getY()), correspondingTile);
 
+            // Store the tile in the coordinatesToTile map for easy access
+            coordinatesToTile.emplace(std::pair<int, int>(correspondingTile->getX(), correspondingTile->getY()), correspondingTile);
         }
 
+        // Update the anchorX for the next section
         anchorX += section->getSectionWidth();
     }
+}
+
 
     for(Tile * tile : *this->actuallyLoadedTiles){
            if(tile->getTileId() == 0) continue;
