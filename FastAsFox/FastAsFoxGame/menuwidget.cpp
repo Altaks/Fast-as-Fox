@@ -187,18 +187,18 @@ MenuWidget::MenuWidget(QWidget * parent, int aNumberOfLevelsUnlocked, int isRest
 
     // Setup audio
     m_selectPlayer = new QMediaPlayer(this);
-    m_selectPlayer -> setSource(QUrl("qrc:/menu/sprites/menu/menuSelection.mp3"));
+    m_selectPlayer -> setSource(QUrl(AUDIOMENUSELECTION));
     QAudioOutput * selectOutput = new QAudioOutput(this);
     m_selectPlayer -> setAudioOutput(selectOutput);
     m_selectedPlayer = new QMediaPlayer(this);
-    m_selectedPlayer -> setSource(QUrl("qrc:/menu/sprites/menu/menuSelected.mp3"));
+    m_selectedPlayer -> setSource(QUrl(AUDIOMENUSELECTED));
     QAudioOutput * selectedOutput = new QAudioOutput(this);
     m_selectedPlayer -> setAudioOutput(selectedOutput);
 
     m_sagaPlayer = new QMediaPlayer(this);
     audioOutput = new QAudioOutput;
     m_sagaPlayer -> setAudioOutput(audioOutput);
-    m_sagaPlayer -> setSource(QUrl("qrc:/menu/sprites/menu/saga.mp3"));
+    m_sagaPlayer -> setSource(QUrl(AUDIOSAGA));
 
     this -> setFocusPolicy(Qt::StrongFocus);
 
@@ -709,7 +709,7 @@ void MenuWidget::saga() {
             movie -> start();
 
             // Play the menu.mp3
-            m_sagaPlayer -> setSource(QUrl("qrc:/menu/sprites/menu/menu.mp3"));
+            m_sagaPlayer -> setSource(QUrl(AUDIOMENU));
             m_sagaPlayer -> play();
 
             // Baisser le volume de 50%

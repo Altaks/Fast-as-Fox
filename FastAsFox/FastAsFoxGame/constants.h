@@ -241,16 +241,11 @@ const int HEDGEHOG_N_OF_FRAME = 4;
 // ----------------------------------------------------- //
 
 // ----------------< AUDIO FILES PATHS >---------------- //
-#define AUDIO1       ""
-#define AUDIO2       ""
-#define AUDIO3       ""
-#define AUDIO4       ""
-#define AUDIO5       ""
-#define AUDIO6       ""
-#define AUDIO7       ""
-#define AUDIO8       ""
-#define AUDIO9       ""
-#define AUDIO10      ""
+#define AUDIOMENUSELECTION       "qrc:/menu/sprites/menu/menuSelection.mp3"
+#define AUDIOMENUSELECTED       "qrc:/menu/sprites/menu/menuSelected.mp3"
+#define AUDIOSAGA               "qrc:/menu/sprites/menu/saga.mp3"
+#define AUDIOMENU               "qrc:/menu/sprites/menu/menu.mp3"
+
 // ----------------------------------------------------- //
 
 
