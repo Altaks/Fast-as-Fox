@@ -71,7 +71,7 @@ Level::Level(int leveln, pair<int,int> AStartingPosition, Map * AMap, QMainWindo
 
 
     this->berries = new std::vector<Berry *>();
-        for(std::pair<int, int> coordinates : LEVEL_ONE_POWERUPDOWNS_POSITIONS){
+    for(std::pair<int, int> coordinates : POWERUPDOWNS_POS.at(level)){
             this->berries->push_back(Berry::generateRandom(scene, coordinates));
         }
 

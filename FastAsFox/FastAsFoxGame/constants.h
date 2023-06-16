@@ -62,34 +62,29 @@ const static std::string SPEED =            ":/powerups/sprites/powerups/citron.
 
 const static std::string SLOW  =            ":/powerdowns/sprites/powerdowns/banana.png";
 const static std::string TOO_FAST  =        ":/powerdowns/sprites/powerdowns/stawberry.png";
-const static std::string BUMP  =            ":/powerdowns/sprites/powerdowns/watermelon.png";
-const static std::string INVIS  =           ":/powerdowns/sprites/powerdowns/avocado.png";
 const static std::string EXPLOOOSION  =     ":/powerdowns/sprites/powerdowns/pepper.png";
 
-const double DASH_BOOST_PERCENTAGE = 170;
-const double DASH_DURATION = 2;
+const double DASH_BOOST_PERCENTAGE = 120;
+const double DASH_DURATION = 1;
 
-const double SPEED_BOOST_PERCENTAGE = 100;
-const double SPEED_DURATION = 5;
+const double SPEED_BOOST_PERCENTAGE = 40;
+const double SPEED_DURATION = 2;
 
 const double SLOW_DEBUFF_PERCENTAGE = 50; // -20% of speed
 const double SLOW_DURATION = 5;
 
-const double TOOFAST_DEBUFF_PERCENTAGE = 200;
+const double TOOFAST_DEBUFF_PERCENTAGE = 150;
 const double TOOFAST_DEBUFF_DURATION = 2;
 
-const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUPDOWNS_POSITIONS = {
-    {12, 6}, {12, 8}
-};
 
 // ----------------------------------------------------- //
 
 // ----------------< LEVEL POSITION CONSTANTS >--------- //
 const std::pair<int,int> LEVEL_ONE_START_POS = std::pair(1,7);
-const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(10,35);
+const std::pair<int,int> LEVEL_TWO_START_POS = std::pair(1,21);
 const std::pair<int,int> LEVEL_THREE_START_POS = std::pair(1,15);
 const std::pair<int,int> LEVEL_FOUR_START_POS = std::pair(1,15);
-const std::pair<int,int> LEVEL_FIVE_START_POS = std::pair(2,7);
+const std::pair<int,int> LEVEL_FIVE_START_POS = std::pair(1,15);
 
 const std::vector<std::pair<int,int>> LEVEL_START_POS = {LEVEL_ONE_START_POS,
                                                          LEVEL_TWO_START_POS,
@@ -102,8 +97,9 @@ const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS1 = std::pair(7,4);
 const std::pair<int,int> HEDGEHOG_LEVEL_ONE_POS2 = std::pair(30,10);
 const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_ONE_POS_VECTOR = {HEDGEHOG_LEVEL_ONE_POS1,HEDGEHOG_LEVEL_ONE_POS2};
 
-
-const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_TWO_POS_VECTOR = {};
+const std::pair<int,int> HEDGEHOG_LEVEL_TWO_POS1 = std::pair(23,19);
+const std::pair<int,int> HEDGEHOG_LEVEL_TWO_POS2 = std::pair(32,19);
+const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_TWO_POS_VECTOR = {HEDGEHOG_LEVEL_TWO_POS1,HEDGEHOG_LEVEL_TWO_POS2};
 
 const std::pair<int,int> HEDGEHOG_LEVEL_THREE_POS1 = std::pair(20,16);
 const std::pair<int,int> HEDGEHOG_LEVEL_THREE_POS2 = std::pair(90,14);
@@ -119,8 +115,10 @@ const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_FOUR_POS_VECTOR = {HEDGEHOG
                                                                        HEDGEHOG_LEVEL_FOUR_POS3,
                                                                        HEDGEHOG_LEVEL_FOUR_POS4};
 
-
-const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_FIVE_POS_VECTOR = {};
+const std::pair<int,int> HEDGEHOG_LEVEL_FIVE_POS1 = std::pair(25,14);
+const std::pair<int,int> HEDGEHOG_LEVEL_FIVE_POS2 = std::pair(105,14);
+const std::vector<std::pair<int,int>> HEDGEHOG_LEVEL_FIVE_POS_VECTOR = {HEDGEHOG_LEVEL_FIVE_POS1,
+                                                                         HEDGEHOG_LEVEL_FIVE_POS2};
 
 const std::vector<std::vector<std::pair<int,int>>> HEDGEHOG_POS = {HEDGEHOG_LEVEL_ONE_POS_VECTOR,
                                                                    HEDGEHOG_LEVEL_TWO_POS_VECTOR,
@@ -133,8 +131,8 @@ const std::pair<int,int> SPIKE_LEVEL_ONE_POS1 = std::pair(41,6);
 const std::pair<int,int> SPIKE_LEVEL_ONE_POS2 = std::pair(60,5);
 const std::vector<std::pair<int,int>> SPIKE_LEVEL_ONE_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
 
-
-const std::vector<std::pair<int,int>> SPIKE_LEVEL_TWO_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
+const std::pair<int,int> SPIKE_LEVEL_TWO_POS1 = std::pair(45,20);
+const std::vector<std::pair<int,int>> SPIKE_LEVEL_TWO_POS_VECTOR = {SPIKE_LEVEL_TWO_POS1};
 
 const std::pair<int,int> SPIKE_LEVEL_THREE_POS1 = std::pair(39,15);
 const std::pair<int,int> SPIKE_LEVEL_THREE_POS2 = std::pair(40,15);
@@ -168,8 +166,12 @@ const std::vector<std::pair<int,int>> SPIKE_LEVEL_FOUR_POS_VECTOR = {SPIKE_LEVEL
                                                                     SPIKE_LEVEL_FOUR_POS7,
                                                                     SPIKE_LEVEL_FOUR_POS8};
 
-
-const std::vector<std::pair<int,int>> SPIKE_LEVEL_FIVE_POS_VECTOR = {SPIKE_LEVEL_ONE_POS1,SPIKE_LEVEL_ONE_POS2};
+const std::pair<int,int> SPIKE_LEVEL_FIVE_POS1 = std::pair(15,14);
+const std::pair<int,int> SPIKE_LEVEL_FIVE_POS2 = std::pair(112,14);
+const std::pair<int,int> SPIKE_LEVEL_FIVE_POS3 = std::pair(142,14);
+const std::vector<std::pair<int,int>> SPIKE_LEVEL_FIVE_POS_VECTOR = {SPIKE_LEVEL_FIVE_POS1,
+                                                                      SPIKE_LEVEL_FIVE_POS2,
+                                                                      SPIKE_LEVEL_FIVE_POS3};
 
 
 const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_POS_VECTOR,
@@ -180,16 +182,40 @@ const std::vector<std::vector<std::pair<int,int>>> SPIKE_POS = {SPIKE_LEVEL_ONE_
 
 // ----------------< END BERRIES POSITION CONSTANTS >-- //
 const std::pair<int,int> END_BERRIES_LEVEL1 = std::pair(71,7);
-const std::pair<int,int> END_BERRIES_LEVEL2 = std::pair(71,7);
+const std::pair<int,int> END_BERRIES_LEVEL2 = std::pair(148,16);
 const std::pair<int,int> END_BERRIES_LEVEL3 = std::pair(148,14);
-const std::pair<int,int> END_BERRIES_LEVEL4 = std::pair(147,14);
-const std::pair<int,int> END_BERRIES_LEVEL5 = std::pair(71,7);
+const std::pair<int,int> END_BERRIES_LEVEL4 = std::pair(148,14);
+const std::pair<int,int> END_BERRIES_LEVEL5 = std::pair(148,14);
 
 const std::vector<std::pair<int,int>> END_BERRIES = {END_BERRIES_LEVEL1,
                                                      END_BERRIES_LEVEL2,
                                                      END_BERRIES_LEVEL3,
                                                      END_BERRIES_LEVEL4,
                                                      END_BERRIES_LEVEL5};
+
+
+const std::vector<std::pair<int, int>> LEVEL_ONE_POWERUPDOWNS_POSITIONS = {
+    {30, 7}, {30, 10}
+};
+const std::vector<std::pair<int, int>> LEVEL_TWO_POWERUPDOWNS_POSITIONS = {
+    {55, 20}, {104,24}
+};
+const std::vector<std::pair<int, int>> LEVEL_THREE_POWERUPDOWNS_POSITIONS = {
+    {45, 14}, {99, 14}, {123, 13}
+};
+const std::vector<std::pair<int, int>> LEVEL_FOUR_POWERUPDOWNS_POSITIONS = {
+    {30, 14}, {78, 16}, {120, 14}
+};
+const std::vector<std::pair<int, int>> LEVEL_FIVE_POWERUPDOWNS_POSITIONS = {
+    {22, 14}, {54, 18}, {85, 18}, {119, 14}
+};
+
+
+const std::vector<std::vector<std::pair<int,int>>> POWERUPDOWNS_POS = {LEVEL_ONE_POWERUPDOWNS_POSITIONS,
+                                                                        LEVEL_TWO_POWERUPDOWNS_POSITIONS,
+                                                                        LEVEL_THREE_POWERUPDOWNS_POSITIONS,
+                                                                        LEVEL_FOUR_POWERUPDOWNS_POSITIONS,
+                                                                        LEVEL_FIVE_POWERUPDOWNS_POSITIONS};
 
 
 // ----------------------------------------------------- //

@@ -42,10 +42,10 @@ Berry * Berry::generateRandom(QGraphicsScene * scene, std::pair<int, int> spawnp
     std::uniform_int_distribution<int> random_type(0, 1);
 
     if((bool)random_type(eng)){ // implicit conversion to boolean
-        PowerDownType type = (PowerDownType)distribution(eng);
+        PowerDownType type = (PowerDownType)distribution2(eng);
         return new PowerDown(scene, type, spawnpoint);
     } else {
-        PowerUpType type = (PowerUpType)distribution2(eng);
+        PowerUpType type = (PowerUpType)distribution(eng);
         return new PowerUp(scene, type, spawnpoint);
     }
 }

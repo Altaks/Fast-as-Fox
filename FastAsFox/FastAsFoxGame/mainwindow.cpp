@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Failed to open the file";
     }
 
-    m_menuWidget = new MenuWidget(this, 4, nbMode);
+    m_menuWidget = new MenuWidget(this, 5, nbMode);
     setCentralWidget(m_menuWidget);
     //connect(m_menuWidget, &MenuWidget::levelSelected, this, &MainWindow::handleLevelSelection);
     connect(m_menuWidget, &MenuWidget::finished, this, &MainWindow::handleMenuFinished);

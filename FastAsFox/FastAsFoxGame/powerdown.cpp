@@ -48,5 +48,5 @@ void PowerDown::applyEffect(Level * level, Player * player){
 void PowerDown::addToScene()
 {
     this->scene->addItem(this);
-    this->hasBeenUsed = false;
+    this->hasBeenPickedUp = false;
 }
