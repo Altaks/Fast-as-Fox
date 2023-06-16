@@ -154,11 +154,11 @@ const std::vector<std::pair<int,int>> SPIKE_LEVEL_THREE_POS_VECTOR = {SPIKE_LEVE
 const std::pair<int,int> SPIKE_LEVEL_FOUR_POS1 = std::pair(34,14);
 const std::pair<int,int> SPIKE_LEVEL_FOUR_POS2 = std::pair(63,14);
 const std::pair<int,int> SPIKE_LEVEL_FOUR_POS3 = std::pair(85,18);
-const std::pair<int,int> SPIKE_LEVEL_FOUR_POS4 = std::pair(109,18);
-const std::pair<int,int> SPIKE_LEVEL_FOUR_POS5 = std::pair(110,18);
-const std::pair<int,int> SPIKE_LEVEL_FOUR_POS6 = std::pair(111,18);
-const std::pair<int,int> SPIKE_LEVEL_FOUR_POS7 = std::pair(112,18);
-const std::pair<int,int> SPIKE_LEVEL_FOUR_POS8 = std::pair(113,18);
+const std::pair<int,int> SPIKE_LEVEL_FOUR_POS4 = std::pair(109,14);
+const std::pair<int,int> SPIKE_LEVEL_FOUR_POS5 = std::pair(110,14);
+const std::pair<int,int> SPIKE_LEVEL_FOUR_POS6 = std::pair(111,14);
+const std::pair<int,int> SPIKE_LEVEL_FOUR_POS7 = std::pair(112,14);
+const std::pair<int,int> SPIKE_LEVEL_FOUR_POS8 = std::pair(113,14);
 const std::vector<std::pair<int,int>> SPIKE_LEVEL_FOUR_POS_VECTOR = {SPIKE_LEVEL_FOUR_POS1,
                                                                     SPIKE_LEVEL_FOUR_POS2,
                                                                     SPIKE_LEVEL_FOUR_POS3,
