@@ -79,6 +79,17 @@ QGraphicsView * Map::getView(){
     return this->mapView;
 }
 
+/**
+ * @brief Loads the map by creating and placing tiles in the scene.
+ *
+ * This function populates the map with tiles by iterating over the map sections
+ * and their respective tile coordinates. It creates `Tile` objects, assigns them
+ * corresponding textures, sets collision properties, and places them in the scene.
+ * The tiles are associated with their coordinates in a map for efficient lookup.
+ *
+ * @note This function assumes that the necessary data structures and resources
+ *       have been properly initialized beforehand.
+ */
 void Map::load()
 {
     std::map<std::pair<int, int>, Tile*> coordinatesToTile;
