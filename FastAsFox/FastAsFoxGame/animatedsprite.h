@@ -21,21 +21,14 @@ public:
     void crouch();
     void reset();
     std::pair<int,int> getSpritePosition() const;
-
     bool getIsRunning() const;
     void setIsRunning(bool newIsRunning);
-
     QGraphicsScene *getScene() const;
     void updatePixmap();
-
     QColor originalColor;  // Store the original color
     QGraphicsColorizeEffect* colorizeEffect;  // Store the colorize effect
-
     void setColor(QColor color) ;
-
     void resetColor() ;
-
-
     QTimer *getTimer() const;
 
 private:
