@@ -1031,6 +1031,8 @@ void MenuWidget::initMenu() {
     setupImagesLayout();
 
     this -> setLayout(m_layout);
+    m_sagaPlayer -> setSource(QUrl(AUDIOMENU));
+    m_sagaPlayer -> play();
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();

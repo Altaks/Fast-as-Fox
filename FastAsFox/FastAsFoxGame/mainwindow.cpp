@@ -133,8 +133,8 @@ void MainWindow::handleMenuFinished()
     map->load();
     level = new Level(levelN,LEVEL_START_POS.at(levelN),map,this);
 
-    //QPixmap background(":/texture/sprites/texture/bg.jpg");
-    //level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    QPixmap background(":/texture/sprites/texture/bg.jpg");
+    level->getScene()->setBackgroundBrush(background.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
 
 
     level->start();
