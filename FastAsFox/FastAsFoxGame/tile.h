@@ -6,11 +6,26 @@
 class Tile : public GameObject
 {
 private:
+    /**
+     * @brief texture the texture of the tile
+     */
     QPixmap * texture;
+
+    /**
+     * @brief tile the final item that will be added to the scene
+     */
     QGraphicsPixmapItem * tile;
+
+    /**
+     * @brief tileid the Id of the tile
+     */
     int tileid;
+
+    /// The coordinates of the tile
     int x;
     int y;
+
+    /// Pointers towards nearby tiles
     Tile * upTile = nullptr;
     Tile * bottomTile = nullptr;
     Tile * leftTile = nullptr;

@@ -1,0 +1,85 @@
+#ifndef BERRY_H
+#define BERRY_H
+
+#include <QRect>
+#include <QGraphicsPixmapItem>
+
+#include "player.h"
+#include "animatedsprite.h"
+#include "poweruptype.h"
+#include "powerdowntype.h"
+#include "level.h"
+
+class Berry : public QGraphicsPixmapItem
+{
+protected:
+    
+    /**
+     * @brief hasBeenUsed says if this berry has been used
+     */
+    bool hasBeenUsed = false;
+    
+    /**
+     * @brief texture the texture of the berry
+     */
+    QPixmap * texture = nullptr;
+    
+    /**
+     * @brief scene the scene where the berry spawns in
+     */
+    QGraphicsScene * scene = nullptr;
+public:
+    /**
+     * @brief Berry the constructor
+     * @param scene the scene where the berry spawns
+     */
+    Berry(QGraphicsScene * scene);
+    
+    /**
+     * @brief onCollide function called when the player collides with the berry
+     * @param fox a pointer towards the player
+     */
+    virtual void onCollide(Player * fox);
+    
+    /**
+     * @brief applyEffect applies the berry effect to the player
+     * @param level a pointer towards the current level
+     * @param fox a pointer towards the current player
+     */
+    virtual void applyEffect(Level * level, Player * fox);
+    
+    /**
+     * @brief addToScene a function that adds the berry to the scene and resets it if needed
+     */
+    virtual void addToScene();
+    
+    /**
+     * @brief generateRandom generates a random berry and places it
+     * @param scene the scene where the berry spawns
+     * @param spawnpoint the coordinates where the berry has to spawn
+     * @return a pointer towards the generated berry
+     */
+    static Berry * generateRandom(QGraphicsScene * scene, std::pair<int, int> spawnpoint);
+    
+    /**
+     * @brief queryPixmapPowerUp queries the texture of this powerup type
+     * @param type the concerned powerup type
+     * @return a pointer towards the texture
+     */
+    static QPixmap * queryPixmapPowerUp(PowerUpType type);
+    
+    /**
+     * @brief queryPixmapPowerUp queries the texture of this powerup type
+     * @param type the concerned powerup type
+     * @return a pointer towards the texture
+     */
+    static QPixmap * queryPixmapPowerDown(PowerDownType type);
+
+    QPixmap *getTexture() const;
+    QGraphicsScene *getScene() const;
+    void setTexture(QPixmap *newTexture);
+    void setScene(QGraphicsScene *newScene);
+    void setHasBeenUsed(bool newHasBeenUsed);
+};
+
+#endif //BERRY_H
