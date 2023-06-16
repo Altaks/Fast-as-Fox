@@ -11,6 +11,7 @@ private:
     int tileid;
     int x;
     int y;
+    bool isCollideable;
     Tile * upTile = nullptr;
     Tile * bottomTile = nullptr;
     Tile * leftTile = nullptr;
@@ -18,11 +19,13 @@ private:
 
 
 public:
-    explicit Tile(QPixmap * texture, int tileid, int x, int y, QObject *parent = nullptr);
+    explicit Tile(QPixmap * texture, int tileId, int x, int y, QObject *parent = nullptr);
     QGraphicsPixmapItem * getTileItem();
     int getTileId() const;
     int getX() const;
     int getY() const;
+    bool getIsCollideable();
+    void setIsCollideable(bool collideable);
     Tile *getUpTile() const;
     void setUpTile(Tile *newUpTile);
     Tile *getBottomTile() const;

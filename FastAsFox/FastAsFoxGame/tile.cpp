@@ -56,14 +56,26 @@ void Tile::setRightTile(Tile *newRightTile)
 }
 
 
-Tile::Tile(QPixmap *texture, int tileid, int x, int y, QObject *parent) : GameObject{parent}
+Tile::Tile(QPixmap *texture, int tileId, int x, int y, QObject *parent) : GameObject{parent}
+
 {
     this->texture = texture;
     this->tile = new QGraphicsPixmapItem(*texture);
-    this->tileid = tileid;
+    this->tileid = tileId;
     this->x = x;
     this->y = y;
 }
+
+bool Tile::getIsCollideable()
+{
+    return isCollideable;
+}
+
+void Tile::setIsCollideable(bool collideable)
+{
+    isCollideable = collideable;
+}
+
 
 QGraphicsPixmapItem *Tile::getTileItem()
 {
